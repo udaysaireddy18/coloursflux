@@ -1,0 +1,725 @@
+/* ============================================================
+   ColoursFlux — opening animation
+   A rangoli of festival colour blooms around the word COLOURS,
+   then the portal closes and reveals the guide.
+   Decorative only: assets/js/intro.js removes the whole block
+   once the sequence finishes or the visitor taps to enter.
+   ============================================================ */
+
+html.intro-open,
+html.intro-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html.intro-seen .intro {
+  display: none;
+}
+
+.intro {
+  --intro-size: min(760px, 118vmin);
+  --exit-time: 0.95s;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(58% 54% at 50% 46%, rgba(37, 25, 78, 0.72), transparent 72%),
+    radial-gradient(80% 64% at 50% 112%, rgba(6, 182, 212, 0.16), transparent 68%),
+    radial-gradient(70% 60% at 4% -8%, rgba(79, 70, 229, 0.24), transparent 70%),
+    radial-gradient(70% 60% at 96% -4%, rgba(217, 70, 239, 0.18), transparent 70%),
+    #05060f;
+  clip-path: circle(150% at 50% 47%);
+  transition: clip-path var(--exit-time) cubic-bezier(0.72, 0, 0.28, 1);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  animation: intro-failsafe 0s 8.8s forwards;
+}
+
+/* Slow colour haze + a dusting of festival stars behind the rangoli. */
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: -34%;
+  z-index: 0;
+  background: conic-gradient(
+    from 210deg at 50% 50%,
+    rgba(79, 70, 229, 0.46),
+    rgba(217, 70, 239, 0.32),
+    rgba(244, 196, 106, 0.2),
+    rgba(46, 196, 182, 0.28),
+    rgba(34, 211, 238, 0.36),
+    rgba(79, 70, 229, 0.46)
+  );
+  filter: blur(96px);
+  opacity: 0.55;
+  animation: intro-aura 17s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(244, 196, 106, 0.72) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(165, 243, 252, 0.55) 1.2px, transparent 1.8px);
+  background-size: 190px 170px, 310px 270px, 450px 390px;
+  background-position: 20px 30px, 80px 10px, 140px 60px;
+  opacity: 0.35;
+  animation: intro-stars 26s linear infinite;
+  mask-image: radial-gradient(74% 74% at 50% 47%, #000 30%, transparent 82%);
+  -webkit-mask-image: radial-gradient(74% 74% at 50% 47%, #000 30%, transparent 82%);
+  pointer-events: none;
+}
+
+/* ---------- rangoli ---------- */
+
+.intro-rangoli {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  z-index: 1;
+  width: var(--intro-size);
+  height: var(--intro-size);
+  transform: translate(-50%, -50%);
+  transition:
+    scale var(--exit-time) var(--ease),
+    filter var(--exit-time) ease;
+  pointer-events: none;
+}
+
+.intro.is-leaving .intro-rangoli {
+  scale: 1.18;
+  filter: blur(1px);
+}
+
+.intro-ring {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: intro-ring-in 1.15s var(--ease) 0.1s both;
+}
+
+.intro-ring-1 {
+  inset: 0;
+  border: 1px solid rgba(244, 196, 106, 0.18);
+  box-shadow: 0 0 90px -18px rgba(79, 70, 229, 0.8), inset 0 0 70px rgba(217, 70, 239, 0.08);
+}
+
+.intro-ring-1::before {
+  content: "";
+  position: absolute;
+  inset: 2.4%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 215, 120, 0.9) 0 1.1deg,
+    transparent 1.1deg 9deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 70.5%, #000 71.4% 72.4%, transparent 73.3%);
+  mask: radial-gradient(circle, transparent 70.5%, #000 71.4% 72.4%, transparent 73.3%);
+  animation: intro-spin 90s linear infinite;
+}
+
+.intro-ring-2 {
+  inset: 11%;
+  border: 1px dashed rgba(129, 140, 248, 0.26);
+  animation-delay: 0.22s;
+}
+
+.intro-ring-2::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 7deg,
+    rgba(232, 121, 249, 0.8) 0 1.6deg,
+    transparent 1.6deg 12deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 72%, #000 73% 76%, transparent 77%);
+  mask: radial-gradient(circle, transparent 72%, #000 73% 76%, transparent 77%);
+  animation: intro-spin 64s linear infinite reverse;
+}
+
+.intro-ring-3 {
+  inset: 27%;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 46px rgba(34, 211, 238, 0.14);
+  animation-delay: 0.34s;
+}
+
+.intro-core {
+  position: absolute;
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 228, 160, 0.5),
+    rgba(244, 196, 106, 0.18) 38%,
+    rgba(217, 70, 239, 0.08) 58%,
+    transparent 72%
+  );
+  filter: blur(4px);
+  animation: intro-core 3.4s ease-in-out infinite alternate;
+}
+
+.intro-petals,
+.intro-dots {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: intro-spin 150s linear infinite;
+}
+
+.intro-dots {
+  animation-direction: reverse;
+  animation-duration: 190s;
+}
+
+.intro-petal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--intro-size) * 0.05);
+  height: calc(var(--intro-size) * 0.165);
+  margin-left: calc(var(--intro-size) * -0.025);
+  margin-top: calc(var(--intro-size) * -0.0825);
+  border-radius: 50% 50% 46% 46% / 66% 66% 34% 34%;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.62), transparent 52%),
+    var(--c);
+  box-shadow:
+    0 0 18px -3px var(--c),
+    inset 0 -10px 16px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  scale: 0.16;
+  transform: rotate(var(--a)) translateY(calc(var(--intro-size) * -0.305));
+  animation: intro-petal-in 0.9s cubic-bezier(0.18, 0.82, 0.28, 1.1)
+    calc(0.26s + var(--i) * 34ms) forwards;
+  pointer-events: none;
+}
+
+.intro-petal-inner {
+  width: calc(var(--intro-size) * 0.038);
+  height: calc(var(--intro-size) * 0.1);
+  margin-left: calc(var(--intro-size) * -0.019);
+  margin-top: calc(var(--intro-size) * -0.05);
+  transform: rotate(var(--a)) translateY(calc(var(--intro-size) * -0.19));
+  opacity: 0;
+  scale: 0.16;
+}
+
+.intro-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--intro-size) * 0.009);
+  height: calc(var(--intro-size) * 0.009);
+  margin-left: calc(var(--intro-size) * -0.0045);
+  margin-top: calc(var(--intro-size) * -0.0045);
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 10px var(--c);
+  opacity: 0;
+  transform: rotate(var(--a)) translateY(calc(var(--intro-size) * -0.445));
+  animation: intro-dot-in 0.6s var(--ease) calc(0.62s + var(--i) * 26ms) forwards;
+  pointer-events: none;
+}
+
+/* ---------- headline ---------- */
+
+.intro-copy {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  max-width: min(94vw, 900px);
+  padding: 0 22px;
+  text-align: center;
+  transition: transform calc(var(--exit-time) * 0.9) var(--ease);
+}
+
+.intro.is-leaving .intro-copy {
+  transform: translateY(-14px) scale(1.03);
+}
+
+.intro-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: #dfe6ff;
+  font-size: clamp(0.58rem, 1.4vw, 0.7rem);
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: intro-rise 0.85s var(--ease) 0.55s forwards;
+}
+
+.intro-kicker::before,
+.intro-kicker::after {
+  content: "";
+  width: clamp(18px, 5vw, 48px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(199, 210, 254, 0.8));
+}
+
+.intro-kicker::after {
+  transform: scaleX(-1);
+}
+
+.intro-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: clamp(8px, 1.6vw, 16px) 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12.5vw, 7.1rem);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+.intro-word {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+/* FLUX is appended only after every letter of COLOURS has landed. */
+.intro-word-flux {
+  margin-left: 0.14em;
+}
+
+.intro-letter {
+  --d: calc(0.95s + var(--i) * 0.075s);
+  position: relative;
+  display: inline-block;
+  color: var(--c);
+  opacity: 0;
+  transform: translateY(0.5em) rotateX(-58deg) scale(0.82);
+  transform-origin: 50% 100%;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.35),
+    0 20px 52px rgba(0, 0, 0, 0.72),
+    0 0 34px rgba(255, 255, 255, 0.16);
+  animation: intro-letter 0.9s cubic-bezier(0.18, 0.82, 0.28, 1.12) var(--d) forwards;
+}
+
+/* A small rangoli blooms behind each letter as it is revealed. */
+.intro-letter::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: 1.55em;
+  height: 1.55em;
+  margin: -0.775em 0 0 -0.775em;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    var(--c) 0deg 4.5deg,
+    transparent 4.5deg 22.5deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 30%, #000 32% 54%, transparent 57%);
+  mask: radial-gradient(circle, transparent 30%, #000 32% 54%, transparent 57%);
+  opacity: 0;
+  scale: 0.2;
+  pointer-events: none;
+  animation: intro-letter-rangoli 1.2s ease-out var(--d) forwards;
+}
+
+/* The second half of the name is white, like a clean current through the colour. */
+.intro-letter-flux {
+  --d: calc(2.5s + var(--f) * 0.11s);
+  color: #fff;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.4),
+    0 18px 46px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(255, 255, 255, 0.55),
+    0 0 68px rgba(186, 230, 253, 0.35);
+}
+
+.intro-letter-flux::before {
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 255, 255, 0.95) 0deg 4.5deg,
+    transparent 4.5deg 22.5deg
+  );
+}
+
+.intro-underline {
+  width: clamp(120px, 30vw, 290px);
+  height: 2px;
+  margin-top: clamp(12px, 2vw, 20px);
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    #ffb703,
+    #ffe066,
+    #ff70a6,
+    #f15bb5,
+    #9b5de5,
+    #4cc9f0,
+    #2ec4b6
+  );
+  background-size: 240% 100%;
+  box-shadow: 0 0 22px rgba(217, 70, 239, 0.7);
+  transform-origin: center;
+  opacity: 0;
+  animation:
+    intro-line 0.9s var(--ease) 3.95s both,
+    intro-line-flow 5s linear 4.85s infinite;
+}
+
+.intro-tagline {
+  margin: 14px 0 0;
+  color: #dbe3ff;
+  font-size: clamp(0.72rem, 1.8vw, 0.92rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: intro-rise 0.85s var(--ease) 4.05s forwards;
+}
+
+.intro-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin: clamp(16px, 2.6vw, 24px) 0 0;
+  padding: 7px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-pill);
+  background: rgba(10, 14, 32, 0.72);
+  font-size: clamp(0.7rem, 1.7vw, 0.82rem);
+  opacity: 0;
+  animation: intro-rise 0.85s var(--ease) 4.3s forwards;
+}
+
+.intro-brand b {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+/* “Flux” keeps flowing — the visual half of the festival name. */
+.intro-brand b span {
+  background: linear-gradient(90deg, #22d3ee, #818cf8, #e94ddb, #ffd166, #22d3ee);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: intro-flux 4s linear infinite;
+}
+
+.intro-brand em {
+  font-style: normal;
+  color: var(--muted-dim);
+}
+
+.intro-brand em::before {
+  content: "·";
+  margin-right: 8px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.intro-enter {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(24px, 5vh, 46px);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transform: translateX(-50%);
+  color: var(--muted-dim);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  animation: intro-enter-in 0.8s var(--ease) 4.45s forwards;
+}
+
+.intro-enter-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 0 rgba(244, 196, 106, 0.9);
+  animation: intro-enter-pulse 1.8s ease-in-out infinite;
+}
+
+.intro-timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.intro-timer i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #ffb703, #ffe066, #ff70a6, #f15bb5, #9b5de5, #4cc9f0, #2ec4b6);
+  transform-origin: left center;
+  animation: intro-timer 6s linear 0.12s forwards;
+}
+
+.intro.is-leaving {
+  clip-path: circle(0% at 50% 47%);
+  pointer-events: none;
+}
+
+/* ---------- keyframes ---------- */
+
+@keyframes intro-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+@keyframes intro-aura {
+  from {
+    transform: translate3d(-2%, 1%, 0) scale(0.96) rotate(-4deg);
+    opacity: 0.4;
+  }
+  to {
+    transform: translate3d(2%, -2%, 0) scale(1.08) rotate(5deg);
+    opacity: 0.68;
+  }
+}
+
+@keyframes intro-stars {
+  to {
+    transform: translate3d(190px, 170px, 0);
+  }
+}
+
+@keyframes intro-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes intro-ring-in {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes intro-core {
+  from {
+    opacity: 0.55;
+    scale: 0.92;
+  }
+  to {
+    opacity: 0.95;
+    scale: 1.08;
+  }
+}
+
+@keyframes intro-petal-in {
+  0% {
+    opacity: 0;
+    scale: 0.16;
+  }
+  58% {
+    opacity: 1;
+    scale: 1.08;
+  }
+  100% {
+    opacity: 0.86;
+    scale: 1;
+  }
+}
+
+@keyframes intro-dot-in {
+  from {
+    opacity: 0;
+    scale: 0.2;
+  }
+  to {
+    opacity: 0.9;
+    scale: 1;
+  }
+}
+
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes intro-enter-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes intro-letter {
+  0% {
+    opacity: 0;
+    transform: translateY(0.5em) rotateX(-58deg) scale(0.82);
+    filter: blur(5px);
+  }
+  58% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes intro-letter-rangoli {
+  0% {
+    opacity: 0;
+    scale: 0.2;
+    rotate: -35deg;
+  }
+  32% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.55;
+    rotate: 55deg;
+  }
+}
+
+@keyframes intro-line {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes intro-line-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 240% 50%;
+  }
+}
+
+@keyframes intro-flux {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 260% 50%;
+  }
+}
+
+@keyframes intro-enter-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(244, 196, 106, 0.7);
+    opacity: 0.55;
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(244, 196, 106, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes intro-timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 640px) {
+  .intro {
+    --intro-size: min(860px, 142vmin);
+  }
+
+  .intro-copy {
+    padding: 0 14px;
+  }
+
+  .intro-title {
+    font-size: clamp(1.85rem, 10.6vw, 4.4rem);
+  }
+
+  .intro-brand {
+    padding: 7px 14px;
+    font-size: 0.7rem;
+  }
+
+  .intro-enter {
+    letter-spacing: 0.2em;
+  }
+}
+
+@media (max-height: 560px) {
+  .intro {
+    --intro-size: min(680px, 150vmin);
+  }
+
+  .intro-title {
+    font-size: clamp(2rem, 9vh, 3.4rem);
+  }
+
+  .intro-brand {
+    margin-top: 12px;
+  }
+
+  .intro-enter {
+    bottom: 14px;
+  }
+}
+
+/* Motion-sensitive visitors go straight to the guide. */
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none !important;
+  }
+}

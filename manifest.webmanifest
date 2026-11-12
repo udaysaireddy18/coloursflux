@@ -1,0 +1,41 @@
+{
+  "name": "ColoursFlux — Colours 2K27",
+  "short_name": "ColoursFlux",
+  "description": "Feel the Flow. Live the Colours. The offline-first festival companion for Colours 2K27 at Aditya University.",
+  "id": "./",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#080B1A",
+  "theme_color": "#080B1A",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["entertainment", "education", "travel"],
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Events & schedule",
+      "short_name": "Events",
+      "url": "./events.html?source=pwa",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Campus map",
+      "short_name": "Map",
+      "url": "./map.html?source=pwa",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Announcements",
+      "short_name": "Notices",
+      "url": "./announcements.html?source=pwa",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

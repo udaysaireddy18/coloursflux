@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ColoursFlux — Feel the Flow. Live the Colours.</title>
+  <meta name="description" content="ColoursFlux is the official festival companion for Colours 2K27 at Aditya University. Explore events, the campus map, stalls, offers and live announcements — online or offline." />
+  <meta name="theme-color" content="#080B1A" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <meta property="og:title" content="ColoursFlux — Colours 2K27" />
+  <meta property="og:description" content="Feel the Flow. Live the Colours. Events, campus map, stalls and announcements in one app." />
+  <meta property="og:type" content="website" />
+  <script>
+    // Hide the opening animation before first paint when it has already
+    // played this session. ?intro=1 replays it on purpose.
+    try {
+      var replayIntro = new URLSearchParams(location.search).get('intro') === '1';
+      if (!replayIntro && sessionStorage.getItem('cf.intro.seen.v1') === '1') {
+        document.documentElement.classList.add('intro-seen');
+      }
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <link rel="stylesheet" href="assets/css/intro.css?v=2" />
+  <noscript><style>.intro { display: none; }</style></noscript>
+  <script type="module" src="assets/js/pages/home.js"></script>
+  <script type="module">
+    // Boot the opening animation independently of the cached home bundle, so
+    // it still plays for visitors who have an older home.js in the service
+    // worker cache.
+    import { mountIntro } from './assets/js/intro.js?v=3';
+    mountIntro();
+  </script>
+</head>
+<body>
+  <div class="intro" id="fest-intro" role="presentation" aria-hidden="true">
+    <div class="intro-rangoli" aria-hidden="true">
+      <span class="intro-ring intro-ring-1"></span>
+      <span class="intro-ring intro-ring-2"></span>
+      <span class="intro-ring intro-ring-3"></span>
+      <div class="intro-petals"></div>
+      <div class="intro-dots"></div>
+      <span class="intro-core"></span>
+    </div>
+
+    <div class="intro-copy">
+      <p class="intro-kicker">Aditya University presents</p>
+      <h2 class="intro-title" aria-label="Colours Flux">
+        <span class="intro-word">
+          <span class="intro-letter" style="--i: 0; --c: #ffb703">C</span><span class="intro-letter" style="--i: 1; --c: #ffe066">O</span><span class="intro-letter" style="--i: 2; --c: #ff70a6">L</span><span class="intro-letter" style="--i: 3; --c: #f15bb5">O</span><span class="intro-letter" style="--i: 4; --c: #9b5de5">U</span><span class="intro-letter" style="--i: 5; --c: #4cc9f0">R</span><span class="intro-letter" style="--i: 6; --c: #2ec4b6">S</span>
+        </span>
+        <span class="intro-word intro-word-flux">
+          <span class="intro-letter intro-letter-flux" style="--f: 0">F</span><span class="intro-letter intro-letter-flux" style="--f: 1">L</span><span class="intro-letter intro-letter-flux" style="--f: 2">U</span><span class="intro-letter intro-letter-flux" style="--f: 3">X</span>
+        </span>
+      </h2>
+      <span class="intro-underline" aria-hidden="true"></span>
+      <p class="intro-tagline">A cultural festival of colour and flow</p>
+      <p class="intro-brand"><b>Colours<span>Flux</span></b><em>your guide to the fest</em></p>
+    </div>
+
+    <span class="intro-enter"><span class="intro-enter-dot"></span> Tap to enter</span>
+    <span class="intro-timer" aria-hidden="true"><i></i></span>
+  </div>
+  <script>
+    // Last-resort cleanup if the module fails to load or a cached script is
+    // still the previous version. The controller normally closes it sooner.
+    setTimeout(function () {
+      var intro = document.getElementById('fest-intro');
+      if (!intro) return;
+      intro.remove();
+      document.documentElement.classList.remove('intro-open');
+    }, 8800);
+  </script>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow eyebrow-glow"><span class="dot"></span> Colours 2K27 · Aditya University</span>
+          <h1>Feel the Flow. <br /><span class="gradient-text">Live the Colours.</span></h1>
+          <div class="hero-date" id="festival-dates">Dates announced soon</div>
+          <p class="lead">Your ultimate digital companion for the biggest cultural fest of the year — schedule, campus navigation, stalls and official notices in one place.</p>
+
+          <div class="cluster hero-actions">
+            <a class="btn btn-gold btn-lg" href="events.html">Explore the fest <i data-icon="arrow-right" data-size="17"></i></a>
+            <a class="btn btn-outline btn-lg" href="map.html">Campus map</a>
+            <button class="btn btn-lg" data-install-app hidden>Install app</button>
+          </div>
+
+          <div class="hero-meta">
+            <span><i data-icon="map-pin" data-size="15"></i> Aditya University campus</span>
+            <span id="festival-phase" class="badge badge-purple">Schedule loading…</span>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Festival countdown">
+          <div class="hero-panel-head">
+            <span class="hero-panel-kicker" id="countdown-label">Festival countdown</span>
+            <span class="badge badge-gold"><i data-icon="sparkles" data-size="12"></i> Colours 2K27</span>
+          </div>
+          <div id="countdown-host" aria-live="off"></div>
+          <div class="hero-panel-foot">
+            <span><i data-icon="navigation" data-size="14"></i> Aditya University</span>
+            <a href="install.html">Save for offline <i data-icon="arrow-up-right" data-size="13"></i></a>
+          </div>
+        </aside>
+      </div>
+      <a class="hero-scroll" href="#quick-title"><span>Scroll</span><i aria-hidden="true"></i></a>
+    </section>
+
+    <div class="fest-ribbon" aria-hidden="true">
+      <div class="fest-ribbon-track">
+        <span class="ribbon-item">Music</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Dance</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Theatre</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Art</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Food</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Sport</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Campus</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Colours 2K27</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Music</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Dance</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Theatre</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Art</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Food</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Sport</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Campus</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Colours 2K27</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Music</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Dance</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Theatre</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Art</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Food</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Sport</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Campus</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Colours 2K27</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Music</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Dance</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Theatre</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Art</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Food</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Sport</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Campus</span><span class="ribbon-star">✦</span>
+        <span class="ribbon-item">Colours 2K27</span><span class="ribbon-star">✦</span>
+      </div>
+    </div>
+
+    <section class="section-tight" aria-labelledby="quick-title">
+      <div class="container">
+        <h2 id="quick-title" class="sr-only">Quick access</h2>
+        <div class="quick-grid">
+          <a class="quick-card" href="events.html">
+            <span class="quick-etop">
+              <span class="quick-icon"><i data-icon="calendar" data-size="20"></i></span>
+              <span class="go" aria-hidden="true"><i data-icon="arrow-up-right" data-size="16"></i></span>
+            </span>
+            <span class="quick-label">Events &amp; Schedule</span>
+            <span class="quick-sub">Day-wise schedule and venue information for every performance and competition.</span>
+            <span class="quick-meta" id="quick-events">Full day-wise schedule</span>
+          </a>
+          <a class="quick-card" href="map.html">
+            <span class="quick-etop">
+              <span class="quick-icon"><i data-icon="map" data-size="20"></i></span>
+              <span class="go" aria-hidden="true"><i data-icon="arrow-up-right" data-size="16"></i></span>
+            </span>
+            <span class="quick-label">Campus Map</span>
+            <span class="quick-sub">Find stages, food, facilities and entry points across the campus.</span>
+            <span class="quick-meta" id="quick-locations">Stages, food court, parking</span>
+          </a>
+          <a class="quick-card" href="stalls.html">
+            <span class="quick-etop">
+              <span class="quick-icon"><i data-icon="store" data-size="20"></i></span>
+              <span class="go" aria-hidden="true"><i data-icon="arrow-up-right" data-size="16"></i></span>
+            </span>
+            <span class="quick-label">Stalls &amp; Vendors</span>
+            <span class="quick-sub">Food, fashion, technology and merchandise from campus and local vendors.</span>
+            <span class="quick-meta" id="quick-vendors">Vendors and festival offers</span>
+          </a>
+          <a class="quick-card" href="announcements.html">
+            <span class="quick-etop">
+              <span class="quick-icon"><i data-icon="megaphone" data-size="20"></i></span>
+              <span class="go" aria-hidden="true"><i data-icon="arrow-up-right" data-size="16"></i></span>
+            </span>
+            <span class="quick-label">Announcements</span>
+            <span class="quick-sub">Festival notices, timing changes and urgent updates from the organisers.</span>
+            <span class="quick-meta" id="quick-announcements">Live notices and updates</span>
+          </a>
+        </div>
+        <div id="home-status" style="margin-top:14px"></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="featured-events-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow"><i data-icon="sparkles" data-size="13"></i> Don't miss</span>
+            <h2 id="featured-events-title" style="margin-top:10px">Featured events</h2>
+            <p>Headline shows, competitions and the moments everyone will be talking about.</p>
+          </div>
+          <a class="btn btn-outline" href="events.html">Full schedule <i data-icon="arrow-right" data-size="15"></i></a>
+        </div>
+        <div class="grid grid-3" id="featured-events">
+          <div class="sk-card"><div class="sk sk-media"></div><div style="padding:18px;display:grid;gap:10px"><div class="sk sk-line w60"></div><div class="sk sk-line w80"></div><div class="sk sk-line w40"></div></div></div>
+          <div class="sk-card"><div class="sk sk-media"></div><div style="padding:18px;display:grid;gap:10px"><div class="sk sk-line w60"></div><div class="sk sk-line w80"></div><div class="sk sk-line w40"></div></div></div>
+          <div class="sk-card"><div class="sk sk-media"></div><div style="padding:18px;display:grid;gap:10px"><div class="sk sk-line w60"></div><div class="sk sk-line w80"></div><div class="sk sk-line w40"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="vendors-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow"><i data-icon="store" data-size="13"></i> Food · Merch · Art</span>
+            <h2 id="vendors-title" style="margin-top:10px">Stalls &amp; offers</h2>
+            <p>Grab a bite, pick up festival merch and check the offers before you queue.</p>
+          </div>
+          <a class="btn btn-outline" href="stalls.html">All stalls <i data-icon="arrow-right" data-size="15"></i></a>
+        </div>
+        <div class="chip-row vendor-chips" id="home-vendor-chips" role="navigation" aria-label="Browse stall categories"></div>
+        <div class="grid grid-3" id="featured-vendors"></div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="map-preview-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow"><i data-icon="map" data-size="13"></i> Find your way</span>
+            <h2 id="map-preview-title" style="margin-top:10px">Campus at a glance</h2>
+            <p>Stages, food, facilities and entry points — tap through for the full interactive map.</p>
+          </div>
+          <a class="btn btn-outline" href="map.html">Explore Campus <i data-icon="arrow-right" data-size="15"></i></a>
+        </div>
+
+        <div class="home-map-grid">
+          <div class="map-board map-preview" id="home-map-board" role="group" aria-label="Campus map preview">
+            <div id="home-map-art"></div>
+            <div id="home-map-markers" aria-hidden="true"></div>
+            <span class="map-preview-badge"><span class="dot"></span> Campus layout</span>
+            <a class="map-preview-cta" href="map.html">Explore Campus <i data-icon="arrow-up-right" data-size="14"></i></a>
+          </div>
+
+          <aside class="home-map-panel" aria-label="Campus locations preview">
+            <div class="between">
+              <h3>Locations</h3>
+              <span class="badge badge-cyan" id="home-map-count">—</span>
+            </div>
+            <div class="home-map-list" id="home-map-list"></div>
+            <div class="home-map-legend" id="home-map-legend" aria-label="Location types"></div>
+            <a class="btn btn-outline btn-block" href="map.html">Open full map <i data-icon="arrow-right" data-size="15"></i></a>
+            <p class="micro dim">Positions are set by the organisers and saved to this device for offline use.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="announce-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow"><i data-icon="megaphone" data-size="13"></i> Latest</span>
+            <h2 id="announce-title" style="margin-top:10px">Announcements</h2>
+            <p>Timing changes, venue updates and urgent notices from the organisers.</p>
+          </div>
+          <a class="btn btn-outline" href="announcements.html">All notices <i data-icon="arrow-right" data-size="15"></i></a>
+        </div>
+        <div class="announce-feed home-announcements" id="home-announcements"></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="info-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow"><i data-icon="info" data-size="13"></i> Plan your visit</span>
+            <h2 id="info-title" style="margin-top:10px">Festival information</h2>
+            <p>Everything you need before you reach the campus gate.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="align-items:start">
+          <div class="stack" style="--gap:16px">
+            <div class="info-grid info-grid-2" id="festival-facts"></div>
+            <div class="card card-pad">
+              <div class="between" style="margin-bottom:8px">
+                <h3 style="font-size:1rem">Works without signal</h3>
+                <span class="badge badge-cyan"><i data-icon="wifi-off" data-size="12"></i> Offline-first</span>
+              </div>
+              <p class="small">Campus grounds get crowded and networks get slow. Save the schedule, map and stall list to this device before you arrive — they stay readable with no connection.</p>
+              <div class="cluster" style="margin-top:14px">
+                <button class="btn btn-primary btn-sm" data-download-data><i data-icon="download" data-size="15"></i> Download festival data</button>
+                <a class="btn btn-sm btn-ghost" href="install.html">How it works</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <h3 style="font-size:1rem;margin-bottom:12px">Good to know</h3>
+            <div class="stack" style="--gap:12px">
+              <div class="meta-row" style="align-items:flex-start"><i data-icon="ticket" data-size="16"></i><span style="white-space:normal">Carry a valid student ID for pass verification at the gate.</span></div>
+              <div class="meta-row" style="align-items:flex-start"><i data-icon="clock" data-size="16"></i><span style="white-space:normal">Event timings can change on the day — check Announcements before you leave for a venue.</span></div>
+              <div class="meta-row" style="align-items:flex-start"><i data-icon="navigation" data-size="16"></i><span style="white-space:normal">Use the campus map to find stages, food stalls and restrooms.</span></div>
+              <div class="meta-row" style="align-items:flex-start"><i data-icon="alert-triangle" data-size="16"></i><span style="white-space:normal">In an emergency, follow organiser instructions and campus security — this app is not an emergency service.</span></div>
+            </div>
+            <div class="divider" style="margin:16px 0"></div>
+            <div id="sponsor-strip-host"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img">
+  <defs>
+    <linearGradient id="vbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111a3f"/><stop offset="1" stop-color="#0a1024"/>
+    </linearGradient>
+    <radialGradient id="vglow" cx=".25" cy=".2" r=".9">
+      <stop offset="0" stop-color="#06b6d4" stop-opacity=".42"/><stop offset="1" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="vstroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06b6d4"/><stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+    <filter id="vblur"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="400" height="400" fill="url(#vbg)"/>
+  <rect width="400" height="400" fill="url(#vglow)"/>
+  <circle cx="300" cy="320" r="110" fill="#22d3ee" opacity=".16" filter="url(#vblur)"/>
+  <g stroke="url(#vstroke)" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+    <rect x="140" y="140" width="120" height="120" rx="12"/><rect x="175" y="175" width="50" height="50" rx="6"/><path d="M170 140v-30M200 140v-30M230 140v-30M170 260v30M200 260v30M230 260v30M140 170h-30M140 200h-30M140 230h-30M260 170h30M260 200h30M260 230h30"/>
+  </g>
+  <g stroke="#ffffff" stroke-opacity=".05" fill="none">
+    <circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="118"/>
+  </g>
+</svg>

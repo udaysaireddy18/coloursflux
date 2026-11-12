@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Announcements · ColoursFlux</title>
+  <meta name="description" content="Live Colours 2K27 notices: timing changes, venue updates, new stalls and urgent information. Cached for offline reading." />
+  <meta name="theme-color" content="#080B1A" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <script type="module" src="assets/js/pages/announcements.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Announcements</span></nav>
+        <span class="eyebrow"><i data-icon="megaphone" data-size="13"></i> Official notices</span>
+        <h1><span class="gradient-text">Announcements</span></h1>
+        <p class="lead">Timing changes, venue updates, new stalls and urgent notices. Newest first, saved to this device for offline reading.</p>
+        <div class="page-head-meta">
+          <span class="badge badge-purple"><i data-icon="clock" data-size="12"></i> Newest first</span>
+          <span class="badge badge-cyan"><i data-icon="wifi-off" data-size="12"></i> Cached for offline reading</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-label="Announcements">
+      <div id="announce-status"></div>
+
+      <div class="between" style="margin:18px 0 14px">
+        <div class="priority-legend" aria-hidden="true">
+          <span class="priority-dot"><i style="background:#ef4444"></i> Urgent</span>
+          <span class="priority-dot"><i style="background:#f59e0b"></i> High</span>
+          <span class="priority-dot"><i style="background:#6d63ff"></i> Notice</span>
+          <span class="priority-dot"><i style="background:#06b6d4"></i> Info</span>
+        </div>
+        <div class="cluster">
+          <span class="micro dim" id="last-updated">Last updated: —</span>
+          <button class="btn btn-sm btn-outline" id="refresh-announcements"><i data-icon="refresh" data-size="14"></i> Refresh</button>
+        </div>
+      </div>
+
+      <div class="chip-row" id="priority-chips" role="group" aria-label="Filter by priority" style="margin-bottom:18px"></div>
+
+      <div class="announce-feed" id="announce-feed">
+        <div class="sk" style="height:104px"></div>
+        <div class="sk" style="height:104px"></div>
+        <div class="sk" style="height:104px"></div>
+      </div>
+
+      <div class="card card-pad" style="margin-top:26px">
+        <div class="between" style="align-items:flex-start">
+          <div style="max-width:58ch">
+            <h3 style="font-size:1rem;margin-bottom:6px">Browser alerts (optional)</h3>
+            <p class="small" id="notify-copy">Notifications can only be sent by this browser while ColoursFlux is open in a tab or installed window. New notices still require an internet connection — offline devices cannot receive them.</p>
+          </div>
+          <button class="btn btn-sm" id="notify-btn" hidden>Enable alerts</button>
+        </div>
+        <p class="micro dim" id="notify-state" style="margin-top:10px">Checking browser support…</p>
+      </div>
+
+      <div class="cluster" style="margin-top:22px">
+        <button class="btn btn-outline btn-sm" data-download-data><i data-icon="download" data-size="15"></i> Save notices offline</button>
+        <a class="btn btn-ghost btn-sm" href="events.html">Back to schedule</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

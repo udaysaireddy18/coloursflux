@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Events &amp; Schedule · ColoursFlux</title>
+  <meta name="description" content="Day-wise Colours 2K27 schedule. Search events, filter by day, category and venue, and save events to this device for offline use." />
+  <meta name="theme-color" content="#080B1A" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <script type="module" src="assets/js/pages/events.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Events</span></nav>
+        <span class="eyebrow"><i data-icon="calendar" data-size="13"></i> Festival programme</span>
+        <h1>Events &amp; <span class="gradient-text">schedule</span></h1>
+        <p class="lead">Every performance, competition and workshop, ordered by day and start time. Save what you like — saved events stay on this device.</p>
+        <div class="page-head-meta">
+          <span class="badge badge-purple"><i data-icon="list" data-size="12"></i> Day-wise schedule</span>
+          <span class="badge badge-cyan"><i data-icon="bookmark" data-size="12"></i> Save events offline</span>
+          <span class="badge badge-amber"><i data-icon="alert-circle" data-size="12"></i> Timings may change — check announcements</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-label="Event filters">
+      <div class="filter-panel">
+        <div class="filter-row">
+          <div class="search-field">
+            <i data-icon="search" data-size="18"></i>
+            <label class="sr-only" for="event-search">Search events</label>
+            <input class="input" id="event-search" type="search" placeholder="Search events, e.g. concert, hackathon…" autocomplete="off" />
+          </div>
+          <label class="sr-only" for="day-filter">Filter by day</label>
+          <select class="select filter-select" id="day-filter"><option value="">All days</option></select>
+          <label class="sr-only" for="venue-filter">Filter by venue</label>
+          <select class="select filter-select" id="venue-filter"><option value="">All venues</option></select>
+          <button class="chip" id="saved-toggle" aria-pressed="false"><i data-icon="bookmark" data-size="14"></i> Saved</button>
+        </div>
+        <div class="chip-row" id="category-chips" role="group" aria-label="Filter by category"></div>
+      </div>
+
+      <div class="results-line">
+        <span id="results-count" aria-live="polite">Loading schedule…</span>
+        <div class="segmented" role="group" aria-label="Layout">
+          <button data-view="schedule" aria-pressed="true"><i data-icon="list" data-size="14"></i> Schedule</button>
+          <button data-view="grid" aria-pressed="false"><i data-icon="grid" data-size="14"></i> Cards</button>
+        </div>
+      </div>
+
+      <div id="events-status"></div>
+      <div id="events-results">
+        <div class="stack" style="--gap:10px">
+          <div class="sk" style="height:84px"></div>
+          <div class="sk" style="height:84px"></div>
+          <div class="sk" style="height:84px"></div>
+        </div>
+      </div>
+      <div class="cluster" style="margin-top:26px">
+        <button class="btn btn-outline btn-sm" data-download-data><i data-icon="download" data-size="15"></i> Save this schedule offline</button>
+        <a class="btn btn-ghost btn-sm" href="announcements.html">Check for timing changes</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

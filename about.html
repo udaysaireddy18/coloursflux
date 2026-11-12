@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>About &amp; Help · ColoursFlux</title>
+  <meta name="description" content="About ColoursFlux, how offline mode works, frequently asked questions and organiser contact details for Colours 2K27." />
+  <meta name="theme-color" content="#080B1A" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <script type="module" src="assets/js/pages/about.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>About</span></nav>
+        <h1>About <span class="gradient-text">ColoursFlux</span></h1>
+        <p class="lead">A festival companion built for students on crowded campus grounds: fast, readable, and useful when the network is not.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="grid grid-2" style="align-items:start;gap:26px">
+        <div class="prose">
+          <h2 style="margin-top:0">What this app does</h2>
+          <p>ColoursFlux brings the festival essentials into one place: the day-wise schedule, a campus map, stall and offer listings, and announcements from the organisers. It is designed for phones first, and it keeps working when the campus network gets busy.</p>
+          <ul>
+            <li><b>Events</b> — search by name, filter by day, category and venue, and save events to this device.</li>
+            <li><b>Campus map</b> — stages, food court, technical venues, services and parking, with a searchable directory.</li>
+            <li><b>Stalls</b> — vendor details, opening hours where provided, and time-limited offers.</li>
+            <li><b>Announcements</b> — time changes, venue changes and urgent notices, newest first.</li>
+          </ul>
+
+          <h2 id="festival">Festival information</h2>
+          <div class="info-grid" id="about-facts" style="grid-template-columns:1fr 1fr"></div>
+
+          <h2 id="offline">How offline mode works</h2>
+          <p>ColoursFlux is a progressive web app. When you load it once with a connection, the app shell is cached and the festival data is stored locally on your device. On later visits, the app opens from that cache and shows the saved schedule, map, stalls and notices.</p>
+          <ul>
+            <li><b>First visit needs a connection.</b> The app cannot install itself from nothing.</li>
+            <li><b>Tap “Download festival data”</b> before you enter crowded areas to refresh the offline copy.</li>
+            <li><b>Offline data can go stale.</b> New notices and last-minute changes need a connection; the app always shows when the data was last synced.</li>
+            <li><b>A QR code only opens the website.</b> It does not make content available offline by itself.</li>
+            <li><b>Clearing your browser data</b> removes the offline copy. You will need a connection to restore it.</li>
+          </ul>
+
+          <h2 id="help">Using the app</h2>
+          <div class="step-list">
+            <div class="step"><div><b>Open the site and save data</b><p>Use the “Download festival data” button on the home page while you still have signal.</p></div></div>
+            <div class="step"><div><b>Install it to your home screen</b><p>On Android use the browser menu → Install app. On iPhone use Share → Add to Home Screen.</p></div></div>
+            <div class="step"><div><b>Save the events you care about</b><p>Tap the bookmark icon. Saved events stay on this device and are available in the Saved filter.</p></div></div>
+            <div class="step"><div><b>Check announcements before you travel between venues</b><p>Timing and venue changes are published there first.</p></div></div>
+          </div>
+
+          <h2 id="vendors">Vendor promotion</h2>
+          <p>Basic stall listings are free for students. Organisers can optionally mark a vendor as featured or place a sponsored card; those placements are labelled in the interface. Illustrative demo pricing is ₹99 for a featured listing, ₹199 for a sponsored promotion, and ₹499+ for a sponsor package. These prices are examples, not confirmed rates, and this app does not process payments.</p>
+
+          <h2 id="contact">Contact</h2>
+          <div id="contact-block">
+            <p>Organiser contact details have not been published in the app yet. They are configured in the admin dashboard.</p>
+          </div>
+
+          <h2 id="legal">Privacy &amp; terms</h2>
+          <p>Read the <a href="privacy.html">privacy policy</a> and <a href="terms.html">terms of use</a>. Both describe how this specific deployment handles data and should be reviewed by the organising team before launch.</p>
+        </div>
+
+        <aside class="stack" style="--gap:16px;position:sticky;top:calc(var(--header-h) + 20px)">
+          <div class="card card-pad">
+            <h3 style="font-size:1rem;margin-bottom:8px">Go offline-ready</h3>
+            <p class="small">Save the current schedule, map and stalls to this device before you enter the grounds.</p>
+            <button class="btn btn-primary btn-sm btn-block" style="margin-top:12px" data-download-data><i data-icon="download" data-size="15"></i> Download festival data</button>
+            <a class="btn btn-ghost btn-sm btn-block" style="margin-top:8px" href="install.html">Installation guide</a>
+            <div id="about-sync" style="margin-top:12px"></div>
+          </div>
+
+          <div class="card card-pad">
+            <h3 style="font-size:1rem;margin-bottom:10px">Frequently asked</h3>
+            <div class="faq" id="faq-list">
+              <details open>
+                <summary>Does the app work without internet? <i data-icon="chevron-down" data-size="16"></i></summary>
+                <div class="faq-body">Yes, after the first successful visit and a data download. The app shell and the festival data are stored on your device. Live changes still need a connection.</div>
+              </details>
+              <details>
+                <summary>Why does it say my data may be out of date? <i data-icon="chevron-down" data-size="16"></i></summary>
+                <div class="faq-body">When the app is offline, or the last sync is old, it keeps showing your saved copy and says so. That is intentional — it is better to show saved times than invent new ones.</div>
+              </details>
+              <details>
+                <summary>Do I need an account? <i data-icon="chevron-down" data-size="16"></i></summary>
+                <div class="faq-body">No. Browsing is public. Accounts exist only for authorised organisers to publish content from the admin dashboard.</div>
+              </details>
+              <details>
+                <summary>How do I install it on my phone? <i data-icon="chevron-down" data-size="16"></i></summary>
+                <div class="faq-body">Android: browser menu → “Install app” or “Add to Home screen”. iPhone (Safari): Share → “Add to Home Screen”. Full steps are on the <a href="install.html">installation page</a>.</div>
+              </details>
+              <details>
+                <summary>Are the offers guaranteed? <i data-icon="chevron-down" data-size="16"></i></summary>
+                <div class="faq-body">Offers are published by vendors and expire automatically in the app. Availability is decided by the vendor at the stall — the app does not process payments or issue vouchers.</div>
+              </details>
+              <details>
+                <summary>Something is wrong with an event. Who do I tell? <i data-icon="chevron-down" data-size="16"></i></summary>
+                <div class="faq-body">Speak to the registration desk or the organiser contact published in this page. This app is a companion, not the official record of the festival.</div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <h3 style="font-size:1rem;margin-bottom:8px">Sample data notice</h3>
+            <p class="small">Unless the organiser has connected the database, this deployment shows clearly-labelled sample records for layout and testing. Sample records are never presented as live festival information.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

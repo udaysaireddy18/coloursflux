@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Install &amp; Offline Guide · ColoursFlux</title>
+  <meta name="description" content="Install ColoursFlux on Android, iPhone or desktop and save the festival schedule, map and stalls for offline use." />
+  <meta name="theme-color" content="#080B1A" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/pages.css" />
+  <script type="module" src="assets/js/pages/install.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Install &amp; offline</span></nav>
+        <h1>Install &amp; go <span class="gradient-text">offline</span></h1>
+        <p class="lead">Campus networks slow down when thousands of people arrive. Install the app and save the festival data <em>before</em> you reach the grounds.</p>
+        <p class="micro dim" style="margin-top:10px">A QR code only opens this website. It does not make the site available offline — you still need one successful visit with a connection.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div id="install-status"></div>
+
+      <div class="grid grid-2" style="margin-top:22px;align-items:start">
+        <div class="card card-pad">
+          <div class="between" style="margin-bottom:10px">
+            <h2 style="font-size:1.2rem">1. Install the app</h2>
+            <span class="badge badge-cyan" id="install-state">Checking…</span>
+          </div>
+          <p class="small">Installing keeps ColoursFlux on your home screen and lets it open without a browser tab. It is optional — the website also works in a browser.</p>
+
+          <div class="step-list" style="margin-top:16px">
+            <div class="step"><div><b>Android (Chrome, Edge, Samsung Internet)</b><p>Open the browser menu and choose <i>Install app</i> or <i>Add to Home screen</i>. If you see an install banner in the app, you can use that instead.</p></div></div>
+            <div class="step"><div><b>iPhone &amp; iPad (Safari)</b><p>Tap the Share icon, then <i>Add to Home Screen</i>. iOS installs web apps from Safari; other browsers may not show the option.</p></div></div>
+            <div class="step"><div><b>Laptop / desktop</b><p>Look for the install icon in the address bar, or open the browser menu and choose <i>Install ColoursFlux</i>.</p></div></div>
+          </div>
+
+          <div class="cluster" style="margin-top:16px">
+            <button class="btn btn-primary" data-install-app><i data-icon="download" data-size="16"></i> Install ColoursFlux</button>
+            <span class="micro dim">A2HS availability depends on your browser.</span>
+          </div>
+        </div>
+
+        <div class="card card-pad">
+          <div class="between" style="margin-bottom:10px">
+            <h2 style="font-size:1.2rem">2. Save festival data</h2>
+            <span class="badge badge-purple"><i data-icon="wifi-off" data-size="12"></i> Offline-first</span>
+          </div>
+          <p class="small">This stores the current schedule, campus map, stall list and announcements on this device. Re-run it whenever you have a connection to pick up changes.</p>
+          <div class="stack" style="--gap:10px;margin-top:14px">
+            <button class="btn btn-primary btn-block" data-download-data><i data-icon="download" data-size="16"></i> Download festival data</button>
+            <div class="sync-bar" id="offline-summary" style="justify-content:space-between">
+              <span id="offline-summary-text">Checking saved data…</span>
+            </div>
+            <button class="btn btn-sm btn-ghost" id="clear-data" style="justify-self:start">Clear saved data on this device</button>
+          </div>
+          <div class="divider" style="margin:16px 0"></div>
+          <h3 style="font-size:0.95rem;margin-bottom:8px">What stays available offline</h3>
+          <div class="stack" style="--gap:8px">
+            <div class="meta-row"><i data-icon="check-circle" data-size="15"></i><span>Schedule, venue and saved events</span></div>
+            <div class="meta-row"><i data-icon="check-circle" data-size="15"></i><span>Location directory and map positions</span></div>
+            <div class="meta-row"><i data-icon="check-circle" data-size="15"></i><span>Stall details, offers and announcements</span></div>
+            <div class="meta-row"><i data-icon="x-circle" data-size="15"></i><span>New announcements published after your last sync</span></div>
+          </div>
+        </div>
+      </div>
+
+      <section id="qr" style="margin-top:44px">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow"><i data-icon="qr" data-size="13"></i> For organisers</span>
+            <h2 style="margin-top:10px">QR code &amp; launch</h2>
+            <p>Generate a printable QR code for the deployed site. Nothing is uploaded — the code is drawn locally in your browser.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="align-items:start">
+          <div class="card card-pad">
+            <div class="stack" style="--gap:12px">
+              <div class="field">
+                <label for="qr-url">Confirmed deployed URL</label>
+                <input class="input" id="qr-url" type="url" inputmode="url" placeholder="https://your-confirmed-domain.example" autocomplete="off" />
+                <span class="hint">Only enter a URL after the site is actually deployed and tested. Do not generate a QR code for a placeholder domain.</span>
+              </div>
+              <div class="cluster">
+                <button class="btn btn-primary" id="qr-generate"><i data-icon="qr" data-size="16"></i> Generate QR code</button>
+                <button class="btn btn-sm btn-ghost" id="qr-use-current">Use this page’s URL</button>
+              </div>
+              <p class="error-text" id="qr-error" hidden></p>
+              <div class="pill-note">
+                <i data-icon="info" data-size="16"></i>
+                <span>The current page address may be a local preview (<code>localhost</code>) and will not work for visitors. Confirm the final HTTPS URL first.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-pad" style="display:grid;place-items:center;gap:14px;text-align:center">
+            <div id="qr-output">
+              <div class="empty-qr">Your QR code will appear here after you enter a confirmed URL.</div>
+            </div>
+            <p class="micro dim" id="qr-caption">No QR code generated yet.</p>
+            <button class="btn btn-sm btn-outline" id="qr-download" hidden><i data-icon="download" data-size="15"></i> Download PNG</button>
+          </div>
+        </div>
+
+        <div class="grid grid-3" style="margin-top:18px">
+          <div class="info-tile"><b>Print size</b><p>Print at least 4 × 4 cm with a quiet white border. Bigger is better on posters and standees.</p></div>
+          <div class="info-tile"><b>Test on real phones</b><p>Scan from a printed copy with at least two phones, at the distance people will actually stand.</p></div>
+          <div class="info-tile"><b>Put it near signal</b><p>Place the code where visitors still have connectivity, so the first load and data download can succeed.</p></div>
+        </div>
+      </section>
+
+      <section class="card card-pad" style="margin-top:36px">
+        <h2 style="font-size:1.2rem">Honest offline limits</h2>
+        <div class="prose" style="margin-top:10px">
+          <ul>
+            <li>A first-time visitor cannot open the site offline. The application shell must be cached during an earlier online visit.</li>
+            <li>Saved data can be outdated. The app shows the last sync time and labels offline content.</li>
+            <li>Live announcements require connectivity; a device that is offline cannot receive new notices.</li>
+            <li>Admin pages are never cached. The dashboard requires a connection and a signed-in organiser session.</li>
+          </ul>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

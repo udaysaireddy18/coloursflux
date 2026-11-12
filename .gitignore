@@ -1,0 +1,38 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Note: assets/js/env.js is intentionally tracked. It ships with blank values
+# (branded demo mode) and may only ever contain the PUBLIC anon key.
+
+# Dependencies / tooling
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Supabase CLI scratch files
+supabase/.temp/
+supabase/.branches/
+supabase/.env
+supabase/.env.*
+
+# Editors
+.vscode/
+.idea/
+*.iml
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test output
+coverage/
+test-results/
+playwright-report/
+*.local
+*.log
