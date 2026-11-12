@@ -17,11 +17,9 @@
   <meta property="og:description" content="Feel the Flow. Live the Colours. Events, campus map, stalls and announcements in one app." />
   <meta property="og:type" content="website" />
   <script>
-    // Hide the opening animation before first paint when it has already
-    // played this session. ?intro=1 replays it on purpose.
+    // The opening animation now plays on every visit. Add ?intro=0 to skip it.
     try {
-      var replayIntro = new URLSearchParams(location.search).get('intro') === '1';
-      if (!replayIntro && sessionStorage.getItem('cf.intro.seen.v1') === '1') {
+      if (new URLSearchParams(location.search).get('intro') === '0') {
         document.documentElement.classList.add('intro-seen');
       }
     } catch (e) {}
@@ -29,14 +27,14 @@
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/components.css" />
   <link rel="stylesheet" href="assets/css/pages.css" />
-  <link rel="stylesheet" href="assets/css/intro.css?v=2" />
+  <link rel="stylesheet" href="assets/css/intro.css?v=3" />
   <noscript><style>.intro { display: none; }</style></noscript>
   <script type="module" src="assets/js/pages/home.js"></script>
   <script type="module">
     // Boot the opening animation independently of the cached home bundle, so
     // it still plays for visitors who have an older home.js in the service
     // worker cache.
-    import { mountIntro } from './assets/js/intro.js?v=3';
+    import { mountIntro } from './assets/js/intro.js?v=4';
     mountIntro();
   </script>
 </head>

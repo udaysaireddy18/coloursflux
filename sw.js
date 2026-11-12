@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v1.1.9';
+const VERSION = 'v1.2.0';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -35,7 +35,7 @@ const SHELL = [
   './assets/css/base.css',
   './assets/css/components.css',
   './assets/css/pages.css',
-  './assets/css/intro.css?v=2',
+  './assets/css/intro.css?v=3',
   './assets/js/env.js',
   './assets/js/config.js',
   './assets/js/icons.js',
@@ -45,7 +45,7 @@ const SHELL = [
   './assets/js/api.js',
   './assets/js/store.js',
   './assets/js/ui.js',
-  './assets/js/intro.js?v=3',
+  './assets/js/intro.js?v=4',
   './assets/js/pwa.js',
   './assets/js/qr.js',
   './assets/js/pages/home.js',
@@ -63,6 +63,7 @@ const SHELL = [
   './assets/icons/favicon.svg',
   './assets/icons/favicon.png',
   './assets/icons/logo.png',
+  './assets/icons/logo-mark.svg',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
   './assets/icons/icon-maskable-512.png',

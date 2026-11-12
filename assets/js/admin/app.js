@@ -253,7 +253,7 @@ function shellMarkup(profile) {
     <aside class="admin-side" aria-label="Dashboard navigation">
       <div class="admin-brand">
         <span class="brand-mark" aria-hidden="true">
-          <img class="brand-img" src="../assets/icons/logo.png" alt="" width="32" height="32" decoding="async" />
+          <img class="brand-img" src="../assets/icons/logo-mark.svg" alt="" width="48" height="48" decoding="async" />
         </span>
         <small>Organiser dashboard</small>
       </div>

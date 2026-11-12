@@ -2,12 +2,11 @@
  * ColoursFlux — opening animation controller.
  *
  * The overlay markup lives at the top of index.html so it paints before the
- * hero. This module builds the rangoli, plays the sequence once per browser
- * session, and dismisses the overlay on tap, key press, wheel or timeout.
- * Add ?intro=1 to replay it deliberately.
+ * hero. This module builds the rangoli, plays the sequence on every visit, and
+ * dismisses the overlay on tap, key press, wheel or timeout.
+ * Add ?intro=0 to skip it once.
  */
 
-const SEEN_KEY = 'cf.intro.seen.v1';
 const OUTER_PETALS = 20;
 const INNER_PETALS = 12;
 const DOTS = 24;
@@ -63,18 +62,11 @@ export function mountIntro() {
   const root = document.getElementById('fest-intro');
   if (!root) return;
 
-  const replay = new URLSearchParams(location.search).get('intro') === '1';
-  let seen = false;
-  try {
-    seen = sessionStorage.getItem(SEEN_KEY) === '1';
-  } catch {
-    seen = false;
-  }
+  const skip = new URLSearchParams(location.search).get('intro') === '0';
 
-  // Browsers that ask for less motion go straight to the guide.
+  // Browsers that ask for less motion go straight to the guide; ?intro=0 skips.
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reducedMotion || (seen && !replay) || document.documentElement.classList.contains('intro-seen')) {
-    markSeen();
+  if (reducedMotion || skip || document.documentElement.classList.contains('intro-seen')) {
     root.remove();
     return;
   }
@@ -89,10 +81,6 @@ export function mountIntro() {
   const onWheel = () => close(true);
 
   const cleanup = () => {
-    // Remember it only after it has actually played. A service-worker update
-    // can reload the page mid-animation, and the reload should still get the
-    // opening sequence instead of being marked as "already seen".
-    markSeen();
     root.remove();
     document.documentElement.classList.remove('intro-open');
     window.removeEventListener('keydown', onKey);

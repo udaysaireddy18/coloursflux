@@ -12,7 +12,7 @@ import store, { lastSyncLabel, isSampleMode, hasSampleRecords } from './store.js
 /* Brand art                                                        */
 /* ---------------------------------------------------------------- */
 
-export const BRAND_MARK = `<img class="brand-img" src="assets/icons/logo.png" alt="" width="32" height="32" decoding="async" />`;
+export const BRAND_MARK = `<img class="brand-img" src="assets/icons/logo-mark.svg" alt="" width="56" height="56" decoding="async" />`;
 
 /** Glowing wave artwork used behind hero sections. */
 export function waveArt() {
