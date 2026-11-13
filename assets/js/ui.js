@@ -87,6 +87,103 @@ export function waveArt() {
     <div class="orb orb-c"></div>
     <div class="hero-scrim"></div>
     <div class="hero-grid"></div>
+    <div class="hero-fest">
+      <svg class="fest-wheel" viewBox="0 0 240 270" aria-hidden="true">
+        <defs>
+          <linearGradient id="festWheelGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffd166"/>
+            <stop offset=".45" stop-color="#f15bb5"/>
+            <stop offset="1" stop-color="#22d3ee"/>
+          </linearGradient>
+          <g id="festCabin">
+            <line x1="120" y1="112" x2="120" y2="38" stroke="url(#festWheelGrad)" stroke-width="1.5"/>
+            <rect x="111" y="25" width="18" height="12" rx="4" fill="url(#festWheelGrad)"/>
+          </g>
+        </defs>
+        <g class="fest-wheel-spin">
+          <circle cx="120" cy="112" r="78" fill="none" stroke="url(#festWheelGrad)" stroke-width="2.4"/>
+          <circle cx="120" cy="112" r="58" fill="none" stroke="url(#festWheelGrad)" stroke-width="1" opacity=".45"/>
+          <use href="#festCabin"/>
+          <use href="#festCabin" transform="rotate(30 120 112)"/>
+          <use href="#festCabin" transform="rotate(60 120 112)"/>
+          <use href="#festCabin" transform="rotate(90 120 112)"/>
+          <use href="#festCabin" transform="rotate(120 120 112)"/>
+          <use href="#festCabin" transform="rotate(150 120 112)"/>
+          <use href="#festCabin" transform="rotate(180 120 112)"/>
+          <use href="#festCabin" transform="rotate(210 120 112)"/>
+          <use href="#festCabin" transform="rotate(240 120 112)"/>
+          <use href="#festCabin" transform="rotate(270 120 112)"/>
+          <use href="#festCabin" transform="rotate(300 120 112)"/>
+          <use href="#festCabin" transform="rotate(330 120 112)"/>
+          <circle cx="120" cy="112" r="6" fill="#ffe9b0"/>
+        </g>
+        <g class="fest-wheel-base" stroke="url(#festWheelGrad)" stroke-width="2.5" stroke-linecap="round" fill="none">
+          <path d="M120 112 82 238"/>
+          <path d="M120 112 158 238"/>
+          <path d="M64 242h112"/>
+        </g>
+      </svg>
+
+      <svg class="fest-dancers" viewBox="0 0 320 90" aria-hidden="true">
+        <defs>
+          <linearGradient id="festDanceGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ffd166"/>
+            <stop offset=".5" stop-color="#f15bb5"/>
+            <stop offset="1" stop-color="#22d3ee"/>
+          </linearGradient>
+        </defs>
+        <g stroke="url(#festDanceGrad)" stroke-width="4.5" stroke-linecap="round" fill="none">
+          <g transform="translate(50 74)"><g class="dancer d1">
+            <circle cx="0" cy="-58" r="6" fill="url(#festDanceGrad)" stroke="none"/>
+            <path d="M0-50V-20"/><path d="M0-44l-16-16M0-44l16-12"/>
+            <path d="M0-20l-12 20M0-20l12 20"/>
+          </g></g>
+          <g transform="translate(120 76)"><g class="dancer d2">
+            <circle cx="0" cy="-60" r="6" fill="url(#festDanceGrad)" stroke="none"/>
+            <path d="M0-52V-22"/><path d="M0-46l-17-8M0-46l15-18"/>
+            <path d="M0-22l-14 22M0-22l13 20"/>
+          </g></g>
+          <g transform="translate(190 74)"><g class="dancer d3">
+            <circle cx="0" cy="-58" r="6" fill="url(#festDanceGrad)" stroke="none"/>
+            <path d="M0-50V-20"/><path d="M0-42l-20-4M0-42l20-4"/>
+            <path d="M0-20l-11 20M0-20l11 20"/>
+          </g></g>
+          <g transform="translate(258 77)"><g class="dancer d4">
+            <circle cx="0" cy="-61" r="6" fill="url(#festDanceGrad)" stroke="none"/>
+            <path d="M0-53V-23"/><path d="M0-47l-14-20M0-47l14-20"/>
+            <path d="M0-23l-10 10-4 13M0-23l12 23"/>
+          </g></g>
+        </g>
+      </svg>
+
+      <div class="fest-dhol" aria-hidden="true">
+        <svg viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="festDholGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f4c46a"/>
+              <stop offset=".5" stop-color="#f15bb5"/>
+              <stop offset="1" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+          <path d="M26 42Q60 30 94 42L94 84Q60 96 26 84Z" fill="url(#festDholGrad)"/>
+          <ellipse cx="26" cy="63" rx="8" ry="21" fill="#160f2e" stroke="url(#festDholGrad)" stroke-width="2"/>
+          <ellipse cx="94" cy="63" rx="8" ry="21" fill="#160f2e" stroke="url(#festDholGrad)" stroke-width="2"/>
+          <path d="M26 42Q60 30 94 42" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.5"/>
+          <circle class="beat-ring" cx="60" cy="63" r="26"/>
+          <circle class="beat-ring beat-ring-2" cx="60" cy="63" r="26"/>
+        </svg>
+      </div>
+
+      <span class="fest-diya" style="--x: 34%; --d: 0s"></span>
+      <span class="fest-diya" style="--x: 48%; --d: -1.1s"></span>
+      <span class="fest-diya" style="--x: 62%; --d: -2.3s"></span>
+      <span class="fest-diya" style="--x: 76%; --d: -.7s"></span>
+      <span class="fest-diya" style="--x: 89%; --d: -1.7s"></span>
+
+      <span class="fest-firework" style="--x: 46%; --y: 20%; --c: #f15bb5; --d: 0s"></span>
+      <span class="fest-firework" style="--x: 63%; --y: 26%; --c: #22d3ee; --d: -2.4s"></span>
+      <span class="fest-firework" style="--x: 80%; --y: 14%; --c: #ffd166; --d: -4.8s"></span>
+    </div>
   </div>`;
 }
 

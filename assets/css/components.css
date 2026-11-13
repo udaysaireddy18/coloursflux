@@ -494,6 +494,183 @@
   -webkit-mask-image: radial-gradient(80% 70% at 50% 20%, #000 10%, transparent 76%);
 }
 
+/* ---------- hero: festival motifs ---------- */
+
+.hero-fest {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.fest-wheel {
+  position: absolute;
+  right: 9%;
+  top: 15%;
+  width: clamp(220px, 21vw, 320px);
+  opacity: 0.32;
+  filter: drop-shadow(0 0 22px rgba(244, 196, 106, 0.28));
+}
+
+.fest-wheel-spin {
+  transform-box: view-box;
+  transform-origin: 120px 112px;
+  animation: fest-wheel-spin 72s linear infinite;
+}
+
+.fest-wheel-base {
+  opacity: 0.8;
+}
+
+@keyframes fest-wheel-spin {
+  to { transform: rotate(360deg); }
+}
+
+.fest-dancers {
+  position: absolute;
+  left: 57%;
+  bottom: 15%;
+  width: clamp(260px, 27vw, 400px);
+  opacity: 0.5;
+  filter: drop-shadow(0 0 14px rgba(241, 91, 181, 0.35));
+  overflow: visible;
+}
+
+.fest-dancers .dancer {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: fest-dance 1.5s ease-in-out infinite alternate;
+}
+
+.fest-dancers .d1 { animation-delay: -0.2s; }
+.fest-dancers .d2 { animation-delay: -0.6s; animation-duration: 1.25s; }
+.fest-dancers .d3 { animation-delay: -0.9s; animation-duration: 1.7s; }
+.fest-dancers .d4 { animation-delay: -0.4s; animation-duration: 1.35s; }
+
+@keyframes fest-dance {
+  from { transform: translateY(0) rotate(-3.5deg); }
+  to { transform: translateY(-5px) rotate(3.5deg); }
+}
+
+.fest-dhol {
+  position: absolute;
+  left: 52%;
+  bottom: 13.5%;
+  width: clamp(60px, 6vw, 84px);
+  opacity: 0.44;
+  filter: drop-shadow(0 0 14px rgba(244, 196, 106, 0.4));
+}
+
+.fest-dhol svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  animation: fest-dhol-bob 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes fest-dhol-bob {
+  from { transform: translateY(0) rotate(-1deg); }
+  to { transform: translateY(-3px) rotate(1deg); }
+}
+
+.beat-ring {
+  fill: none;
+  stroke: rgba(244, 196, 106, 0.7);
+  stroke-width: 2;
+  transform-box: view-box;
+  transform-origin: 60px 63px;
+  animation: fest-beat 1.5s ease-out infinite;
+}
+
+.beat-ring-2 {
+  animation-delay: 0.75s;
+}
+
+@keyframes fest-beat {
+  0% { opacity: 0.65; transform: scale(0.7); }
+  100% { opacity: 0; transform: scale(1.75); }
+}
+
+.fest-diya {
+  position: absolute;
+  left: var(--x);
+  bottom: 15%;
+  width: 18px;
+  height: 8px;
+  border-radius: 0 0 60% 60% / 0 0 100% 100%;
+  background: linear-gradient(180deg, #f4c46a, #b45309);
+  box-shadow: 0 0 12px rgba(244, 150, 40, 0.3);
+  opacity: 0.75;
+}
+
+.fest-diya::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 7px;
+  height: 13px;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background: radial-gradient(circle at 50% 72%, #fff7d6, #ffb703 56%, rgba(255, 90, 0, 0) 74%);
+  transform: translateX(-50%);
+  animation: fest-flame 1.6s ease-in-out infinite alternate;
+  animation-delay: var(--d);
+  filter: blur(0.3px);
+}
+
+@keyframes fest-flame {
+  from { transform: translateX(-50%) scale(0.88) rotate(-3deg); opacity: 0.72; }
+  to { transform: translateX(-50%) scale(1.12) rotate(3deg); opacity: 1; }
+}
+
+.fest-firework {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: clamp(90px, 9vw, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, var(--c) 0deg 1.4deg, transparent 1.4deg 24deg);
+  -webkit-mask: radial-gradient(circle, transparent 42%, #000 44% 52%, transparent 55%);
+  mask: radial-gradient(circle, transparent 42%, #000 44% 52%, transparent 55%);
+  opacity: 0;
+  animation: fest-burst 7.5s ease-out infinite;
+  animation-delay: var(--d);
+  filter: drop-shadow(0 0 9px var(--c));
+}
+
+@keyframes fest-burst {
+  0%, 76% { opacity: 0; transform: scale(0.25) rotate(0deg); }
+  82% { opacity: 0.85; }
+  100% { opacity: 0; transform: scale(1.55) rotate(18deg); }
+}
+
+@media (max-width: 900px) {
+  .fest-wheel { right: 2%; top: 4%; width: 210px; opacity: 0.18; }
+  .fest-dancers { left: 26%; bottom: 2%; width: 300px; opacity: 0.28; }
+  .fest-dhol { left: 18%; bottom: 1%; opacity: 0.26; }
+  .fest-diya { display: none; }
+}
+
+@media (max-width: 720px) {
+  .fest-wheel { display: none; }
+  .fest-dancers,
+  .fest-dhol { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fest-wheel-spin,
+  .fest-dancers .dancer,
+  .fest-dhol svg,
+  .beat-ring,
+  .fest-diya::before,
+  .fest-firework {
+    animation: none !important;
+  }
+  .fest-firework { opacity: 0.35; }
+}
+
 .hero-inner {
   position: relative;
   display: grid;
