@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v1.2.2';
+const VERSION = 'v1.3.0';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -80,6 +80,45 @@ const SHELL = [
   './assets/img/art/vendor-food.svg',
   './assets/img/art/vendor-merch.svg',
   './assets/img/art/vendor-books.svg',
+  './assets/img/events/basketball-men.svg',
+  './assets/img/events/basketball-women.svg',
+  './assets/img/events/chess-men.svg',
+  './assets/img/events/chess-women.svg',
+  './assets/img/events/dance-duet.svg',
+  './assets/img/events/dance-group.svg',
+  './assets/img/events/dance-solo.svg',
+  './assets/img/events/dumb-charades.svg',
+  './assets/img/events/fashion-show.svg',
+  './assets/img/events/football-men.svg',
+  './assets/img/events/instrumental.svg',
+  './assets/img/events/jumping.svg',
+  './assets/img/events/kabaddi-men.svg',
+  './assets/img/events/kabaddi-women.svg',
+  './assets/img/events/kho-kho-men.svg',
+  './assets/img/events/kho-kho-women.svg',
+  './assets/img/events/mehandi.svg',
+  './assets/img/events/mime.svg',
+  './assets/img/events/mimicry.svg',
+  './assets/img/events/mono-action.svg',
+  './assets/img/events/movie-making.svg',
+  './assets/img/events/rangoli.svg',
+  './assets/img/events/relay.svg',
+  './assets/img/events/running.svg',
+  './assets/img/events/sahityam.svg',
+  './assets/img/events/shuttle-badminton-singles-men.svg',
+  './assets/img/events/shuttle-badminton-singles-women.svg',
+  './assets/img/events/singing.svg',
+  './assets/img/events/skit.svg',
+  './assets/img/events/spot-painting.svg',
+  './assets/img/events/spot-photography.svg',
+  './assets/img/events/stand-up-comedy.svg',
+  './assets/img/events/table-tennis-singles-men.svg',
+  './assets/img/events/table-tennis-singles-women.svg',
+  './assets/img/events/tennikoit-singles-women.svg',
+  './assets/img/events/throwball-women.svg',
+  './assets/img/events/throwing.svg',
+  './assets/img/events/treasure-hunt.svg',
+  './assets/img/events/volleyball-men.svg',
   './assets/img/campus-map.webp',
 ];
 

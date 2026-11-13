@@ -53,10 +53,48 @@
 
       <div class="map-layout" style="margin-top:16px">
         <div>
-          <div class="map-board" id="map-board" aria-label="Campus map with markers" role="group">
-            <div id="map-art"></div>
-            <div id="map-markers"></div>
+          <div class="map-frame" id="map-frame">
+            <div class="map-frame-bar">
+              <div class="map-frame-title">
+                <span class="map-live" aria-hidden="true"></span>
+                <span>
+                  <b>Campus venue board</b>
+                  <small id="map-count">Loading locations…</small>
+                </span>
+              </div>
+              <div class="map-tools" role="group" aria-label="Map view controls">
+                <button class="map-tool" type="button" data-map-action="zoom-out" aria-label="Zoom out" title="Zoom out">
+                  <i data-icon="minus" data-size="16"></i>
+                </button>
+                <button class="map-tool" type="button" data-map-action="zoom-in" aria-label="Zoom in" title="Zoom in">
+                  <i data-icon="plus" data-size="16"></i>
+                </button>
+                <button class="map-tool" type="button" data-map-action="reset" aria-label="Reset map view" title="Reset view">
+                  <i data-icon="rotate-ccw" data-size="15"></i>
+                </button>
+                <button class="map-tool" type="button" data-map-action="fullscreen" aria-label="Toggle fullscreen map" aria-pressed="false" title="Fullscreen">
+                  <i data-icon="maximize" data-size="15"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="map-board map-interactive" id="map-board" aria-label="Campus map with markers" role="group" tabindex="0">
+              <div class="map-canvas" id="map-canvas">
+                <div id="map-art"></div>
+                <div id="map-markers"></div>
+              </div>
+              <div class="map-hud">
+                <span class="map-scale" id="map-scale">100%</span>
+                <span class="map-hint" id="map-hint"><i data-icon="navigation" data-size="12"></i> Drag to pan · scroll or pinch to zoom</span>
+              </div>
+            </div>
+
+            <div class="map-frame-foot">
+              <div class="map-key" id="map-key" aria-label="Location type key"></div>
+              <span class="map-source"><i data-icon="shield" data-size="12"></i> Official campus map</span>
+            </div>
           </div>
+
           <p class="micro dim" style="margin-top:10px">
             <i data-icon="info" data-size="12"></i>
             Positions follow the official Aditya University campus map. Tap a marker for venue details.
