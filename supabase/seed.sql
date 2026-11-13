@@ -1,21 +1,19 @@
 -- ============================================================================
--- ColoursFlux — DEMO SEED DATA (do not run in production)
+-- ColoursFlux — festival seed data
 -- ----------------------------------------------------------------------------
--- Run AFTER schema.sql, policies.sql and storage.sql, in a fresh project, if
--- you want the dashboard and public site populated while you build the real
--- programme.
+-- Run AFTER schema.sql, policies.sql and storage.sql in a fresh project.
 --
--- Every row below is flagged `is_sample = true`, and the public site shows a
--- "Sample records" strip while any such row is loaded. Dates, vendors, prices
--- and notices are illustrative placeholders for Colours 2K27 — they are NOT
--- confirmed festival information. Delete or replace them before launch:
+-- This seed mirrors the official "Schedule of Events" PDF: CREO, cultural and
+-- sports events on 9–11 January 2027, using the Aditya University campus map
+-- for venue positions.
 --
---   delete from public.events        where is_sample;
---   delete from public.offers        where is_sample;  -- before vendors
---   delete from public.vendors       where is_sample;
---   delete from public.locations     where is_sample;
---   delete from public.announcements where is_sample;
---   delete from public.sponsorships  where is_sample;
+-- Rows are flagged `is_sample = true` so the dashboard can tell they came from
+-- this bundled seed rather than hand entry. Remove the flag once the programme
+-- is confirmed:
+--
+--   update public.events     set is_sample = false;
+--   update public.locations  set is_sample = false;
+--   update public.announcements set is_sample = false;
 --   update public.app_config set is_sample = false where id = 'app';
 --
 -- Images use the bundled SVG artwork so the seed works without uploading
@@ -33,122 +31,373 @@ insert into public.app_config (
   'app',
   'Colours 2K27',
   'Feel the Flow. Live the Colours.',
-  '2027-01-07T10:00:00+05:30',
-  '2027-01-09T23:00:00+05:30',
+  '2027-01-09T09:00:00+05:30',
+  '2027-01-11T18:00:00+05:30',
   'Asia/Kolkata',
   '',
   '',
-  '',
+  '+91 96660 66844',
   '[]'::jsonb,
-  1,
+  2,
   true
 )
-on conflict (id) do nothing;
+on conflict (id) do update set
+  festival_name = excluded.festival_name,
+  tagline = excluded.tagline,
+  festival_start = excluded.festival_start,
+  festival_end = excluded.festival_end,
+  contact_phone = excluded.contact_phone,
+  data_version = excluded.data_version;
 
 -- ----------------------------------------------------------------------------
--- Locations
+-- Reset previous bundled seed rows
+-- ----------------------------------------------------------------------------
+-- Keeps the seed idempotent and removes the older placeholder programme
+-- (Event 1–11) when re-running it against an existing demo project.
+
+delete from public.offers        where is_sample;
+delete from public.events        where is_sample;
+delete from public.vendors       where is_sample;
+delete from public.locations     where is_sample;
+delete from public.announcements where is_sample;
+delete from public.sponsorships  where is_sample;
+
+-- ----------------------------------------------------------------------------
+-- Locations — Aditya University campus map
 -- ----------------------------------------------------------------------------
 
 insert into public.locations
   (id, name, location_type, description, map_x, map_y, is_published, is_sample)
 values
-  ('11111111-1111-4111-8111-000000000001', 'Main Stage', 'stage',
-   'Headline concerts, DJ nights and the closing ceremony.', 50, 30, true, true),
-  ('11111111-1111-4111-8111-000000000002', 'Cultural Stage', 'stage',
-   'Dance, theatre and classical performances.', 24, 42, true, true),
-  ('11111111-1111-4111-8111-000000000003', 'Food Court', 'food',
-   'Food stalls, beverages and seating area.', 72, 52, true, true),
-  ('11111111-1111-4111-8111-000000000004', 'Tech Block A', 'venue',
-   'Technical events, workshops and hackathon rooms.', 30, 70, true, true),
-  ('11111111-1111-4111-8111-000000000005', 'Sports Ground', 'sports',
-   'Outdoor sports and the campus carnival zone.', 82, 26, true, true),
-  ('11111111-1111-4111-8111-000000000006', 'Central Lawn', 'venue',
-   'Open-air hangout zone and photo spots.', 55, 62, true, true),
-  ('11111111-1111-4111-8111-000000000007', 'Registration Desk', 'service',
-   'Pass collection and help desk near the main gate.', 16, 20, true, true),
-  ('11111111-1111-4111-8111-000000000008', 'North Parking', 'parking',
-   'Two-wheeler and four-wheeler parking, subject to campus approval.', 88, 74, true, true),
-  ('11111111-1111-4111-8111-000000000009', 'Restrooms — Block C', 'service',
-   'Accessible restrooms next to the cultural stage.', 18, 58, true, true),
-  ('11111111-1111-4111-8111-000000000010', 'Central Library', 'venue',
-   'Literary events and quiet zone.', 68, 78, true, true)
-on conflict do nothing;
+  ('11111111-1111-4111-8111-000000000001', 'Ratan Tata Bhavan (RTB)', 'venue',
+   'CREO and cultural rooms — RTB-210, RTB-212 and RTB Seminar Hall-411.', 17, 19, true, true),
+  ('11111111-1111-4111-8111-000000000002', 'Cotton Bhavan (CB)', 'venue',
+   'CB Seminar Hall-208 — mimicry, stand-up comedy and skit.', 22.5, 19, true, true),
+  ('11111111-1111-4111-8111-000000000003', 'KL Rao Bhavan (KLRB)', 'venue',
+   'KLRB Drawing Hall-406 — spot painting.', 31, 19, true, true),
+  ('11111111-1111-4111-8111-000000000004', 'Bill Gates Bhavan', 'venue',
+   'Academic block on the north campus row.', 43, 19, true, true),
+  ('11111111-1111-4111-8111-000000000005', 'Visweswaraya Bhavan (VB)', 'venue',
+   'VB Seminar Hall-011 — dance solo and dance group.', 54, 19, true, true),
+  ('11111111-1111-4111-8111-000000000006', 'C.V. Raman Bhavan (CVB)', 'venue',
+   'Table tennis and chess rooms — CV Raman Bhavan-003, -005 and -009.', 66, 19, true, true),
+  ('11111111-1111-4111-8111-000000000007', 'Ramanujan Bhavan (RB)', 'venue',
+   'RB Seminar Hall-005 and rooms 101, 111 — literary, music and mehandi events.', 81, 19, true, true),
+  ('11111111-1111-4111-8111-000000000008', 'Newton Bhavan (NB)', 'venue',
+   'NB Seminar Hall-201 — mime and mono action.', 91, 19, true, true),
+
+  ('11111111-1111-4111-8111-000000000009', 'Open Air Auditorium', 'stage',
+   'Open-air stage beside KL Rao Ground.', 34, 29, true, true),
+  ('11111111-1111-4111-8111-000000000010', 'KL Rao Ground', 'sports',
+   'Athletics track, relay, jumps, throws, volleyball and basketball.', 34, 37, true, true),
+  ('11111111-1111-4111-8111-000000000011', 'KL Rao Bhavan Ground', 'sports',
+   'Women''s basketball, tennikoit and throwball.', 29, 41, true, true),
+  ('11111111-1111-4111-8111-000000000012', 'Fete Ground', 'other',
+   'Festival fete, stalls and activity zone.', 45, 36, true, true),
+  ('11111111-1111-4111-8111-000000000013', 'Ramanujan Ground (RB Ground)', 'sports',
+   'Rangoli competition and outdoor events.', 74, 22, true, true),
+  ('11111111-1111-4111-8111-000000000014', 'CV Raman Ground', 'sports',
+   'Kabaddi, kho-kho and throwball.', 68, 32, true, true),
+  ('11111111-1111-4111-8111-000000000015', 'Mango Garden', 'other',
+   'Shaded garden seating and stall row.', 55, 33, true, true),
+  ('11111111-1111-4111-8111-000000000016', 'Temples', 'other',
+   'Campus temple complex.', 55, 45, true, true),
+  ('11111111-1111-4111-8111-000000000017', 'Boys Hostels A & B Blocks', 'venue',
+   'Badminton courts for men''s singles.', 67, 44, true, true),
+  ('11111111-1111-4111-8111-000000000018', 'Girls Hostels A & B Blocks', 'venue',
+   'Badminton courts for women''s singles.', 17, 67, true, true),
+
+  ('11111111-1111-4111-8111-000000000019', 'Parking', 'parking',
+   'Visitor and participant parking near the west gate.', 12, 31, true, true),
+  ('11111111-1111-4111-8111-000000000020', 'Guest House', 'venue',
+   'Guest accommodation on the east side of campus.', 90, 39, true, true),
+  ('11111111-1111-4111-8111-000000000021', 'Aditya Global Business Incubator', 'venue',
+   'Startup and innovation block.', 20, 53, true, true),
+  ('11111111-1111-4111-8111-000000000022', 'Water Pond', 'other',
+   'Landmark near the central junction.', 44, 55, true, true),
+  ('11111111-1111-4111-8111-000000000023', 'Bus Ground', 'parking',
+   'Buses and large-vehicle parking.', 67, 62, true, true),
+  ('11111111-1111-4111-8111-000000000024', 'Aditya Pharmacy College', 'venue',
+   'Pharmacy college block.', 31, 67, true, true),
+  ('11111111-1111-4111-8111-000000000025', 'Abdul Kalam Bhavan', 'venue',
+   'Academic block near the pharmacy campus.', 45, 67, true, true),
+  ('11111111-1111-4111-8111-000000000026', 'Aditya College of Pharmacy (ACOP)', 'venue',
+   'ACOP Seminar Hall-019 — fashion show.', 29, 82, true, true),
+  ('11111111-1111-4111-8111-000000000027', 'Aditya Degree & PG College', 'venue',
+   'Degree and postgraduate college block.', 44, 82, true, true),
+  ('11111111-1111-4111-8111-000000000028', 'Aditya Polytechnic College', 'venue',
+   'Polytechnic college block.', 29, 90, true, true),
+  ('11111111-1111-4111-8111-000000000029', 'BPED Ground (BPD Ground)', 'sports',
+   'Football and major outdoor sports.', 68, 78, true, true)
+on conflict (id) do update set
+  name = excluded.name,
+  location_type = excluded.location_type,
+  description = excluded.description,
+  map_x = excluded.map_x,
+  map_y = excluded.map_y,
+  is_published = excluded.is_published;
 
 -- ----------------------------------------------------------------------------
--- Events
+-- Events — CREO, cultural and sports
 -- ----------------------------------------------------------------------------
 
 insert into public.events
   (id, title, slug, description, category, event_date, start_time, end_time,
    location_id, image_url, status, featured, is_sample)
 values
-  ('22222222-2222-4222-8222-000000000001', 'Event 1',
-   'neon-waves-opening-concert',
-   'The festival opens with a full-stage light show, a live band and the first wave of ColoursFlux visuals. Gates open 30 minutes before the show.',
-   'music', '2027-01-07', '18:00', '21:00',
-   '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-purple.svg',
-   'published', true, true),
-
-  ('22222222-2222-4222-8222-000000000002', 'Event 2', 'flux-dance-battle',
-   'Crews from across the campus go head to head. Open to registered teams; spectators welcome.',
-   'dance', '2027-01-07', '14:00', '17:00',
-   '11111111-1111-4111-8111-000000000002', 'assets/img/art/wave-magenta.svg',
-   'published', true, true),
-
-  ('22222222-2222-4222-8222-000000000003', 'Event 3', 'build-night-hack',
-   'A student hackathon with mentors from the tech community. Bring your own laptop; power and Wi-Fi provided on site.',
-   'tech', '2027-01-08', '09:00', '21:00',
-   '11111111-1111-4111-8111-000000000004', 'assets/img/art/wave-cyan.svg',
-   'published', true, true),
-
-  ('22222222-2222-4222-8222-000000000004', 'Event 4', 'street-food-trail',
-   'A guided walk across the food court with student vendors and local partners. Pay per stall.',
-   'food', '2027-01-08', '12:00', '16:00',
-   '11111111-1111-4111-8111-000000000003', 'assets/img/art/wave-amber.svg',
-   'published', false, true),
-
-  ('22222222-2222-4222-8222-000000000005', 'Event 5', 'canvas-and-code',
-   'Generative art showcase where design students and coders present interactive installations.',
-   'arts', '2027-01-08', '16:30', '19:00',
-   '11111111-1111-4111-8111-000000000006', 'assets/img/art/wave-magenta.svg',
-   'published', false, true),
-
-  ('22222222-2222-4222-8222-000000000006', 'Event 6', 'improv-night',
-   'Short-form improv sets from the campus theatre society. Audience prompts encouraged.',
-   'theatre', '2027-01-08', '19:30', '21:00',
-   '11111111-1111-4111-8111-000000000002', 'assets/img/art/wave-purple.svg',
-   'published', false, true),
-
-  ('22222222-2222-4222-8222-000000000007', 'Event 7', 'dj-set-afterglow',
-   'Closing night dance set with a visual mapping show. Subject to sound-permission timings.',
-   'music', '2027-01-09', '20:00', '23:00',
-   '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-cyan.svg',
-   'published', true, true),
-
-  ('22222222-2222-4222-8222-000000000008', 'Event 8', 'campus-cricket-cup',
-   'Inter-department knockout tournament. Reporting time 30 minutes before the first match.',
-   'sports', '2027-01-09', '08:00', '13:00',
-   '11111111-1111-4111-8111-000000000005', 'assets/img/art/wave-emerald.svg',
-   'published', false, true),
-
-  ('22222222-2222-4222-8222-000000000009', 'Event 9', 'slam-poetry-open-mic',
-   'Sign-up on the day at the library desk. Three minutes per performer.',
-   'literature', '2027-01-09', '15:00', '17:00',
-   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-purple.svg',
-   'published', false, true),
-
-  ('22222222-2222-4222-8222-000000000010', 'Event 10', 'closing-ceremony',
-   'Prize distribution, sponsor acknowledgements and the festival close-out.',
-   'music', '2027-01-09', '17:30', '19:30',
+  -- CREO — day 1
+  ('22222222-2222-4222-8222-000000000001', 'Spot Photography', 'spot-photography',
+   'On-the-spot photography contest. Bring your own camera or phone; entries are judged on composition and story. Venue: RTB-210.',
+   'arts', '2027-01-09', '10:00', '12:00',
    '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-magenta.svg',
    'published', false, true),
 
-  ('22222222-2222-4222-8222-000000000011', 'Event 11', 'robotics-demo-arena',
-   'Student robotics teams run live demos. Cancellation notice will appear here if the venue changes.',
-   'tech', '2027-01-08', '11:00', '14:00',
-   '11111111-1111-4111-8111-000000000004', 'assets/img/art/wave-emerald.svg',
-   'cancelled', false, true)
-on conflict do nothing;
+  ('22222222-2222-4222-8222-000000000002', 'Sahityam', 'sahityam',
+   'Literary showcase with poetry, essay and creative-writing rounds. Venue: RTB-212.',
+   'literature', '2027-01-09', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000003', 'Mehandi', 'mehandi',
+   'Traditional mehandi design competition judged on pattern, finish and speed. Venue: RB-111.',
+   'art', '2027-01-09', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000007', 'assets/img/art/wave-amber.svg',
+   'published', false, true),
+
+  -- CREO — day 2
+  ('22222222-2222-4222-8222-000000000004', 'Spot Painting', 'spot-painting',
+   'On-the-spot painting with a surprise theme announced at the venue. Materials to be arranged by participants. Venue: KLRB Drawing Hall-406.',
+   'arts', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000003', 'assets/img/art/wave-magenta.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000005', 'Movie Making', 'movie-making',
+   'Short-film challenge — shoot and edit within the given window. Venue: RTB-210.',
+   'arts', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-cyan.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000006', 'Fashion Show', 'fashion-show',
+   'Team runway showcase judged on styling, walk and concept. Venue: ACOP Seminar Hall-019.',
+   'fashion', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000026', 'assets/img/art/wave-amber.svg',
+   'published', true, true),
+
+  -- CREO — day 3
+  ('22222222-2222-4222-8222-000000000007', 'Rangoli', 'rangoli',
+   'Rangoli competition on the ground. Colours and materials to be brought by participants. Venue: RB Ground.',
+   'art', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000013', 'assets/img/art/wave-magenta.svg',
+   'published', true, true),
+
+  ('22222222-2222-4222-8222-000000000008', 'Dumb Charades', 'dumb-charades',
+   'Team-based dumb charades with movie and theme rounds. Venue: RTB Seminar Hall-411.',
+   'theatre', '2027-01-11', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000009', 'Treasure Hunt', 'treasure-hunt',
+   'Campus-wide clue trail. Teams report at the start point with a charged phone. Venue: RB-101.',
+   'other', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000007', 'assets/img/art/wave-cyan.svg',
+   'published', false, true),
+
+  -- Cultural — day 1
+  ('22222222-2222-4222-8222-000000000010', 'Dance — Solo', 'dance-solo',
+   'Solo dance competition across classical and contemporary styles. Venue: VB Seminar Hall-011.',
+   'dance', '2027-01-09', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000005', 'assets/img/art/wave-magenta.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000011', 'Dance — Duet', 'dance-duet',
+   'Partner dance competition judged on coordination and expression. Venue: RTB Seminar Hall-006.',
+   'dance', '2027-01-09', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000001', 'assets/img/art/wave-magenta.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000012', 'Instrumental', 'instrumental',
+   'Solo instrumental performance. Instruments other than the keyboard to be brought by participants. Venue: RB Seminar Hall-005.',
+   'music', '2027-01-09', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000007', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  -- Cultural — day 2
+  ('22222222-2222-4222-8222-000000000013', 'Singing', 'singing',
+   'Solo singing competition across film, classical and light music. Venue: RB Seminar Hall-005.',
+   'music', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000007', 'assets/img/art/wave-purple.svg',
+   'published', true, true),
+
+  ('22222222-2222-4222-8222-000000000014', 'Mime', 'mime',
+   'Silent storytelling performance judged on expression and clarity. Venue: NB Seminar Hall-201.',
+   'theatre', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000008', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000015', 'Mono Action', 'mono-action',
+   'Single-actor performance without dialogue. Venue: NB Seminar Hall-201.',
+   'theatre', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000008', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000016', 'Mimicry', 'mimicry',
+   'Voice and impersonation rounds. Venue: CB Seminar Hall-208.',
+   'theatre', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000002', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000017', 'Stand-up Comedy', 'stand-up-comedy',
+   'Open-mic stand-up set. Material must be original. Venue: CB Seminar Hall-208.',
+   'theatre', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000002', 'assets/img/art/wave-amber.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000018', 'Skit', 'skit',
+   'Team skit performance. Venue: CB Seminar Hall-208.',
+   'theatre', '2027-01-10', '10:00', '12:00',
+   '11111111-1111-4111-8111-000000000002', 'assets/img/art/wave-purple.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000019', 'Dance — Group', 'dance-group',
+   'Group dance competition. Teams report 30 minutes early with their track. Venue: VB Seminar Hall-011.',
+   'dance', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000005', 'assets/img/art/wave-magenta.svg',
+   'published', true, true),
+
+  -- Sports — athletics, day 1
+  ('22222222-2222-4222-8222-000000000020', 'Running', 'running',
+   '100 m, 200 m, 400 m, 800 m, 1500 m and 5 km cross-country. Venue: KL Rao Ground.',
+   'sports', '2027-01-09', '09:00', '11:00',
+   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000021', 'Relay', 'relay',
+   '4 × 100 m and 4 × 400 m relays. Venue: KL Rao Ground.',
+   'sports', '2027-01-09', '11:00', '12:00',
+   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000022', 'Jumping', 'jumping',
+   'Long jump, high jump and triple jump. Venue: KL Rao Ground.',
+   'sports', '2027-01-09', '09:00', '11:30',
+   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000023', 'Throwing', 'throwing',
+   'Discus throw and shot put. Venue: KL Rao Ground.',
+   'sports', '2027-01-09', '09:00', '11:30',
+   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  -- Sports — men, day 2
+  ('22222222-2222-4222-8222-000000000024', 'Football (Men)', 'football-men',
+   'Men''s football tournament. Venue: BPED Ground.',
+   'sports', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000029', 'assets/img/art/wave-emerald.svg',
+   'published', true, true),
+
+  ('22222222-2222-4222-8222-000000000025', 'Volleyball (Men)', 'volleyball-men',
+   'Men''s volleyball. Venue: KL Rao Ground.',
+   'sports', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000026', 'Basketball (Men)', 'basketball-men',
+   'Men''s basketball. Venue: KL Rao Ground.',
+   'sports', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000010', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000027', 'Kabaddi (Men)', 'kabaddi-men',
+   'Men''s kabaddi. Venue: CV Raman Ground.',
+   'sports', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000014', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000028', 'Kho-Kho (Men)', 'kho-kho-men',
+   'Men''s kho-kho. Venue: CV Raman Ground.',
+   'sports', '2027-01-10', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000014', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000029', 'Table Tennis Singles (Men)', 'table-tennis-singles-men',
+   'Men''s table tennis singles. Venue: CV Raman Bhavan-005.',
+   'sports', '2027-01-10', '10:00', '14:00',
+   '11111111-1111-4111-8111-000000000006', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000030', 'Shuttle Badminton Singles (Men)', 'shuttle-badminton-singles-men',
+   'Men''s badminton singles. Venue: Boys Hostel A & B Blocks.',
+   'sports', '2027-01-10', '10:00', '14:00',
+   '11111111-1111-4111-8111-000000000017', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000031', 'Chess (Men)', 'chess-men',
+   'Men''s chess tournament. Venue: CV Raman Bhavan-003.',
+   'sports', '2027-01-10', '10:00', '16:00',
+   '11111111-1111-4111-8111-000000000006', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  -- Sports — women, day 3
+  ('22222222-2222-4222-8222-000000000032', 'Basketball (Women)', 'basketball-women',
+   'Women''s basketball. Venue: KL Rao Bhavan Ground.',
+   'sports', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000033', 'Kabaddi (Women)', 'kabaddi-women',
+   'Women''s kabaddi. Venue: CV Raman Bhavan Ground.',
+   'sports', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000014', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000034', 'Kho-Kho (Women)', 'kho-kho-women',
+   'Women''s kho-kho. Venue: CV Raman Bhavan Ground.',
+   'sports', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000014', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000035', 'Throwball (Women)', 'throwball-women',
+   'Women''s throwball. Venue: KL Rao Bhavan Ground.',
+   'sports', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000036', 'Tennikoit Singles (Women)', 'tennikoit-singles-women',
+   'Women''s tennikoit singles. Venue: KL Rao Bhavan Ground.',
+   'sports', '2027-01-11', '10:00', '13:00',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000037', 'Table Tennis Singles (Women)', 'table-tennis-singles-women',
+   'Women''s table tennis singles. Venue: CV Raman Bhavan-005.',
+   'sports', '2027-01-11', '10:00', '14:00',
+   '11111111-1111-4111-8111-000000000006', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000038', 'Shuttle Badminton Singles (Women)', 'shuttle-badminton-singles-women',
+   'Women''s badminton singles. Venue: Girls Hostel A & B Blocks.',
+   'sports', '2027-01-11', '10:00', '14:00',
+   '11111111-1111-4111-8111-000000000018', 'assets/img/art/wave-emerald.svg',
+   'published', false, true),
+
+  ('22222222-2222-4222-8222-000000000039', 'Chess (Women)', 'chess-women',
+   'Women''s chess tournament. Venue: CV Raman Bhavan-009.',
+   'sports', '2027-01-11', '10:00', '16:00',
+   '11111111-1111-4111-8111-000000000006', 'assets/img/art/wave-emerald.svg',
+   'published', false, true)
+on conflict (id) do update set
+  title = excluded.title,
+  slug = excluded.slug,
+  description = excluded.description,
+  category = excluded.category,
+  event_date = excluded.event_date,
+  start_time = excluded.start_time,
+  end_time = excluded.end_time,
+  location_id = excluded.location_id,
+  image_url = excluded.image_url,
+  status = excluded.status,
+  featured = excluded.featured;
 
 -- ----------------------------------------------------------------------------
 -- Vendors
@@ -160,44 +409,47 @@ insert into public.vendors
 values
   ('33333333-3333-4333-8333-000000000001', 'Stall 1', 'food',
    'Cold brew, filter coffee and festival specials brewed on site.',
-   '11111111-1111-4111-8111-000000000003', 'assets/img/art/vendor-coffee.svg',
+   '11111111-1111-4111-8111-000000000012', 'assets/img/art/vendor-coffee.svg',
    '', '11 AM – 10 PM', 'approved', true, '2027-01-15T00:00:00+05:30', true),
 
   ('33333333-3333-4333-8333-000000000002', 'Stall 2', 'fashion',
    'Hand-printed tees, tote bags and campus merch from student designers.',
-   '11111111-1111-4111-8111-000000000006', 'assets/img/art/vendor-fashion.svg',
+   '11111111-1111-4111-8111-000000000015', 'assets/img/art/vendor-fashion.svg',
    '', '11 AM – 9 PM', 'approved', true, '2027-01-15T00:00:00+05:30', true),
 
   ('33333333-3333-4333-8333-000000000003', 'Stall 3', 'tech',
    'On-demand 3D prints, custom keychains and mini figure printing.',
-   '11111111-1111-4111-8111-000000000004', 'assets/img/art/vendor-tech.svg',
+   '11111111-1111-4111-8111-000000000012', 'assets/img/art/vendor-tech.svg',
    '', '10 AM – 8 PM', 'approved', false, null, true),
 
   ('33333333-3333-4333-8333-000000000004', 'Stall 4', 'art',
    'Handmade ceramics, painted magnets and a make-your-own mini workshop.',
-   '11111111-1111-4111-8111-000000000006', 'assets/img/art/vendor-art.svg',
+   '11111111-1111-4111-8111-000000000015', 'assets/img/art/vendor-art.svg',
    '', '11 AM – 8 PM', 'approved', true, '2027-01-09T00:00:00+05:30', true),
 
   ('33333333-3333-4333-8333-000000000005', 'Stall 5', 'food',
    'Steamed and fried momos with three house chutneys. Vegetarian options available.',
-   '11111111-1111-4111-8111-000000000003', 'assets/img/art/vendor-food.svg',
+   '11111111-1111-4111-8111-000000000012', 'assets/img/art/vendor-food.svg',
    '', '12 PM – 11 PM', 'approved', false, null, true),
 
   ('33333333-3333-4333-8333-000000000006', 'Stall 6', 'merch',
    'Vinyl stickers, enamel pins and festival lanyards.',
-   '11111111-1111-4111-8111-000000000006', 'assets/img/art/vendor-merch.svg',
+   '11111111-1111-4111-8111-000000000012', 'assets/img/art/vendor-merch.svg',
    '', '11 AM – 9 PM', 'approved', false, null, true),
 
   ('33333333-3333-4333-8333-000000000007', 'Stall 7', 'other',
    'Second-hand books, zines and student publications.',
-   '11111111-1111-4111-8111-000000000010', 'assets/img/art/vendor-books.svg',
+   '11111111-1111-4111-8111-000000000015', 'assets/img/art/vendor-books.svg',
    '', '10 AM – 6 PM', 'approved', false, null, true),
 
   ('33333333-3333-4333-8333-000000000008', 'Stall 8', 'fashion',
-   'Festival makeup, hair braiding and photo-ready touch-ups. Pending organiser approval.',
-   '11111111-1111-4111-8111-000000000002', 'assets/img/art/vendor-fashion.svg',
-   '', '2 PM – 10 PM', 'pending', false, null, true)
-on conflict do nothing;
+   'Festival makeup, hair braiding and photo-ready touch-ups.',
+   '11111111-1111-4111-8111-000000000009', 'assets/img/art/vendor-fashion.svg',
+   '', '2 PM – 10 PM', 'approved', false, null, true)
+on conflict (id) do update set
+  description = excluded.description,
+  location_id = excluded.location_id,
+  approval_status = excluded.approval_status;
 
 -- ----------------------------------------------------------------------------
 -- Offers
@@ -209,28 +461,28 @@ values
   ('44444444-4444-4444-8444-000000000001', '33333333-3333-4333-8333-000000000001',
    'Buy 1 get 1 cold brew',
    'Valid on all cold brew sizes between 2 PM and 4 PM.',
-   '2027-01-07T00:00:00+05:30', '2027-01-09T23:59:00+05:30', 'active', true),
+   '2027-01-09T00:00:00+05:30', '2027-01-11T23:59:00+05:30', 'active', true),
 
   ('44444444-4444-4444-8444-000000000002', '33333333-3333-4333-8333-000000000002',
    '10% off campus merch',
    'Show your festival pass at the counter.',
-   '2027-01-07T00:00:00+05:30', '2027-01-09T23:59:00+05:30', 'active', true),
+   '2027-01-09T00:00:00+05:30', '2027-01-11T23:59:00+05:30', 'active', true),
 
   ('44444444-4444-4444-8444-000000000003', '33333333-3333-4333-8333-000000000004',
    'Free mini magnet',
    'With any ceramic purchase above ₹499.',
-   '2027-01-07T00:00:00+05:30', '2027-01-08T23:59:00+05:30', 'active', true),
+   '2027-01-09T00:00:00+05:30', '2027-01-10T23:59:00+05:30', 'active', true),
 
   ('44444444-4444-4444-8444-000000000004', '33333333-3333-4333-8333-000000000005',
    'Student combo ₹99',
    'Six momos plus a soft drink. Valid with student ID.',
-   '2027-01-07T00:00:00+05:30', '2027-01-09T23:59:00+05:30', 'active', true),
+   '2027-01-09T00:00:00+05:30', '2027-01-11T23:59:00+05:30', 'active', true),
 
   ('44444444-4444-4444-8444-000000000005', '33333333-3333-4333-8333-000000000003',
    'Free keychain on 3D print',
    'One keychain per order while stocks last.',
    '2027-01-01T00:00:00+05:30', '2027-01-05T23:59:00+05:30', 'expired', true)
-on conflict do nothing;
+on conflict (id) do nothing;
 
 -- ----------------------------------------------------------------------------
 -- Announcements
@@ -239,30 +491,36 @@ on conflict do nothing;
 insert into public.announcements
   (id, title, message, priority, status, published_at, expires_at, is_sample)
 values
-  ('55555555-5555-4555-8555-000000000001', 'Festival gates open at 4 PM',
-   'Registration and the main gate open at 4 PM on day one. Carry a valid student ID for pass verification.',
-   'normal', 'published', '2027-01-06T10:00:00+05:30', '2027-01-10T00:00:00+05:30', true),
+  ('55555555-5555-4555-8555-000000000001', 'Colours 2K27 schedule is live',
+   'The full CREO, cultural and sports schedule runs from 9 to 11 January 2027. Check the Events page for dates, times and venues.',
+   'high', 'published', '2027-01-01T09:00:00+05:30', '2027-01-12T00:00:00+05:30', true),
 
-  ('55555555-5555-4555-8555-000000000002', 'Event 11 cancelled',
-   'Event 11, scheduled for day two, has been cancelled due to venue unavailability. Refunds are not applicable as the event was free.',
-   'high', 'published', '2027-01-05T18:30:00+05:30', '2027-01-10T00:00:00+05:30', true),
+  ('55555555-5555-4555-8555-000000000002', 'Registration desks',
+   'Registration and other details: Dr. N. Raja Babu 9849265690, Mr. P. Raju 8374245400, Dr. N. Ravi 9912393905, Dr. B. Srinivas 9866732745.',
+   'normal', 'published', '2027-01-01T09:00:00+05:30', '2027-01-12T00:00:00+05:30', true),
 
-  ('55555555-5555-4555-8555-000000000003', 'New stall: Stall 6',
-   'Stall 6 has joined the Central Lawn stall row with festival lanyards and pins.',
-   'normal', 'published', '2027-01-04T12:00:00+05:30', null, true),
+  ('55555555-5555-4555-8555-000000000003', 'Helpdesk numbers',
+   'For on-campus help during the fest: Dr. Akash Gupta 9666066844, B. Govindarajulu 9666893731, M. Prasanthi Kumari 9391410983.',
+   'normal', 'published', '2027-01-01T09:00:00+05:30', '2027-01-12T00:00:00+05:30', true),
 
-  ('55555555-5555-4555-8555-000000000004', 'Shuttle timing update',
-   'The evening shuttle now leaves the north parking gate every 20 minutes from 6 PM to 11 PM. This is a sample notice — confirm real transport details with the organiser.',
-   'high', 'published', '2027-01-03T09:15:00+05:30', '2027-01-10T00:00:00+05:30', true),
+  ('55555555-5555-4555-8555-000000000004', 'Sports reporting time',
+   'Sports participants should report 30 minutes before their event. Football is at BPED Ground; track events and volleyball/basketball are at KL Rao Ground.',
+   'high', 'published', '2027-01-07T10:00:00+05:30', '2027-01-12T00:00:00+05:30', true),
 
-  ('55555555-5555-4555-8555-000000000005', 'Event 7 moved to 8 PM',
-   'Event 7 will now start at 8 PM instead of 7:30 PM. The venue is unchanged.',
-   'urgent', 'published', '2027-01-02T20:00:00+05:30', '2027-01-10T00:00:00+05:30', true),
+  ('55555555-5555-4555-8555-000000000005', 'Venue guide',
+   'RTB Ratan Tata Bhavan, CB Cotton Bhavan, KLRB KL Rao Bhavan, VB Visweswaraya Bhavan, CVB CV Raman Bhavan, RB Ramanujan Bhavan, NB Newton Bhavan. Use the Campus Map for directions.',
+   'normal', 'published', '2027-01-07T10:00:00+05:30', null, true),
 
-  ('55555555-5555-4555-8555-000000000006', 'Lost & found desk',
-   'A lost and found desk operates at the registration counter during festival hours.',
-   'low', 'published', '2027-01-01T11:00:00+05:30', null, true)
-on conflict do nothing;
+  ('55555555-5555-4555-8555-000000000006', 'Campus map updated',
+   'The map now shows all event venues, grounds, hostels, parking and college blocks across the Aditya University campus.',
+   'low', 'published', '2027-01-07T10:00:00+05:30', null, true)
+on conflict (id) do update set
+  title = excluded.title,
+  message = excluded.message,
+  priority = excluded.priority,
+  status = excluded.status,
+  published_at = excluded.published_at,
+  expires_at = excluded.expires_at;
 
 -- ----------------------------------------------------------------------------
 -- Sponsorships (illustrative placements only)
@@ -277,7 +535,7 @@ values
    'home_strip', '2027-01-01', '2027-01-31', 'active', true, true),
   ('66666666-6666-4666-8666-000000000003', 'Campus Print Co.', '',
    'stalls_banner', '2027-01-02', '2027-01-15', 'active', false, true)
-on conflict do nothing;
+on conflict (id) do nothing;
 
 -- ----------------------------------------------------------------------------
 -- First admin

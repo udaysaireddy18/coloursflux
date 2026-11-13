@@ -458,7 +458,7 @@ function footerMarkup() {
           <a href="about.html">About</a>
         </nav>
       </div>
-      ${isSampleMode() ? `<p class="micro dim" style="padding-bottom:18px">Running on sample data — no live festival records are published yet.</p>` : hasSampleRecords() ? `<p class="micro dim" style="padding-bottom:18px">Some records on this site are sample data. Organisers should replace them before launch.</p>` : ''}
+      ${isSampleMode() ? `<p class="micro dim" style="padding-bottom:18px">Showing the bundled Colours 2K27 programme — the live database is not connected.</p>` : hasSampleRecords() ? `<p class="micro dim" style="padding-bottom:18px">Some records come from the bundled programme. Connect the live database to manage them from the dashboard.</p>` : ''}
     </div>`;
 }
 
@@ -515,7 +515,7 @@ export function syncBarMarkup() {
   if (s.source === 'sample') {
     return `<div class="sync-bar" data-tone="sample">
       ${icon('sparkles', { size: 16 })}
-      <span><b>Sample data.</b> The live database is not connected, so these records are placeholders.</span>
+      <span><b>Bundled schedule.</b> The live database is not connected, so you are viewing the Colours 2K27 programme stored with the site.</span>
       <span class="spacer"></span>
       <a class="btn btn-sm" href="admin/index.html">Connect Supabase</a>
     </div>`;
@@ -728,50 +728,7 @@ export function locationTypeOf(type) {
  * board, so the SVG stretches to the container and stays aligned at any size.
  */
 export function mapPlate() {
-  return `<svg class="map-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-    <defs>
-      <linearGradient id="cf-lawn" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#2a3f8f" stop-opacity=".5" />
-        <stop offset="1" stop-color="#0a1330" stop-opacity=".04" />
-      </linearGradient>
-      <linearGradient id="cf-road" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#31418c" stop-opacity=".55" />
-        <stop offset="1" stop-color="#141d44" stop-opacity=".28" />
-      </linearGradient>
-      <radialGradient id="cf-glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0" stop-color="#6d63ff" stop-opacity=".45" />
-        <stop offset="1" stop-color="#6d63ff" stop-opacity="0" />
-      </radialGradient>
-    </defs>
-    <ellipse cx="50" cy="52" rx="43" ry="37" fill="url(#cf-lawn)" />
-    <circle cx="50" cy="46" r="27" fill="url(#cf-glow)" />
-    <g fill="none" stroke="url(#cf-road)" stroke-linecap="round" vector-effect="non-scaling-stroke">
-      <path d="M6 74 C24 68 30 44 50 44 S78 76 95 68" stroke-width="7" />
-      <path d="M50 4 V96" stroke-width="4.5" opacity=".8" />
-      <path d="M8 88 C30 84 36 60 52 60 S80 88 94 84" stroke-width="2.4" opacity=".5" />
-    </g>
-    <g fill="none" stroke="#3c4f96" stroke-width=".45" stroke-dasharray="1.4 2" vector-effect="non-scaling-stroke" opacity=".55">
-      <path d="M6 74 C24 68 30 44 50 44 S78 76 95 68" />
-      <path d="M50 4 V96" />
-    </g>
-    <g fill="#18234f" stroke="#3a4c8f" stroke-width=".5" vector-effect="non-scaling-stroke" opacity=".9">
-      <rect x="12" y="14" width="13" height="9" rx="1.6" />
-      <rect x="74" y="12" width="16" height="10" rx="1.6" />
-      <rect x="73" y="38" width="12" height="9" rx="1.6" />
-      <rect x="16" y="62" width="13" height="11" rx="1.6" />
-      <rect x="64" y="74" width="15" height="10" rx="1.6" />
-      <rect x="35" y="80" width="16" height="9" rx="1.6" />
-    </g>
-    <g fill="none" stroke="#4b5fa8" stroke-width=".6" vector-effect="non-scaling-stroke" opacity=".7">
-      <circle cx="50" cy="46" r="7" />
-      <circle cx="50" cy="46" r="3" />
-    </g>
-    <g fill="#67e8f9" opacity=".5">
-      <circle cx="18.5" cy="18.5" r=".9" />
-      <circle cx="82" cy="17" r=".9" />
-      <circle cx="24" cy="67.5" r=".9" />
-    </g>
-  </svg>`;
+  return `<img class="map-img" src="assets/img/campus-map.webp" alt="" decoding="async" />`;
 }
 
 /**

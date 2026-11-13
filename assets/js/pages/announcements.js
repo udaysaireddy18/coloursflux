@@ -81,7 +81,7 @@ function render() {
   $('#last-updated').textContent = store.state.lastSync
     ? `Last updated: ${timeAgo(store.state.lastSync)}`
     : store.state.source === 'sample'
-      ? 'Sample data — never synced'
+      ? 'Bundled schedule — not synced'
       : 'Not yet synchronised';
 
   mountIcons($('#announce-feed'));
