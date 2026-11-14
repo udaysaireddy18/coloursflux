@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v1.4.0';
+const VERSION = 'v1.5.0';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -137,6 +137,10 @@ self.addEventListener('install', (event) => {
           }
         })
       );
+      // Take over as soon as the new shell is cached. The page listens for
+      // `controllerchange` and reloads once, so a version bump reaches every
+      // visitor without them having to dismiss an update banner.
+      await self.skipWaiting();
     })()
   );
 });

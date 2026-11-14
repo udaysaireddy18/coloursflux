@@ -1,19 +1,20 @@
 # Event artwork credits
 
 Photos are downloaded from Wikimedia Commons and stored locally so the site still works offline.
+Photos were chosen to show Indian and Andhra Pradesh people and events wherever a suitable image existed.
 Each photo keeps the licence of its source. Replace any image with your own festival photo if preferred.
 
 ## spot-photography
 - File: `spot-photography.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Press_photographer_uploading.jpg
-- Author: Katie Chan
+- Source: https://commons.wikimedia.org/wiki/File:Photographer_at_an_event_in_Goa,India.jpg
+- Author: Fredericknoronha
 - Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## sahityam
 - File: `sahityam.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Poetry_in_Parks_(54304227477).jpg
-- Author: evergladesnps
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Poetry_in_Parks_(54304227477).jpg)
+- Source: https://commons.wikimedia.org/wiki/File:Soumitra_Chatterjee_reciting_a_poem_by_Rabindranath_Tagore_at_inauguration_of_a_flower_show.jpg
+- Author: Tejoshmi
+- Licence: CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
 
 ## mehandi
 - File: `mehandi.jpg`
@@ -29,14 +30,14 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## movie-making
 - File: `movie-making.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Filming_of_Transformers_at_Edwards_AFB_2007-02-28_1.jpg
-- Author: 1st Lt. Brad Kimberly, USAF
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Filming_of_Transformers_at_Edwards_AFB_2007-02-28_1.jpg)
+- Source: https://commons.wikimedia.org/wiki/File:Film_Shooting_From_a_Crane.jpg
+- Author: Vssun
+- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
 
 ## fashion-show
 - File: `fashion-show.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Andres_Sarda_Miami_Fashion_Week_Runway_Show.jpg
-- Author: James C Santiago
+- Source: https://commons.wikimedia.org/wiki/File:India_Runway_Week.JPG
+- Author: IFFDOFFICIAL
 - Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## rangoli
@@ -47,15 +48,15 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## dumb-charades
 - File: `dumb-charades.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:3.6.14RenolySantiagoActingClassByLuigiNovi28.jpg
-- Author: Nightscream
+- Source: https://commons.wikimedia.org/wiki/File:Students_Play_Mobile_Game_-_Kolkata_2016-10-23_1582.JPG
+- Author: Biswarup Ganguly
 - Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
 
 ## treasure-hunt
 - File: `treasure-hunt.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Paf_Treasure_Hunt_2012_(7912615520).jpg
-- Author: Play Among Friends Paf
-- Licence: CC BY 2.0 (https://creativecommons.org/licenses/by/2.0)
+- Source: https://commons.wikimedia.org/wiki/File:Children_explore_history_DVIDS173124.jpg
+- Author: Spc. Elliot Valdez
+- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Children_explore_history_DVIDS173124.jpg)
 
 ## dance-solo
 - File: `dance-solo.jpg`
@@ -71,93 +72,93 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## instrumental
 - File: `instrumental.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Mulatu_Astatke1.jpg
-- Author: LPLT
+- Source: https://commons.wikimedia.org/wiki/File:Sitar_Sarod_Jugalbandi_-_lakshay_%26_Aayush_Mohan_Gupta.jpg
+- Author: Varunkohli.vmc
 - Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
 
 ## singing
 - File: `singing.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Michelle_Williams_on_stage_at_J%26R%27s_Musicfest.jpg
-- Author: J&R Music World from New York City, USA
-- Licence: CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0)
+- Source: https://commons.wikimedia.org/wiki/File:VidhuPrathap_at_DevarajanMaster_7thDeathAnniversary_Concert.jpg
+- Author: Hirumon
+- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
 
 ## mime
 - File: `mime.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Mime_in_guanajuato.jpg
-- Author: Tomas Castelazo
-- Licence: CC BY-SA 2.5 (https://creativecommons.org/licenses/by-sa/2.5)
+- Source: https://commons.wikimedia.org/wiki/File:Mime_Madhu_in_a_Mime_show.jpg
+- Author: Batthini Vinay Kumar Goud
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## mono-action
 - File: `mono-action.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Performance_monodrama_%27Maro%27_in_Delft_(2022).jpg
-- Author: Jelger Groeneveld
-- Licence: CC BY 2.0 (https://creativecommons.org/licenses/by/2.0)
+- Source: https://commons.wikimedia.org/wiki/File:Actor_preparing_for_a_performaince_on_The_Konkani_tiatr_(traditional_theatre)_stage._Prince_Jacob%27s_troupe._May_2023._41.jpg
+- Author: Fredericknoronha
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## mimicry
 - File: `mimicry.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:%27Mimicry_and_gymnastics%27_at_a_street_performance_on_%27Champs_Elysees%27..jpg
-- Author: Rudolph.A.furtado
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:%27Mimicry_and_gymnastics%27_at_a_street_performance_on_%27Champs_Elysees%27..jpg)
+- Source: https://commons.wikimedia.org/wiki/File:Kottayam_Nazeer_Profile.jpg
+- Author: Kappiri
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## stand-up-comedy
 - File: `stand-up-comedy.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Stand-up_comedian_Lewis_Black,_2009.JPG
-- Author: Chad J. McNeeley, U.S. Navy
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Stand-up_comedian_Lewis_Black,_2009.JPG)
+- Source: https://commons.wikimedia.org/wiki/File:Manjeet_Sarkar_at_Drunklings.jpg
+- Author: StandUpIndia
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## skit
 - File: `skit.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Bavaria_Performing_Arts_Group-_One_Act_Play_Festival_(8701985).jpg
-- Author: U.S. Army photo by Sgt. Austin Robertson
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Bavaria_Performing_Arts_Group-_One_Act_Play_Festival_(8701985).jpg)
+- Source: https://commons.wikimedia.org/wiki/File:PSI_India_street_play.jpg
+- Author: GiveWell
+- Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
 
 ## dance-group
 - File: `dance-group.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Dance_performance_in_Kalach_2014.jpg
-- Author: Alexander One Rule
+- Source: https://commons.wikimedia.org/wiki/File:Vizianagaram_folk_dance.jpg
+- Author: Kiran kalyan deep
 - Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## running
 - File: `running.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:US_Navy_040521-N-2653P-302_Cryptologic_Technician_Interpreter_2nd_Class_Casey_Tibbs,_wins_a_100-meter_race_while_qualifying_for_the_U.S._Paralympics_Sprint_Team.jpg
-- Author: U.S. Navy photo by Journalist 1st Class James G. Pinsky
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:US_Navy_040521-N-2653P-302_Cryptologic_Technician_Interpreter_2nd_Class_Casey_Tibbs,_wins_a_100-meter_race_while_qualifying_for_the_U.S._Paralympics_Sprint_Team.jpg)
+- Source: https://commons.wikimedia.org/wiki/File:Women_4x100m_Relay_Dutee_Chand_In_Action_2017_cropped.jpg
+- Author: Odisha Games 2017 were cc by sa - Organised by Asian Athletics Assoc and Odisha government
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## relay
 - File: `relay.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Flickr_cc_runner_wisconsin_u.jpg
-- Author: ms4denmark
-- Licence: CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0)
+- Source: https://commons.wikimedia.org/wiki/File:Men_4x400m_Relay_Race_In_Progress.jpg
+- Author: Athletics Federation of India
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## jumping
 - File: `jumping.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Women_heptathlon_LJ_French_Athletics_Championships_2013_t144221.jpg
-- Author: Marie-Lan Nguyen
-- Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
+- Source: https://commons.wikimedia.org/wiki/File:Long_Jump_Liksy_Joseph_Of_India_In_Action.jpg
+- Author: Athletics Federation of India
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## throwing
 - File: `throwing.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:2013_IPC_Athletics_World_Championships_-_26072013_-_Milos_Grlica_of_Serbia_during_the_Men%27s_Javelin_throw_-_F12-13.jpg
-- Author: Clément Bucco-Lechat
-- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- Source: https://commons.wikimedia.org/wiki/File:Women%27s_Javelin_Throw_Bronze_Medalist_Annu_Rani_In_Action_During_Javelin_Throw_Finals.jpg
+- Author: Athletics Federation of India
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## football-men
 - File: `football-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:During_football_match_07.jpg
-- Author: Francis ackson soko
+- Source: https://commons.wikimedia.org/wiki/File:An_ongoing_football_match_of_students_in_West_Bengal,_India.jpg
+- Author: Billjones94
 - Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## volleyball-men
 - File: `volleyball-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Spiking_(9279923456).jpg
-- Author: Leandro Neumann Ciuffo
-- Licence: CC BY 2.0 (https://creativecommons.org/licenses/by/2.0)
+- Source: https://commons.wikimedia.org/wiki/File:Students_at_a_sports_break_during_a_volleyball_match_in_Goa,_India.jpg
+- Author: Fredericknoronha
+- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
 ## basketball-men
 - File: `basketball-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:YOG_2018_Basketball_-_Men%27s_Dunk_Contest_-_Niccolo_Filoni_01.jpg
-- Author: Gastón Cuello
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://commons.wikimedia.org/wiki/File:Akilan_Pari.JPG
+- Author: Stephreef
+- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
 
 ## kabaddi-men
 - File: `kabaddi-men.jpg`
@@ -173,9 +174,9 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## table-tennis-singles-men
 - File: `table-tennis-singles-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:251000_-_Table_Tennis_Ross_Schurgott_action_-_3b_-_Sydney_2000_match_photo.jpg
-- Author: Sport the library
-- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- Source: https://commons.wikimedia.org/wiki/File:Niwa_Koki_Sharath_Kamal_ATTC2017.jpeg
+- Author: XIAOYU TANG
+- Licence: CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0)
 
 ## shuttle-badminton-singles-men
 - File: `shuttle-badminton-singles-men.jpg`
@@ -185,15 +186,15 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## chess-men
 - File: `chess-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Chess_in_Algeria.jpg
-- Author: Detroit Publishing Co.
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Chess_in_Algeria.jpg)
+- Source: https://commons.wikimedia.org/wiki/File:Gukesh_in_2025.jpg
+- Author: Frans Peeters
+- Licence: CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0)
 
 ## basketball-women
 - File: `basketball-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Wisconsin_vs._Milwaukee_women%27s_basketball_2022_66_(in-game_action).jpg
-- Author: Michael Barera
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://commons.wikimedia.org/wiki/File:Girls_play_basketball_in_Dharmsala,_India.jpg
+- Author: Gilli Chupak
+- Licence: CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0)
 
 ## kabaddi-women
 - File: `kabaddi-women.jpg`
@@ -215,7 +216,7 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## tennikoit-singles-women
 - File: `tennikoit-singles-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Spielszene_vom_Frauendoppel.jpg
+- Source: https://commons.wikimedia.org/wiki/File:Indische_Wurfdynamik.jpg
 - Author: Mario.mueller-rt
 - Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
 
@@ -227,12 +228,12 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## shuttle-badminton-singles-women
 - File: `shuttle-badminton-singles-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Anatoliy_Yartsev_-_2018_European_Men%27s_and_Women%27s_Team_Badminton_Championships.jpg
-- Author: Министерство спорта Республики Татарстан
+- Source: https://commons.wikimedia.org/wiki/File:Thulasimathi_Murugesan_at_the_Paris_2024_Paralympics_Badminton_SU5_Women%27s_Singles_final_01.jpg
+- Author: Wikisquack
 - Licence: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0)
 
 ## chess-women
 - File: `chess-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Dames_schaakwedstrijden_in_de_Kroon,_links_mevrouw_Chaude_de_Silans_en_rechts_me,_Bestanddeelnr_914-4344.jpg
-- Author: Hugo van Gelderen / Anefo
+- Source: https://commons.wikimedia.org/wiki/File:WGM_Nandhidhaa_PV_with_her_2022-_Asian_Women_Chess_Continental_Championship_trophy.jpg
+- Author: NOVKILOSIERRA
 - Licence: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
