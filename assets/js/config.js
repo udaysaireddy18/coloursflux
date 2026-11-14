@@ -40,8 +40,8 @@ export const NAV = [
 /** Used only while the database is unreachable AND nothing is cached yet. */
 export const FALLBACK_CONFIG = {
   festival_name: 'Colours 2K27',
-  festival_start: '2027-01-09T09:00:00+05:30',
-  festival_end: '2027-01-11T18:00:00+05:30',
+  festival_start: '2027-01-07T09:00:00+05:30',
+  festival_end: '2027-01-09T18:00:00+05:30',
   timezone: 'Asia/Kolkata',
   tagline: APP.tagline,
   logo_url: '',

@@ -227,8 +227,8 @@ hardcoded timer.
 
    ```sql
    update public.app_config
-   set festival_start = '2027-01-09T10:00:00+05:30',
-       festival_end   = '2027-01-11T23:00:00+05:30',
+   set festival_start = '2027-01-07T10:00:00+05:30',
+       festival_end   = '2027-01-09T23:00:00+05:30',
        timezone       = 'Asia/Kolkata'
    where id = 'app';
    ```

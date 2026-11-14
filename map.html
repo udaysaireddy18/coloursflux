@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v1.6.0';
+        var stamp = 'v1.8.0';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -114,7 +114,7 @@
 
             <div class="map-frame-foot">
               <div class="map-key" id="map-key" aria-label="Location type key"></div>
-              <span class="map-source"><i data-icon="shield" data-size="12"></i> Illustrated campus map</span>
+              <span class="map-source"><i data-icon="shield" data-size="12"></i> Official Aditya University map</span>
             </div>
           </div>
 

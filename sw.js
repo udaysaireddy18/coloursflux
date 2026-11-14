@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v1.7.0';
+const VERSION = 'v1.8.0';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -119,7 +119,7 @@ const SHELL = [
   './assets/img/events/throwing.jpg',
   './assets/img/events/treasure-hunt.jpg',
   './assets/img/events/volleyball-men.jpg',
-  './assets/img/campus-map.svg',
+  './assets/img/campus-map.webp',
 ];
 
 self.addEventListener('install', (event) => {
