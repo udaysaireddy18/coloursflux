@@ -2048,6 +2048,10 @@
 }
 
 .map-marker .pin-label {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 120px;
   padding: 3px 7px;
   border-radius: 5px;
@@ -2060,6 +2064,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.16s;
 }
 
@@ -2316,8 +2321,8 @@
   .map-frame-title small { display: none; }
   .map-tool { width: 28px; height: 28px; }
   .map-hint { display: none; }
-  .map-marker .pin { width: 26px; height: 26px; border-radius: 8px 8px 8px 2px; }
-  .map-marker .pin svg { width: 13px; height: 13px; }
+  .map-marker .pin { width: 22px; height: 22px; border-radius: 7px 7px 7px 2px; }
+  .map-marker .pin svg { width: 11px; height: 11px; }
   .map-marker .pin-label { max-width: 96px; font-size: 0.58rem; }
   .map-source { display: none; }
   .map-frame-foot { padding-top: 8px; }

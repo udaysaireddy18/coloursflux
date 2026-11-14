@@ -728,7 +728,7 @@ export function locationTypeOf(type) {
  * board, so the SVG stretches to the container and stays aligned at any size.
  */
 export function mapPlate() {
-  return `<img class="map-img" src="assets/img/campus-map.webp" alt="" decoding="async" draggable="false" />`;
+  return `<img class="map-img" src="assets/img/campus-map.svg" alt="Illustrated Aditya University campus map showing academic blocks, sports grounds, hostels, parking and event venues" decoding="async" draggable="false" />`;
 }
 
 /**

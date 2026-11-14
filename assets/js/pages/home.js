@@ -109,7 +109,7 @@ function render() {
   const artHost = $('#home-map-art');
   if (artHost) artHost.innerHTML = mapPlate();
   const markerHost = $('#home-map-markers');
-  if (markerHost) markerHost.innerHTML = mapped.length ? staticMapMarkers(mapped, { max: 10, labels: 4 }) : '';
+  if (markerHost) markerHost.innerHTML = mapped.length ? staticMapMarkers(mapped, { max: 10, labels: 0 }) : '';
   setText('#home-map-count', `${mapped.length} locations`);
 
   const mapList = $('#home-map-list');
