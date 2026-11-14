@@ -1,20 +1,20 @@
 # Event artwork credits
 
-Photos are downloaded from Wikimedia Commons and stored locally so the site still works offline.
-Photos were chosen to show Indian and Andhra Pradesh people and events wherever a suitable image existed.
-Each photo keeps the licence of its source. Replace any image with your own festival photo if preferred.
+Campus event photos are from the Aditya University gallery (adityauniversity.in/gallery) and show university students at real campus events.
+Remaining photos are from Wikimedia Commons, chosen to show Indian and Andhra Pradesh people.
+Replace any image with your own festival photo if preferred.
 
 ## spot-photography
 - File: `spot-photography.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Photographer_at_an_event_in_Goa,India.jpg
-- Author: Fredericknoronha
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## sahityam
 - File: `sahityam.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Soumitra_Chatterjee_reciting_a_poem_by_Rabindranath_Tagore_at_inauguration_of_a_flower_show.jpg
-- Author: Tejoshmi
-- Licence: CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## mehandi
 - File: `mehandi.jpg`
@@ -30,15 +30,15 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## movie-making
 - File: `movie-making.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Film_Shooting_From_a_Crane.jpg
-- Author: Vssun
-- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## fashion-show
 - File: `fashion-show.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:India_Runway_Week.JPG
-- Author: IFFDOFFICIAL
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## rangoli
 - File: `rangoli.jpg`
@@ -48,57 +48,57 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## dumb-charades
 - File: `dumb-charades.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Students_Play_Mobile_Game_-_Kolkata_2016-10-23_1582.JPG
-- Author: Biswarup Ganguly
-- Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## treasure-hunt
 - File: `treasure-hunt.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Children_explore_history_DVIDS173124.jpg
-- Author: Spc. Elliot Valdez
-- Licence: Public domain (https://commons.wikimedia.org/wiki/File:Children_explore_history_DVIDS173124.jpg)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## dance-solo
 - File: `dance-solo.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Bharatanatyam_on_stage_(2022).jpg
-- Author: Yoshreyo
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## dance-duet
 - File: `dance-duet.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Kuchipudi_artists_performing_the_traditional_dance.jpg
-- Author: Sneha G Gupta
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## instrumental
 - File: `instrumental.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Sitar_Sarod_Jugalbandi_-_lakshay_%26_Aayush_Mohan_Gupta.jpg
-- Author: Varunkohli.vmc
-- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## singing
 - File: `singing.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:VidhuPrathap_at_DevarajanMaster_7thDeathAnniversary_Concert.jpg
-- Author: Hirumon
-- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## mime
 - File: `mime.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Mime_Madhu_in_a_Mime_show.jpg
-- Author: Batthini Vinay Kumar Goud
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## mono-action
 - File: `mono-action.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Actor_preparing_for_a_performaince_on_The_Konkani_tiatr_(traditional_theatre)_stage._Prince_Jacob%27s_troupe._May_2023._41.jpg
-- Author: Fredericknoronha
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## mimicry
 - File: `mimicry.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Kottayam_Nazeer_Profile.jpg
-- Author: Kappiri
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## stand-up-comedy
 - File: `stand-up-comedy.jpg`
@@ -108,15 +108,15 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## skit
 - File: `skit.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:PSI_India_street_play.jpg
-- Author: GiveWell
-- Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## dance-group
 - File: `dance-group.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Vizianagaram_folk_dance.jpg
-- Author: Kiran kalyan deep
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## running
 - File: `running.jpg`
@@ -132,9 +132,9 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## jumping
 - File: `jumping.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Long_Jump_Liksy_Joseph_Of_India_In_Action.jpg
-- Author: Athletics Federation of India
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## throwing
 - File: `throwing.jpg`
@@ -156,15 +156,15 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## basketball-men
 - File: `basketball-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Akilan_Pari.JPG
-- Author: Stephreef
-- Licence: CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## kabaddi-men
 - File: `kabaddi-men.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Kabaddi_match.jpg
-- Author: Sumathiraju
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## kho-kho-men
 - File: `kho-kho-men.jpg`
@@ -192,9 +192,9 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## basketball-women
 - File: `basketball-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Girls_play_basketball_in_Dharmsala,_India.jpg
-- Author: Gilli Chupak
-- Licence: CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## kabaddi-women
 - File: `kabaddi-women.jpg`
@@ -210,9 +210,9 @@ Each photo keeps the licence of its source. Replace any image with your own fest
 
 ## throwball-women
 - File: `throwball-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Throwball.jpg
-- Author: Vinoth offl
-- Licence: CC0 (http://creativecommons.org/publicdomain/zero/1.0/deed.en)
+- Source: https://www.adityauniversity.in/gallery
+- Author: Aditya University
+- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
 
 ## tennikoit-singles-women
 - File: `tennikoit-singles-women.jpg`
