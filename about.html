@@ -2,6 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>
+    /* One-time reset for browsers still running an old service-worker cache. */
+    (function () {
+      try {
+        var stamp = 'v1.6.0';
+        if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
+        Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
+          .then(function (res) {
+            var regs = res[0] || [];
+            var keys = (res[1] || []).filter(function (k) { return k.indexOf('coloursflux-') === 0; });
+            if (!regs.length && !keys.length) return;
+            localStorage.setItem('cf.cacheReset', stamp);
+            return Promise.all(
+              regs.map(function (r) { return r.unregister(); }).concat(
+                keys.map(function (k) { return caches.delete(k); })
+              )
+            ).then(function () { location.reload(); });
+          })
+          .catch(function () {});
+      } catch (e) {}
+    })();
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>About &amp; Help · ColoursFlux</title>
   <meta name="description" content="About ColoursFlux, how offline mode works, frequently asked questions and organiser contact details for Colours 2K27." />

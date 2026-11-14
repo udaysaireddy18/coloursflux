@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v1.5.0';
+const VERSION = 'v1.6.0';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -266,6 +266,20 @@ async function handleAsset(request) {
   }
 
   const cached = await cache.match(request);
+
+  // Code and styles are network-first so a deploy never leaves a visitor on an
+  // old bundle (which is how stale dates, event artwork and maps happened).
+  // Images keep stale-while-revalidate for fast repeat loads.
+  if (['script', 'style', 'manifest'].includes(request.destination)) {
+    try {
+      const fresh = await fetch(new Request(request, { cache: 'no-cache' }));
+      if (fresh && fresh.ok) cache.put(request, fresh.clone()).catch(() => {});
+      return fresh;
+    } catch {
+      if (cached) return cached;
+      return new Response('', { status: 504, statusText: 'Offline and not cached' });
+    }
+  }
 
   const network = fetch(request)
     .then((res) => {
