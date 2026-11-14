@@ -14,7 +14,7 @@ dashboard talks straight to Supabase and never pretends a failed write worked.
 - **Admin:** `/admin/` — a network-only dashboard for events, locations, vendors,
   offers, announcements, sponsors, settings and team roles.
 
-> **Placeholder notice.** Demo dates (7–9 Jan 2027), the campus map layout,
+> **Placeholder notice.** Demo dates (9-11 Jan 2027), the campus map layout,
 > vendor names, notices and prices are illustrative sample content, not official
 > festival information. Confirm every date, venue, contact and price with the
 > organisers before launch. See [Sample data and placeholders](#sample-data-and-placeholders).
@@ -338,7 +338,7 @@ Sizing, placement and print tips: [`docs/qr-code.md`](docs/qr-code.md).
 
 Everything below is **illustrative** and must be replaced or confirmed:
 
-- **Festival dates** — 7–9 January 2027. Confirm with the organisers, then
+- **Festival dates** - 9-11 January 2027. Confirm with the organisers, then
   update *Admin → Settings*. The countdown follows this value.
 - **Campus map** — `map_x`/`map_y` are percentages on a stylised map, not a
   surveyed layout. Confirm every pin. Coordinates are optional and blank by
