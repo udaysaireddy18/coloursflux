@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v1.8.0';
+        var stamp = 'v1.9.0';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -28,8 +28,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Event details · ColoursFlux</title>
   <meta name="description" content="Event details, timing and venue for Colours 2K27." />
-  <meta name="theme-color" content="#080B1A" />
-  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#fbf8f2" />
+  <meta name="color-scheme" content="light" />
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="manifest" href="manifest.webmanifest" />

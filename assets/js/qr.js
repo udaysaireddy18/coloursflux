@@ -282,7 +282,7 @@ export function qrMatrix(text) {
 }
 
 /** Draws a QR code onto a canvas with a quiet zone. */
-export function drawQR(canvas, text, { scale = 6, quiet = 4, dark = '#0b1129', light = '#ffffff' } = {}) {
+export function drawQR(canvas, text, { scale = 6, quiet = 4, dark = '#1b1813', light = '#ffffff' } = {}) {
   const { size, modules } = qrMatrix(text);
   const px = (size + quiet * 2) * scale;
   canvas.width = px;

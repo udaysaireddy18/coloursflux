@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v1.8.0';
+        var stamp = 'v1.9.0';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -28,8 +28,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Announcements · ColoursFlux</title>
   <meta name="description" content="Live Colours 2K27 notices: timing changes, venue updates, new stalls and urgent information. Cached for offline reading." />
-  <meta name="theme-color" content="#080B1A" />
-  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#fbf8f2" />
+  <meta name="color-scheme" content="light" />
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="manifest" href="manifest.webmanifest" />
@@ -64,10 +64,10 @@
 
       <div class="between" style="margin:18px 0 14px">
         <div class="priority-legend" aria-hidden="true">
-          <span class="priority-dot"><i style="background:#ef4444"></i> Urgent</span>
-          <span class="priority-dot"><i style="background:#f59e0b"></i> High</span>
-          <span class="priority-dot"><i style="background:#6d63ff"></i> Notice</span>
-          <span class="priority-dot"><i style="background:#06b6d4"></i> Info</span>
+          <span class="priority-dot"><i style="background:#b3261e"></i> Urgent</span>
+          <span class="priority-dot"><i style="background:#a9741a"></i> High</span>
+          <span class="priority-dot"><i style="background:#8a6a1f"></i> Notice</span>
+          <span class="priority-dot"><i style="background:#2f6f6b"></i> Info</span>
         </div>
         <div class="cluster">
           <span class="micro dim" id="last-updated">Last updated: —</span>

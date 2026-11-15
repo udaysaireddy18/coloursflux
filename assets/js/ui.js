@@ -14,176 +14,26 @@ import store, { lastSyncLabel, isSampleMode, hasSampleRecords } from './store.js
 
 export const BRAND_MARK = `<img class="brand-img" src="assets/icons/logo-mark.svg" alt="" width="56" height="56" decoding="async" />`;
 
-/** Glowing wave artwork used behind hero sections. */
+/** Restrained gold line-art used behind hero sections. */
 export function waveArt() {
   return `<div class="hero-art" aria-hidden="true">
-    <div class="hero-aurora"><i></i><i></i><i></i></div>
-    <div class="hero-moon"></div>
-    <div class="hero-beam hero-beam-a"></div>
-    <div class="hero-beam hero-beam-b"></div>
-    <div class="hero-mandala"></div>
-    <svg class="hero-paint" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="paint1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#6366f1" stop-opacity=".9"/>
-          <stop offset=".55" stop-color="#a855f7" stop-opacity=".7"/>
-          <stop offset="1" stop-color="#ec4899" stop-opacity=".35"/>
-        </linearGradient>
-        <linearGradient id="paint2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#22d3ee" stop-opacity=".8"/>
-          <stop offset=".5" stop-color="#818cf8" stop-opacity=".65"/>
-          <stop offset="1" stop-color="#d946ef" stop-opacity=".4"/>
-        </linearGradient>
-        <linearGradient id="paint3" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stop-color="#f4c46a" stop-opacity=".55"/>
-          <stop offset=".6" stop-color="#e879f9" stop-opacity=".5"/>
-          <stop offset="1" stop-color="#06b6d4" stop-opacity=".3"/>
-        </linearGradient>
-        <filter id="paintBlur" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="22"/>
-        </filter>
-      </defs>
-      <g class="paint-group" filter="url(#paintBlur)">
-        <path class="paint-blob p1" fill="url(#paint1)" d="M140 340C150 170 360 80 520 150S820 250 900 400s-30 250-190 300S300 720 190 560 130 450 140 340Z"/>
-        <path class="paint-blob p2" fill="url(#paint2)" d="M520 180C650 60 880 100 990 240s90 300-40 400-330 130-450 20S400 300 520 180Z"/>
-        <path class="paint-blob p3" fill="url(#paint3)" d="M60 540C150 420 360 410 470 510s120 250 10 320S150 880 70 750 0 640 60 540Z"/>
-      </g>
-    </svg>
-    <svg class="hero-waves" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#4f46e5" stop-opacity="0"/>
-          <stop offset=".28" stop-color="#8b5cf6"/>
-          <stop offset=".6" stop-color="#d946ef"/>
-          <stop offset=".88" stop-color="#22d3ee"/>
-          <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="wg2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#06b6d4" stop-opacity="0"/>
-          <stop offset=".35" stop-color="#22d3ee"/>
-          <stop offset=".72" stop-color="#6366f1"/>
-          <stop offset="1" stop-color="#d946ef" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#4f46e5"/>
-          <stop offset=".5" stop-color="#d946ef"/>
-          <stop offset="1" stop-color="#06b6d4"/>
-        </linearGradient>
-        <filter id="soft"><feGaussianBlur stdDeviation="1.2"/></filter>
-      </defs>
-      <g filter="url(#soft)">
-        <path class="wave-line w3" d="M-40 330C180 250 300 430 520 380s320-190 520-120 300 210 460 150"/>
-        <path class="wave-line w1" d="M-40 420C160 330 320 520 560 440s340-250 540-160 280 230 420 180"/>
-        <path class="wave-line w2" d="M-40 480C180 400 340 560 580 500s330-210 520-140 290 200 430 160"/>
-        <path class="wave-line w4" d="M-40 560C200 480 330 620 600 560s340-190 520-130 280 170 400 150"/>
-        <path class="wave-line w2" d="M-40 250C200 190 340 330 600 290s330-150 520-90 300 130 420 120" opacity=".45"/>
-      </g>
-    </svg>
-    <div class="hero-prism"></div>
-    <div class="hero-orbit"><i></i><i></i></div>
-    <div class="hero-sparkles"></div>
-    <div class="orb orb-a"></div>
-    <div class="orb orb-b"></div>
-    <div class="orb orb-c"></div>
-    <div class="hero-scrim"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-rings"></div>
     <div class="hero-grid"></div>
-    <div class="hero-fest">
-      <svg class="fest-wheel" viewBox="0 0 240 270" aria-hidden="true">
-        <defs>
-          <linearGradient id="festWheelGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#ffd166"/>
-            <stop offset=".45" stop-color="#f15bb5"/>
-            <stop offset="1" stop-color="#22d3ee"/>
-          </linearGradient>
-          <g id="festCabin">
-            <line x1="120" y1="112" x2="120" y2="38" stroke="url(#festWheelGrad)" stroke-width="1.5"/>
-            <rect x="111" y="25" width="18" height="12" rx="4" fill="url(#festWheelGrad)"/>
-          </g>
-        </defs>
-        <g class="fest-wheel-spin">
-          <circle cx="120" cy="112" r="78" fill="none" stroke="url(#festWheelGrad)" stroke-width="2.4"/>
-          <circle cx="120" cy="112" r="58" fill="none" stroke="url(#festWheelGrad)" stroke-width="1" opacity=".45"/>
-          <use href="#festCabin"/>
-          <use href="#festCabin" transform="rotate(30 120 112)"/>
-          <use href="#festCabin" transform="rotate(60 120 112)"/>
-          <use href="#festCabin" transform="rotate(90 120 112)"/>
-          <use href="#festCabin" transform="rotate(120 120 112)"/>
-          <use href="#festCabin" transform="rotate(150 120 112)"/>
-          <use href="#festCabin" transform="rotate(180 120 112)"/>
-          <use href="#festCabin" transform="rotate(210 120 112)"/>
-          <use href="#festCabin" transform="rotate(240 120 112)"/>
-          <use href="#festCabin" transform="rotate(270 120 112)"/>
-          <use href="#festCabin" transform="rotate(300 120 112)"/>
-          <use href="#festCabin" transform="rotate(330 120 112)"/>
-          <circle cx="120" cy="112" r="6" fill="#ffe9b0"/>
-        </g>
-        <g class="fest-wheel-base" stroke="url(#festWheelGrad)" stroke-width="2.5" stroke-linecap="round" fill="none">
-          <path d="M120 112 82 238"/>
-          <path d="M120 112 158 238"/>
-          <path d="M64 242h112"/>
-        </g>
-      </svg>
-
-      <svg class="fest-dancers" viewBox="0 0 320 90" aria-hidden="true">
-        <defs>
-          <linearGradient id="festDanceGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#ffd166"/>
-            <stop offset=".5" stop-color="#f15bb5"/>
-            <stop offset="1" stop-color="#22d3ee"/>
-          </linearGradient>
-        </defs>
-        <g stroke="url(#festDanceGrad)" stroke-width="4.5" stroke-linecap="round" fill="none">
-          <g transform="translate(50 74)"><g class="dancer d1">
-            <circle cx="0" cy="-58" r="6" fill="url(#festDanceGrad)" stroke="none"/>
-            <path d="M0-50V-20"/><path d="M0-44l-16-16M0-44l16-12"/>
-            <path d="M0-20l-12 20M0-20l12 20"/>
-          </g></g>
-          <g transform="translate(120 76)"><g class="dancer d2">
-            <circle cx="0" cy="-60" r="6" fill="url(#festDanceGrad)" stroke="none"/>
-            <path d="M0-52V-22"/><path d="M0-46l-17-8M0-46l15-18"/>
-            <path d="M0-22l-14 22M0-22l13 20"/>
-          </g></g>
-          <g transform="translate(190 74)"><g class="dancer d3">
-            <circle cx="0" cy="-58" r="6" fill="url(#festDanceGrad)" stroke="none"/>
-            <path d="M0-50V-20"/><path d="M0-42l-20-4M0-42l20-4"/>
-            <path d="M0-20l-11 20M0-20l11 20"/>
-          </g></g>
-          <g transform="translate(258 77)"><g class="dancer d4">
-            <circle cx="0" cy="-61" r="6" fill="url(#festDanceGrad)" stroke="none"/>
-            <path d="M0-53V-23"/><path d="M0-47l-14-20M0-47l14-20"/>
-            <path d="M0-23l-10 10-4 13M0-23l12 23"/>
-          </g></g>
-        </g>
-      </svg>
-
-      <div class="fest-dhol" aria-hidden="true">
-        <svg viewBox="0 0 120 120">
-          <defs>
-            <linearGradient id="festDholGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#f4c46a"/>
-              <stop offset=".5" stop-color="#f15bb5"/>
-              <stop offset="1" stop-color="#22d3ee"/>
-            </linearGradient>
-          </defs>
-          <path d="M26 42Q60 30 94 42L94 84Q60 96 26 84Z" fill="url(#festDholGrad)"/>
-          <ellipse cx="26" cy="63" rx="8" ry="21" fill="#160f2e" stroke="url(#festDholGrad)" stroke-width="2"/>
-          <ellipse cx="94" cy="63" rx="8" ry="21" fill="#160f2e" stroke="url(#festDholGrad)" stroke-width="2"/>
-          <path d="M26 42Q60 30 94 42" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.5"/>
-          <circle class="beat-ring" cx="60" cy="63" r="26"/>
-          <circle class="beat-ring beat-ring-2" cx="60" cy="63" r="26"/>
-        </svg>
-      </div>
-
-      <span class="fest-diya" style="--x: 34%; --d: 0s"></span>
-      <span class="fest-diya" style="--x: 48%; --d: -1.1s"></span>
-      <span class="fest-diya" style="--x: 62%; --d: -2.3s"></span>
-      <span class="fest-diya" style="--x: 76%; --d: -.7s"></span>
-      <span class="fest-diya" style="--x: 89%; --d: -1.7s"></span>
-
-      <span class="fest-firework" style="--x: 46%; --y: 20%; --c: #f15bb5; --d: 0s"></span>
-      <span class="fest-firework" style="--x: 63%; --y: 26%; --c: #22d3ee; --d: -2.4s"></span>
-      <span class="fest-firework" style="--x: 80%; --y: 14%; --c: #ffd166; --d: -4.8s"></span>
-    </div>
+    <svg class="hero-lines" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="heroGold" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#8a6a1f" stop-opacity="0"/>
+          <stop offset=".35" stop-color="#b8892f"/>
+          <stop offset=".62" stop-color="#e3c071"/>
+          <stop offset="1" stop-color="#8a6a1f" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path class="wave-line w1" d="M-40 420C160 330 320 520 560 440s340-250 540-160 280 230 420 180"/>
+      <path class="wave-line w2" d="M-40 480C180 400 340 560 580 500s330-210 520-140 290 200 430 160"/>
+      <path class="wave-line w3" d="M-40 330C180 250 300 430 520 380s320-190 520-120 300 210 460 150"/>
+    </svg>
+    <div class="hero-scrim"></div>
   </div>`;
 }
 
@@ -351,13 +201,6 @@ export function mountChrome({ active } = {}) {
     document.body.prepend(progress);
   }
 
-  if (!document.querySelector('.colour-aura')) {
-    const aura = document.createElement('div');
-    aura.className = 'colour-aura';
-    aura.setAttribute('aria-hidden', 'true');
-    aura.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
-    document.body.prepend(aura);
-  }
 
   mountIcons();
   mountImageFallbacks();
@@ -662,7 +505,7 @@ export function phaseBadge(ev) {
 /* ---------------------------------------------------------------- */
 
 const PLACEHOLDER = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b2350"/><stop offset=".5" stop-color="#3b2b6b"/><stop offset="1" stop-color="#0d3b4a"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><g fill="none" stroke="url(#g)" stroke-width="2" opacity=".5"><path d="M-20 250c120-70 180 60 320 10s180-140 360-80" stroke="#8b5cf6"/><path d="M-20 300c140-60 200 50 340 0s180-120 380-60" stroke="#22d3ee"/></g><text x="320" y="188" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" fill="#c7d2fe" opacity=".85">ColoursFlux</text></svg>`
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#faf6ec"/><stop offset=".5" stop-color="#f3ecdd"/><stop offset="1" stop-color="#efe4cc"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><g fill="none" stroke="#c9a24a" stroke-width="2" opacity=".55"><path d="M-20 250c120-70 180 60 320 10s180-140 360-80"/><path d="M-20 300c140-60 200 50 340 0s180-120 380-60"/></g><text x="320" y="188" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" fill="#6d5415" opacity=".8">ColoursFlux</text></svg>`
 )}`;
 
 export function mountImageFallbacks(root = document) {
@@ -687,22 +530,22 @@ export function imgTag(src, alt, { cls = '', eager = false } = {}) {
 /* ---------------------------------------------------------------- */
 
 export const CATEGORIES = {
-  music: { label: 'Music', icon: 'music', color: '#d946ef' },
-  dance: { label: 'Dance', icon: 'zap', color: '#f472b6' },
-  theatre: { label: 'Theatre', icon: 'mic', color: '#a78bfa' },
-  tech: { label: 'Tech', icon: 'cpu', color: '#22d3ee' },
-  arts: { label: 'Arts', icon: 'palette', color: '#818cf8' },
-  sports: { label: 'Sports', icon: 'trophy', color: '#34d399' },
-  food: { label: 'Food', icon: 'utensils', color: '#fbbf24' },
-  literature: { label: 'Literature', icon: 'file-text', color: '#60a5fa' },
-  fashion: { label: 'Fashion', icon: 'shirt', color: '#f0abfc' },
-  art: { label: 'Art & crafts', icon: 'palette', color: '#818cf8' },
-  merch: { label: 'Merchandise', icon: 'shopping-bag', color: '#a5b4fc' },
-  other: { label: 'Other', icon: 'tag', color: '#94a3b8' },
+  music: { label: 'Music', icon: 'music', color: '#8a4a1f' },
+  dance: { label: 'Dance', icon: 'zap', color: '#a8435a' },
+  theatre: { label: 'Theatre', icon: 'mic', color: '#6b4a8a' },
+  tech: { label: 'Tech', icon: 'cpu', color: '#2c6e78' },
+  arts: { label: 'Arts', icon: 'palette', color: '#4f5f8a' },
+  sports: { label: 'Sports', icon: 'trophy', color: '#3d6b3a' },
+  food: { label: 'Food', icon: 'utensils', color: '#b07a16' },
+  literature: { label: 'Literature', icon: 'file-text', color: '#3d6489' },
+  fashion: { label: 'Fashion', icon: 'shirt', color: '#8a4a6b' },
+  art: { label: 'Art & crafts', icon: 'palette', color: '#4f5f8a' },
+  merch: { label: 'Merchandise', icon: 'shopping-bag', color: '#7a6236' },
+  other: { label: 'Other', icon: 'tag', color: '#7a7468' },
 };
 
 export function categoryOf(key) {
-  return CATEGORIES[key] || { label: key ? String(key) : 'Other', icon: 'tag', color: '#94a3b8' };
+  return CATEGORIES[key] || { label: key ? String(key) : 'Other', icon: 'tag', color: '#7a7468' };
 }
 
 /* ---------------------------------------------------------------- */
@@ -710,13 +553,13 @@ export function categoryOf(key) {
 /* ---------------------------------------------------------------- */
 
 export const LOCATION_TYPES = {
-  stage: { label: 'Stages', icon: 'mic', color: '#d946ef' },
-  food: { label: 'Food & drink', icon: 'utensils', color: '#f59e0b' },
-  venue: { label: 'Venues', icon: 'building', color: '#6d63ff' },
-  sports: { label: 'Sports', icon: 'trophy', color: '#22c55e' },
-  service: { label: 'Services', icon: 'info', color: '#06b6d4' },
-  parking: { label: 'Parking', icon: 'navigation', color: '#94a3b8' },
-  other: { label: 'Other', icon: 'map-pin', color: '#94a3b8' },
+  stage: { label: 'Stages', icon: 'mic', color: '#8a4a1f' },
+  food: { label: 'Food & drink', icon: 'utensils', color: '#b07a16' },
+  venue: { label: 'Venues', icon: 'building', color: '#6d5415' },
+  sports: { label: 'Sports', icon: 'trophy', color: '#3d6b3a' },
+  service: { label: 'Services', icon: 'info', color: '#2c6e78' },
+  parking: { label: 'Parking', icon: 'navigation', color: '#7a7468' },
+  other: { label: 'Other', icon: 'map-pin', color: '#7a7468' },
 };
 
 export function locationTypeOf(type) {
@@ -811,7 +654,7 @@ export function vendorCard(vendor) {
   const featured = vendor.is_featured && !isExpired(vendor.featured_until);
   return `<article class="card vendor-card">
     <div class="vendor-head">
-      <div class="vendor-logo" style="${vendor.image_url ? '' : `background:linear-gradient(150deg, hsl(${hueFor(vendor.name)} 60% 26%), #16204a)`}">
+      <div class="vendor-logo" style="${vendor.image_url ? '' : `background:linear-gradient(150deg, hsl(${hueFor(vendor.name)} 34% 90%), #e8d9b6)`}">
         ${vendor.image_url ? imgTag(vendor.image_url, `${vendor.name} logo`) : esc(initials(vendor.name))}
       </div>
       <div style="min-width:0;flex:1">

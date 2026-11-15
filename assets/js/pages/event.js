@@ -119,7 +119,7 @@ function render(ev) {
         <div class="detail-hero">
           ${imgTag(ev.image_url, `${ev.title} artwork`, { eager: true })}
           <div class="hero-tags">
-            <span class="badge" style="color:${cat.color};border-color:${cat.color}55;background:rgba(8,11,26,.7)">${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
+            <span class="badge" style="color:${cat.color};border-color:${cat.color}66;background:rgba(255,252,245,.94)">${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
             ${ev.featured ? `<span class="badge badge-magenta">${icon('star', { size: 12 })} Featured</span>` : ''}
             ${phaseBadge(ev)}
           </div>

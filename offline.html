@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v1.8.0';
+        var stamp = 'v1.9.0';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Offline · ColoursFlux</title>
   <meta name="robots" content="noindex" />
-  <meta name="theme-color" content="#080B1A" />
+  <meta name="theme-color" content="#fbf8f2" />
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
@@ -39,7 +39,7 @@
     .offline-wrap { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
     .offline-card { max-width: 520px; text-align: center; display: grid; gap: 14px; justify-items: center; }
     .offline-mark { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center;
-      background: rgba(79,70,229,.16); border: 1px solid rgba(109,99,255,.3); color: #c7c2ff; }
+      background: rgba(201,162,74,.16); border: 1px solid rgba(138,106,31,.32); color: #6d5415; }
   </style>
 </head>
 <body>

@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v1.8.0';
+        var stamp = 'v1.9.0';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -28,8 +28,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ColoursFlux — Feel the Flow. Live the Colours.</title>
   <meta name="description" content="ColoursFlux is the official festival companion for Colours 2K27 at Aditya University. Explore events, the campus map, stalls, offers and live announcements — online or offline." />
-  <meta name="theme-color" content="#080B1A" />
-  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#fbf8f2" />
+  <meta name="color-scheme" content="light" />
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="manifest" href="manifest.webmanifest" />
@@ -76,7 +76,7 @@
       <p class="intro-kicker">Aditya University presents</p>
       <h2 class="intro-title" aria-label="Colours Flux">
         <span class="intro-word">
-          <span class="intro-letter" style="--i: 0; --c: #ffb703">C</span><span class="intro-letter" style="--i: 1; --c: #ffe066">O</span><span class="intro-letter" style="--i: 2; --c: #ff70a6">L</span><span class="intro-letter" style="--i: 3; --c: #f15bb5">O</span><span class="intro-letter" style="--i: 4; --c: #9b5de5">U</span><span class="intro-letter" style="--i: 5; --c: #4cc9f0">R</span><span class="intro-letter" style="--i: 6; --c: #2ec4b6">S</span>
+          <span class="intro-letter" style="--i: 0; --c: #6d5415">C</span><span class="intro-letter" style="--i: 1; --c: #7d6118">O</span><span class="intro-letter" style="--i: 2; --c: #8a6a1f">L</span><span class="intro-letter" style="--i: 3; --c: #9a7826">O</span><span class="intro-letter" style="--i: 4; --c: #8a6a1f">U</span><span class="intro-letter" style="--i: 5; --c: #7d6118">R</span><span class="intro-letter" style="--i: 6; --c: #6d5415">S</span>
         </span>
         <span class="intro-word intro-word-flux">
           <span class="intro-letter intro-letter-flux" style="--f: 0">F</span><span class="intro-letter intro-letter-flux" style="--f: 1">L</span><span class="intro-letter intro-letter-flux" style="--f: 2">U</span><span class="intro-letter intro-letter-flux" style="--f: 3">X</span>

@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v1.8.0';
+const VERSION = 'v1.9.0';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -220,10 +220,10 @@ async function handleNavigation(request) {
       return new Response(
         `<!doctype html><meta charset="utf-8"><title>Connection required</title>
          <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
-         <body style="background:#080b1a;color:#f8fafc;font-family:system-ui;padding:40px;line-height:1.6">
+         <body style="background:#fbf8f2;color:#1b1813;font-family:system-ui;padding:40px;line-height:1.6">
          <h1 style="font-size:1.4rem">The admin dashboard needs a connection</h1>
-         <p style="color:#a7b0d0">Admin pages are never cached, so they cannot be opened offline.</p>
-         <a href="../index.html" style="color:#a5b4fc">Go to the public site</a></body>`,
+         <p style="color:#5b5346">Admin pages are never cached, so they cannot be opened offline.</p>
+         <a href="../index.html" style="color:#6d5415">Go to the public site</a></body>`,
         { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
       );
     }

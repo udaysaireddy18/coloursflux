@@ -11,14 +11,14 @@ const OUTER_PETALS = 20;
 const INNER_PETALS = 12;
 const DOTS = 24;
 const RANGOLI_COLOURS = [
-  '#ffb703',
-  '#ffe066',
-  '#ff70a6',
-  '#f15bb5',
-  '#9b5de5',
-  '#6c63ff',
-  '#22d3ee',
-  '#2ec4b6',
+  '#c9a24a',
+  '#e3c071',
+  '#b8892f',
+  '#e8d3a0',
+  '#8a6a1f',
+  '#d9b45f',
+  '#a8542f',
+  '#c9a24a',
 ];
 
 function buildRangoli(root) {
