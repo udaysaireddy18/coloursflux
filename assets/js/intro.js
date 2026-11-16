@@ -3,8 +3,12 @@
  *
  * The overlay markup lives at the top of index.html so it paints before the
  * hero. This module builds the rangoli rings around the emblem and dismisses
- * the ident on tap, key press, wheel or timeout. Add ?intro=0 to skip it once.
+ * the ident on tap, key press, wheel or timeout. It greets a visitor once per
+ * release: ?intro=0 skips it, ?intro=1 replays it.
  */
+
+const INTRO_KEY = 'coloursflux:intro';
+const INTRO_RELEASE = 'v3';
 
 const OUTER_PETALS = 18;
 const INNER_PETALS = 14;
@@ -48,11 +52,27 @@ export function mountIntro() {
   const root = document.getElementById('fest-intro');
   if (!root) return;
 
-  const skip = new URLSearchParams(location.search).get('intro') === '0';
+  const params = new URLSearchParams(location.search);
+  const skip = params.get('intro') === '0';
+  const replay = params.get('intro') === '1';
 
-  // Browsers that ask for less motion go straight to the guide; ?intro=0 skips.
+  const alreadySeen = () => {
+    try {
+      return localStorage.getItem(INTRO_KEY) === INTRO_RELEASE;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  // Browsers that ask for less motion go straight to the guide; the ident also
+  // plays only on the first opening, so returning to Home does not replay it.
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reducedMotion || skip || document.documentElement.classList.contains('intro-seen')) {
+  if (
+    reducedMotion ||
+    skip ||
+    (!replay && alreadySeen()) ||
+    document.documentElement.classList.contains('intro-seen')
+  ) {
     root.remove();
     document.documentElement.classList.remove('intro-open');
     return;
@@ -60,6 +80,12 @@ export function mountIntro() {
 
   buildRangoli(root);
   document.documentElement.classList.add('intro-open');
+
+  // Remember the greeting as soon as it starts, so mid-animation navigation
+  // does not show it a second time.
+  try {
+    localStorage.setItem(INTRO_KEY, INTRO_RELEASE);
+  } catch (e) {}
 
   let closed = false;
   let timer = 0;

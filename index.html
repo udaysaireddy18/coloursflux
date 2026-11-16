@@ -40,9 +40,13 @@
   <meta property="og:description" content="Feel the Flow. Live the Colours. Events, campus map, stalls and announcements in one app." />
   <meta property="og:type" content="website" />
   <script>
-    // The opening animation now plays on every visit. Add ?intro=0 to skip it.
+    // The cultural ident greets a first-time visitor once per release.
+    // ?intro=0 skips it, ?intro=1 replays it.
     try {
-      if (new URLSearchParams(location.search).get('intro') === '0') {
+      const params = new URLSearchParams(location.search);
+      const forced = params.get('intro') === '1';
+      const skip = params.get('intro') === '0';
+      if (skip || (!forced && localStorage.getItem('coloursflux:intro') === 'v3')) {
         document.documentElement.classList.add('intro-seen');
       }
     } catch (e) {}
@@ -57,7 +61,7 @@
     // Boot the opening animation independently of the cached home bundle, so
     // it still plays for visitors who have an older home.js in the service
     // worker cache.
-    import { mountIntro } from './assets/js/intro.js?v=7';
+    import { mountIntro } from './assets/js/intro.js?v=8';
     mountIntro();
   </script>
 </head>
