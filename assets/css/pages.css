@@ -1066,3 +1066,29 @@
     margin-top: 2px;
   }
 }
+
+/* Phones: hold the ornamental sweeps still and drop the frosted badges so
+   scrolling long event lists stays smooth. */
+@media (max-width: 720px) {
+  .page-head::before {
+    animation: none;
+  }
+
+  .page-ornament i:first-child,
+  .page-ornament i:last-child {
+    animation: none;
+  }
+
+  .page-ornament i:first-child {
+    opacity: 0.8;
+  }
+
+  .page-ornament i:last-child {
+    opacity: 1;
+  }
+
+  .event-media .badge {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

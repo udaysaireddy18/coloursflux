@@ -3106,6 +3106,13 @@
 
 /* ---------- pointer flourish ---------- */
 
+/* Safety net: an older cached script may still try to draw a ring that
+   follows the pointer. Nothing in the current build does, so hide it. */
+.cursor-halo,
+[class*='cursor-halo'] {
+  display: none !important;
+}
+
 /* colour burst on every click / tap */
 .tap-burst {
   position: fixed;
@@ -3161,4 +3168,106 @@
     #3f7a68 88% 94%,
     #5b5490 94% 100%
   );
+}
+
+/* ============================================================
+   Phones: same violet mood, far less per-frame paint.
+   Large blurred gradients, masked conic sweeps and frosted glass
+   are what make mobile Chrome stutter, so below the phone
+   breakpoint they become still paint and a few ornaments that
+   only read at desktop size step aside.
+   ============================================================ */
+
+@media (max-width: 720px) {
+  /* the fixed, full-page dust layer holds still while you scroll */
+  .gold-dust {
+    opacity: 0.26;
+    animation: none;
+  }
+
+  /* one pre-composed aurora wash instead of four blurred moving clouds */
+  .hero-aurora {
+    inset: -12% -8%;
+    opacity: 1;
+    animation: none;
+    background:
+      radial-gradient(60% 46% at 18% 14%, rgba(124, 58, 217, 0.48), transparent 72%),
+      radial-gradient(54% 44% at 86% 8%, rgba(183, 32, 155, 0.32), transparent 74%),
+      radial-gradient(64% 50% at 44% 88%, rgba(75, 15, 168, 0.36), transparent 78%);
+  }
+
+  .hero-aurora i,
+  .hero-aurora::before,
+  .hero-sheen,
+  .hero-sun,
+  .hero-orbits,
+  .hero-lines {
+    display: none;
+  }
+
+  .hero-glow {
+    animation: none;
+  }
+
+  /* keep a little rising movement, but only three petals */
+  .hero-petals i:nth-child(n + 4) {
+    display: none;
+  }
+
+  .hero-petals i {
+    animation-duration: 28s;
+  }
+
+  /* the countdown keeps its frame without repainting a masked conic */
+  .hero-panel::before {
+    animation: none;
+  }
+
+  /* effects that repaint per frame (filter glow, moving gradients, twinkles)
+     become still paint on phones */
+  .hero-actions .btn-gold,
+  .ribbon-star,
+  .gradient-text {
+    animation: none;
+  }
+
+  .quick-card::before {
+    animation: none;
+    background-position: 50% 50%;
+  }
+
+  .site-footer::before {
+    animation: none;
+    background-position: 50% 50%;
+  }
+
+  .brand::before {
+    animation: none;
+  }
+
+  .site-header .nav-links::before,
+  .site-header .nav-links::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  /* frosted glass is recomputed on every scroll frame; use solid tints */
+  .site-header .nav-links,
+  .site-header .menu-toggle,
+  .bottom-nav,
+  .hero-panel,
+  .badge,
+  .date-chip,
+  .event-media .badge,
+  .map-scale,
+  .map-hint,
+  .modal::backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* keep the hero card as luminous as the blurred version */
+  .hero-panel {
+    background-color: #fbf7ff;
+  }
 }

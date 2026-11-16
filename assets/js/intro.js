@@ -40,10 +40,13 @@ function buildRangoli(root) {
   const outer = root.querySelector('.intro-petals-outer');
   const inner = root.querySelector('.intro-petals-inner');
   const kolam = root.querySelector('.intro-kolam');
+  // Phones get a lighter rangoli: the bloom reads the same, with fewer
+  // independently animated elements competing for the main thread.
+  const compact = window.matchMedia('(max-width: 720px)').matches;
 
-  if (outer) outer.innerHTML = petalMarkup(OUTER_PETALS, OUTER_COLOURS);
-  if (inner) inner.innerHTML = petalMarkup(INNER_PETALS, INNER_COLOURS);
-  if (kolam) kolam.innerHTML = dotMarkup(KOLAM_DOTS, DOT_COLOURS);
+  if (outer) outer.innerHTML = petalMarkup(compact ? 11 : OUTER_PETALS, OUTER_COLOURS);
+  if (inner) inner.innerHTML = petalMarkup(compact ? 8 : INNER_PETALS, INNER_COLOURS);
+  if (kolam) kolam.innerHTML = dotMarkup(compact ? 14 : KOLAM_DOTS, DOT_COLOURS);
 }
 
 export function mountIntro() {

@@ -16,6 +16,17 @@ html.intro-seen .intro {
   display: none;
 }
 
+/* The ident covers the page, so ornamental motion underneath can rest until
+   it leaves (it also keeps the opening light on phones). */
+html.intro-open .hero-art *,
+html.intro-open .gold-dust,
+html.intro-open .fest-ribbon *,
+html.intro-open .ribbon-star,
+html.intro-open .scroll-progress,
+html.intro-open .page-ornament * {
+  animation-play-state: paused;
+}
+
 .intro {
   --exit-time: 0.85s;
   --emblem: min(380px, 46vmin);
@@ -667,6 +678,84 @@ html.intro-seen .intro {
 
   .intro-enter {
     bottom: 12px;
+  }
+}
+
+/* Phones: the ident keeps its bloom, but big blurs, layered shadows and
+   infinite spins pause while it is on screen so opening the app stays smooth. */
+@media (max-width: 720px) {
+  .intro {
+    --emblem: min(220px, 52vw);
+  }
+
+  /* dismissing with opacity beats repainting a full-screen clip path */
+  .intro {
+    clip-path: none;
+    transition: opacity var(--exit-time) ease;
+  }
+
+  .intro.is-leaving {
+    clip-path: none;
+    opacity: 0;
+  }
+
+  .intro.is-leaving .intro-stage {
+    transform: translateY(-10px);
+  }
+
+  /* the base .intro background already carries the lilac glow, so the
+     extra full-screen aura layer is pure cost on a phone */
+  .intro-aura {
+    display: none;
+  }
+
+  .intro-emblem::before {
+    display: none;
+  }
+
+  /* the whole rangoli blooms in with the emblem instead of 30 separate delays */
+  .intro-rays,
+  .intro-ring-outer,
+  .intro-ring-mid,
+  .intro-ring-inner,
+  .intro-petal,
+  .intro-dot {
+    animation: none;
+  }
+
+  .intro-petals-outer,
+  .intro-petals-inner,
+  .intro-kolam {
+    animation: none;
+  }
+
+  .intro-rays { opacity: 0.75; }
+  .intro-ring-outer,
+  .intro-ring-mid,
+  .intro-ring-inner { opacity: 1; }
+  .intro-petal,
+  .intro-dot { opacity: 1; scale: 1; }
+
+  /* flat petals and dots rasterise far faster than glowing ones */
+  .intro-petal {
+    background: var(--c);
+    box-shadow: none;
+  }
+
+  .intro-dot {
+    box-shadow: none;
+  }
+
+  .intro-ring-outer {
+    box-shadow: none;
+  }
+
+  .intro-disc {
+    box-shadow:
+      0 18px 40px -24px rgba(64, 14, 167, 0.5),
+      0 0 0 5px rgba(255, 255, 255, 0.38),
+      0 0 26px rgba(158, 99, 241, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 }
 
