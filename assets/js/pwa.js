@@ -82,9 +82,13 @@ export async function registerServiceWorker() {
       });
     });
 
+    // Only reload when a *previous* worker is being replaced. On the very first
+    // visit there is no controller yet, and reloading would replay the opening
+    // ident for no reason.
+    const hadController = Boolean(navigator.serviceWorker.controller);
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (refreshing) return;
+      if (!hadController || refreshing) return;
       refreshing = true;
       location.reload();
     });
