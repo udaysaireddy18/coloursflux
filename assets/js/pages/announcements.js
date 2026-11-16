@@ -15,7 +15,7 @@ const $ = (sel) => document.querySelector(sel);
 const NOTIFY_KEY = 'cf.notify.v1';
 const PRIORITIES = ['urgent', 'high', 'normal', 'low'];
 const PRIORITY_LABEL = { urgent: 'Urgent', high: 'High', normal: 'Notice', low: 'Info' };
-const PRIORITY_COLOR = { urgent: '#b3261e', high: '#a9741a', normal: '#8a6a1f', low: '#2f6f6b' };
+const PRIORITY_COLOR = { urgent: '#b3261e', high: '#a9741a', normal: '#6b2bd0', low: '#2f6f6b' };
 
 let filter = '';
 

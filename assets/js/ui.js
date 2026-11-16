@@ -5,7 +5,7 @@
  */
 import { APP, NAV } from './config.js';
 import { icon, mountIcons } from './icons.js';
-import { esc, formatTime, formatTimeRange, formatDayShort, timeAgo, breakDown, pad2, initials, hueFor, safeUrl, isExpired } from './util.js';
+import { esc, formatTime, formatTimeRange, formatDayShort, timeAgo, breakDown, pad2, initials, violetHueFor, safeUrl, isExpired } from './util.js';
 import store, { lastSyncLabel, isSampleMode, hasSampleRecords } from './store.js';
 
 /* ---------------------------------------------------------------- */
@@ -26,10 +26,10 @@ export function waveArt() {
     <svg class="hero-lines" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id="heroGold" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#8a6a1f" stop-opacity="0"/>
-          <stop offset=".35" stop-color="#b8892f"/>
-          <stop offset=".62" stop-color="#e3c071"/>
-          <stop offset="1" stop-color="#8a6a1f" stop-opacity="0"/>
+          <stop offset="0" stop-color="#4a0fae" stop-opacity="0"/>
+          <stop offset=".35" stop-color="#7c3ad9"/>
+          <stop offset=".62" stop-color="#c04ad8"/>
+          <stop offset="1" stop-color="#b7209b" stop-opacity="0"/>
         </linearGradient>
       </defs>
       <path class="wave-line w1" d="M-40 420C160 330 320 520 560 440s340-250 540-160 280 230 420 180"/>
@@ -525,7 +525,7 @@ export function phaseBadge(ev) {
 /* ---------------------------------------------------------------- */
 
 const PLACEHOLDER = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#faf6ec"/><stop offset=".5" stop-color="#f3ecdd"/><stop offset="1" stop-color="#efe4cc"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><g fill="none" stroke="#c9a24a" stroke-width="2" opacity=".55"><path d="M-20 250c120-70 180 60 320 10s180-140 360-80"/><path d="M-20 300c140-60 200 50 340 0s180-120 380-60"/></g><text x="320" y="188" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" fill="#6d5415" opacity=".8">ColoursFlux</text></svg>`
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7f2fe"/><stop offset=".5" stop-color="#ece2f8"/><stop offset="1" stop-color="#e3d5f6"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><g fill="none" stroke="#7c3ad9" stroke-width="2" opacity=".55"><path d="M-20 250c120-70 180 60 320 10s180-140 360-80"/><path d="M-20 300c140-60 200 50 340 0s180-120 380-60"/></g><text x="320" y="188" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" fill="#4a0fae" opacity=".8">ColoursFlux</text></svg>`
 )}`;
 
 export function mountImageFallbacks(root = document) {
@@ -550,22 +550,22 @@ export function imgTag(src, alt, { cls = '', eager = false } = {}) {
 /* ---------------------------------------------------------------- */
 
 export const CATEGORIES = {
-  music: { label: 'Music', icon: 'music', color: '#8a4a1f' },
-  dance: { label: 'Dance', icon: 'zap', color: '#a8435a' },
-  theatre: { label: 'Theatre', icon: 'mic', color: '#6b4a8a' },
+  music: { label: 'Music', icon: 'music', color: '#4a12b0' },
+  dance: { label: 'Dance', icon: 'zap', color: '#b7209b' },
+  theatre: { label: 'Theatre', icon: 'mic', color: '#7a4a86' },
   tech: { label: 'Tech', icon: 'cpu', color: '#2c6e78' },
   arts: { label: 'Arts', icon: 'palette', color: '#4f5f8a' },
   sports: { label: 'Sports', icon: 'trophy', color: '#3d6b3a' },
-  food: { label: 'Food', icon: 'utensils', color: '#b07a16' },
+  food: { label: 'Food', icon: 'utensils', color: '#c2417a' },
   literature: { label: 'Literature', icon: 'file-text', color: '#3d6489' },
-  fashion: { label: 'Fashion', icon: 'shirt', color: '#8a4a6b' },
+  fashion: { label: 'Fashion', icon: 'shirt', color: '#a8437a' },
   art: { label: 'Art & crafts', icon: 'palette', color: '#4f5f8a' },
-  merch: { label: 'Merchandise', icon: 'shopping-bag', color: '#7a6236' },
-  other: { label: 'Other', icon: 'tag', color: '#7a7468' },
+  merch: { label: 'Merchandise', icon: 'shopping-bag', color: '#6b5c8c' },
+  other: { label: 'Other', icon: 'tag', color: '#6b5c8c' },
 };
 
 export function categoryOf(key) {
-  return CATEGORIES[key] || { label: key ? String(key) : 'Other', icon: 'tag', color: '#7a7468' };
+  return CATEGORIES[key] || { label: key ? String(key) : 'Other', icon: 'tag', color: '#6b5c8c' };
 }
 
 /* ---------------------------------------------------------------- */
@@ -573,13 +573,13 @@ export function categoryOf(key) {
 /* ---------------------------------------------------------------- */
 
 export const LOCATION_TYPES = {
-  stage: { label: 'Stages', icon: 'mic', color: '#8a4a1f' },
-  food: { label: 'Food & drink', icon: 'utensils', color: '#b07a16' },
-  venue: { label: 'Venues', icon: 'building', color: '#6d5415' },
+  stage: { label: 'Stages', icon: 'mic', color: '#4a12b0' },
+  food: { label: 'Food & drink', icon: 'utensils', color: '#c2417a' },
+  venue: { label: 'Venues', icon: 'building', color: '#35097c' },
   sports: { label: 'Sports', icon: 'trophy', color: '#3d6b3a' },
   service: { label: 'Services', icon: 'info', color: '#2c6e78' },
-  parking: { label: 'Parking', icon: 'navigation', color: '#7a7468' },
-  other: { label: 'Other', icon: 'map-pin', color: '#7a7468' },
+  parking: { label: 'Parking', icon: 'navigation', color: '#6b5c8c' },
+  other: { label: 'Other', icon: 'map-pin', color: '#6b5c8c' },
 };
 
 export function locationTypeOf(type) {
@@ -674,7 +674,7 @@ export function vendorCard(vendor) {
   const featured = vendor.is_featured && !isExpired(vendor.featured_until);
   return `<article class="card vendor-card">
     <div class="vendor-head">
-      <div class="vendor-logo" style="${vendor.image_url ? '' : `background:linear-gradient(150deg, hsl(${hueFor(vendor.name)} 34% 90%), #e8d9b6)`}">
+      <div class="vendor-logo" style="${vendor.image_url ? '' : `background:linear-gradient(150deg, hsl(${violetHueFor(vendor.name)} 34% 90%), #e9defb)`}">
         ${vendor.image_url ? imgTag(vendor.image_url, `${vendor.name} logo`) : esc(initials(vendor.name))}
       </div>
       <div style="min-width:0;flex:1">

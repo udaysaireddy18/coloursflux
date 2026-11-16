@@ -10,7 +10,7 @@ import {
   mountImageFallbacks,
 } from '../ui.js';
 import { mountIcons, icon } from '../icons.js';
-import { esc, debounce, formatDay, isExpired, initials, hueFor, safeUrl, param } from '../util.js';
+import { esc, debounce, formatDay, isExpired, initials, violetHueFor, safeUrl, param } from '../util.js';
 
 const $ = (sel) => document.querySelector(sel);
 
@@ -137,7 +137,7 @@ function openVendor(id) {
   $('#vendor-dialog-title').textContent = vendor.name;
   $('#vendor-dialog-body').innerHTML = `
     <div class="vendor-head" style="margin-bottom:14px">
-      <div class="vendor-logo" style="${vendor.image_url ? '' : `background:linear-gradient(150deg, hsl(${hueFor(vendor.name)} 34% 90%), #e8d9b6);width:64px;height:64px`}">
+      <div class="vendor-logo" style="${vendor.image_url ? '' : `background:linear-gradient(150deg, hsl(${violetHueFor(vendor.name)} 34% 90%), #e9defb);width:64px;height:64px`}">
         ${vendor.image_url ? imgTag(vendor.image_url, `${vendor.name} logo`) : esc(initials(vendor.name))}
       </div>
       <div>

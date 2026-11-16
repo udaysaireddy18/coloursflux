@@ -11,13 +11,13 @@ const OUTER_PETALS = 20;
 const INNER_PETALS = 12;
 const DOTS = 24;
 const RANGOLI_COLOURS = [
-  '#c9a24a',
+  '#7c3ad9',
   '#a8435a',
-  '#e3c071',
+  '#c04ad8',
   '#2f6f6a',
-  '#8a6a1f',
+  '#4a0fae',
   '#4f5f8a',
-  '#b06a1f',
+  '#b7209b',
   '#7a4a86',
 ];
 

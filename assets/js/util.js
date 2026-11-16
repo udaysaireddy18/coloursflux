@@ -170,6 +170,11 @@ export function hueFor(str) {
   return h;
 }
 
+/** Same hash, folded into the violet..magenta arc so avatars stay on-theme. */
+export function violetHueFor(str) {
+  return 250 + (hueFor(str) % 86);
+}
+
 export function initials(name) {
   return String(name || '?')
     .split(/\s+/)
