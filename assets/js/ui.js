@@ -423,7 +423,7 @@ function footerMarkup() {
           <a href="about.html">About</a>
         </nav>
       </div>
-      ${isSampleMode() ? `<p class="micro dim" style="padding-bottom:18px">Showing the bundled Colours 2K27 programme — the live database is not connected.</p>` : hasSampleRecords() ? `<p class="micro dim" style="padding-bottom:18px">Some records come from the bundled programme. Connect the live database to manage them from the dashboard.</p>` : ''}
+      ${isSampleMode() ? `<p class="micro dim" style="padding-bottom:18px">Showing the bundled Colours 2K27 programme.</p>` : hasSampleRecords() ? `<p class="micro dim" style="padding-bottom:18px">Some records come from the bundled programme.</p>` : ''}
     </div>`;
 }
 
@@ -480,9 +480,7 @@ export function syncBarMarkup() {
   if (s.source === 'sample') {
     return `<div class="sync-bar" data-tone="sample">
       ${icon('sparkles', { size: 16 })}
-      <span><b>Bundled schedule.</b> The live database is not connected, so you are viewing the Colours 2K27 programme stored with the site.</span>
-      <span class="spacer"></span>
-      <a class="btn btn-sm" href="admin/index.html">Connect Supabase</a>
+      <span><b>Bundled programme.</b> You are viewing the Colours 2K27 schedule, map and stalls stored with the site.</span>
     </div>`;
   }
   if (s.source === 'empty') {
@@ -883,12 +881,11 @@ export function wireDataDownload(btn) {
       await store.refresh();
       toast('Festival data saved on this device.', { type: 'success' });
     } catch (err) {
-      toast(
-        err.code === 'not-configured'
-          ? 'Demo mode: connect Supabase to download live festival data.'
-          : err.message,
-        { type: 'error' }
-      );
+      if (err.code === 'not-configured') {
+        toast('This copy already includes the full festival programme.', { type: 'info' });
+      } else {
+        toast(err.message, { type: 'error' });
+      }
     } finally {
       btn.disabled = false;
       btn.innerHTML = original;

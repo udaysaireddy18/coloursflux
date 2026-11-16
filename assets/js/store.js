@@ -129,7 +129,7 @@ function loadSample() {
  */
 export async function sync({ reason = 'manual' } = {}) {
   if (!isConfigured()) {
-    const err = new Error('Connect Supabase to sync live festival data.');
+    const err = new Error('Live sync is not available in this copy of the site.');
     err.code = 'not-configured';
     throw err;
   }
@@ -237,7 +237,7 @@ export async function init({ autoSync = true } = {}) {
 /** "Download festival data" / pull-to-refresh action. */
 export async function refresh() {
   if (!isConfigured()) {
-    const err = new Error('Live sync needs Supabase credentials. Demo data is shown instead.');
+    const err = new Error('Live sync is not available in this copy; bundled data is shown instead.');
     err.code = 'not-configured';
     throw err;
   }

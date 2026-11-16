@@ -191,7 +191,11 @@ async function boot() {
       await store.refresh();
       toast('Announcements updated.', { type: 'success' });
     } catch (err) {
-      toast(err.code === 'not-configured' ? 'Demo mode: live notices need Supabase.' : err.message, { type: 'error' });
+      if (err.code === 'not-configured') {
+        toast('The bundled notices are already up to date.', { type: 'info' });
+      } else {
+        toast(err.message, { type: 'error' });
+      }
     } finally {
       btn.disabled = false;
       btn.innerHTML = `${icon('refresh', { size: 14 })} Refresh`;
