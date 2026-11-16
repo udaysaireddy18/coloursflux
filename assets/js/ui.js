@@ -115,6 +115,146 @@ function initReveals() {
   window.addEventListener('resize', onScroll, { passive: true });
 }
 
+/* ---------------------------------------------------------------- */
+/* Pointer flourish                                                 */
+/* ---------------------------------------------------------------- */
+
+const BURST_COLOURS = ['#6b2bd0', '#8b22c2', '#b7209b', '#c0249f', '#7c3ad9', '#a8437a'];
+const HOT_SELECTOR = 'a, button, [role="button"], summary, input, select, textarea, label, .chip, .card';
+
+/** Trailing colour halo on the cursor + a colour burst wherever the user clicks. */
+function mountPointerFx() {
+  if (window.__cfPointerFx) return;
+  window.__cfPointerFx = true;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let layer = null;
+  const touchStarts = new Map();
+  const dropIfEmpty = () => {
+    if (layer && !layer.childElementCount) {
+      layer.remove();
+      layer = null;
+    }
+  };
+  const burstAt = (x, y) => {
+    if (!layer) {
+      layer = document.createElement('div');
+      layer.className = 'tap-burst';
+      layer.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(layer);
+    }
+
+    const ring = document.createElement('i');
+    ring.className = 'tap-ring';
+    ring.style.left = `${x}px`;
+    ring.style.top = `${y}px`;
+    layer.appendChild(ring);
+    ring
+      .animate(
+        [
+          { transform: 'scale(0.35)', opacity: 0.75 },
+          { transform: 'scale(2.7)', opacity: 0 },
+        ],
+        { duration: 560, easing: 'cubic-bezier(.2,.72,.3,1)' }
+      )
+      .addEventListener('finish', () => { ring.remove(); dropIfEmpty(); }, { once: true });
+
+    for (let i = 0; i < 11; i += 1) {
+      const colour = BURST_COLOURS[i % BURST_COLOURS.length];
+      const dot = document.createElement('i');
+      const size = 4 + Math.random() * 6;
+      const angle = (Math.PI * 2 * i) / 11 + Math.random() * 0.7;
+      const reach = 26 + Math.random() * 46;
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      dot.style.width = `${size}px`;
+      dot.style.height = `${size}px`;
+      dot.style.background = colour;
+      dot.style.boxShadow = `0 0 12px -2px ${colour}`;
+      layer.appendChild(dot);
+      dot
+        .animate(
+          [
+            { transform: 'translate(0, 0) scale(1)', opacity: 0.95 },
+            {
+              transform: `translate(${Math.cos(angle) * reach}px, ${Math.sin(angle) * reach}px) scale(${0.35 + Math.random() * 0.45})`,
+              opacity: 0,
+            },
+          ],
+          { duration: 520 + Math.random() * 280, easing: 'cubic-bezier(.16,.72,.3,1)' }
+        )
+        .addEventListener('finish', () => { dot.remove(); dropIfEmpty(); }, { once: true });
+    }
+  };
+
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const halo = document.createElement('div');
+    halo.className = 'cursor-halo';
+    halo.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(halo);
+
+    let frame = 0;
+    let tx = -200;
+    let ty = -200;
+    const paint = () => {
+      frame = 0;
+      halo.style.setProperty('--x', `${tx}px`);
+      halo.style.setProperty('--y', `${ty}px`);
+    };
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        if (e.pointerType === 'touch') return;
+        tx = e.clientX;
+        ty = e.clientY;
+        halo.classList.add('is-visible');
+        if (!frame) frame = requestAnimationFrame(paint);
+        const over = e.target instanceof Element ? e.target.closest(HOT_SELECTOR) : null;
+        halo.classList.toggle('is-hot', Boolean(over));
+      },
+      { passive: true }
+    );
+
+    const press = () => halo.classList.add('is-press');
+    const release = () => halo.classList.remove('is-press');
+    window.addEventListener('pointerdown', press, { passive: true });
+    window.addEventListener('pointerup', release, { passive: true });
+    window.addEventListener('pointercancel', release, { passive: true });
+    window.addEventListener('blur', () => halo.classList.remove('is-visible'));
+    document.addEventListener('mouseleave', () => halo.classList.remove('is-visible'));
+  }
+
+  window.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (e.pointerType === 'touch') {
+        touchStarts.set(e.pointerId, { x: e.clientX, y: e.clientY, t: Date.now() });
+        return;
+      }
+      burstAt(e.clientX, e.clientY);
+    },
+    { passive: true }
+  );
+
+  // a touch only bursts on a tap, never while scrolling
+  window.addEventListener(
+    'pointerup',
+    (e) => {
+      if (e.pointerType !== 'touch') return;
+      const start = touchStarts.get(e.pointerId);
+      touchStarts.delete(e.pointerId);
+      if (!start) return;
+      const moved = Math.hypot(e.clientX - start.x, e.clientY - start.y);
+      if (moved > 12 || Date.now() - start.t > 700) return;
+      burstAt(e.clientX, e.clientY);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('pointercancel', (e) => touchStarts.delete(e.pointerId), { passive: true });
+}
+
 export function mountChrome({ active } = {}) {
   const page = active || currentPage();
   const header = document.getElementById('site-header');
@@ -225,6 +365,7 @@ export function mountChrome({ active } = {}) {
   mountIcons();
   mountImageFallbacks();
   initReveals();
+  mountPointerFx();
   chromeMounted = true;
 }
 
@@ -649,24 +790,20 @@ export function scheduleRow(ev) {
   const loc = store.locationOf(ev);
   const cat = categoryOf(ev.category);
   const saved = store.isBookmarked(ev.id);
-  const href = `event.html?slug=${encodeURIComponent(ev.slug || ev.id)}`;
   return `<div class="schedule-row" style="--cat:${cat.color}">
     <div class="schedule-time">${esc(formatTime(ev.start_time)) || 'TBA'}<small>${esc(formatTime(ev.end_time) || '')}</small></div>
     <div class="schedule-main">
-      <a class="schedule-thumb" href="${href}" tabindex="-1" aria-hidden="true">${imgTag(ev.image_url, '')}</a>
-      <div class="schedule-text">
-        <b><a href="${href}">${esc(ev.title)}</a></b>
-        <small>
-          ${icon('map-pin', { size: 12 })} ${esc(loc?.name || 'TBA')}
-          <span class="cat-pill" style="--cat:${cat.color}">${icon(cat.icon, { size: 11 })} ${esc(cat.label)}</span>
-          ${ev.status === 'cancelled' ? '<span class="badge badge-red" style="margin-left:6px">Cancelled</span>' : ''}
-          ${ev.featured ? '<span class="badge badge-magenta" style="margin-left:6px">Featured</span>' : ''}
-        </small>
-      </div>
+      <b><a href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}">${esc(ev.title)}</a></b>
+      <small>
+        ${icon('map-pin', { size: 12 })} ${esc(loc?.name || 'TBA')}
+        <span aria-hidden="true">·</span> <i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i>${esc(cat.label)}
+        ${ev.status === 'cancelled' ? '<span class="badge badge-red" style="margin-left:6px">Cancelled</span>' : ''}
+        ${ev.featured ? '<span class="badge badge-magenta" style="margin-left:6px">Featured</span>' : ''}
+      </small>
     </div>
     <div class="schedule-actions">
       <button class="bookmark-btn" data-bookmark="${esc(ev.id)}" aria-pressed="${saved}" aria-label="${saved ? 'Remove from saved events' : 'Save this event'}">${icon('bookmark', { size: 16 })}</button>
-      <a class="btn btn-icon" href="${href}" aria-label="Open ${esc(ev.title)}">${icon('chevron-right', { size: 16 })}</a>
+      <a class="btn btn-icon" href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}" aria-label="Open ${esc(ev.title)}">${icon('chevron-right', { size: 16 })}</a>
     </div>
   </div>`;
 }
