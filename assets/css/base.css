@@ -83,7 +83,7 @@
   --fs-page: clamp(2.1rem, 4vw, 3.1rem);
 
   /* Rhythm */
-  --header-h: 64px;
+  --header-h: 76px;
   --container: 1800px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }

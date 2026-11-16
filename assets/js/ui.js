@@ -137,7 +137,6 @@ export function mountChrome({ active } = {}) {
           <span class="net-pill" id="net-pill" data-state="${navigator.onLine ? 'online' : 'offline'}" title="Connection status">
             <span class="dot"></span><span class="label">${navigator.onLine ? 'Online' : 'Offline'}</span>
           </span>
-          <a class="btn btn-primary btn-sm" href="events.html">Explore</a>
           <button class="btn btn-icon menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
             ${icon('menu', { size: 20 })}
           </button>
