@@ -58,7 +58,7 @@ function buildControls() {
     .concat(
       cats.map((c) => {
         const cat = categoryOf(c);
-        return `<button class="chip" data-cat="${esc(c)}" aria-pressed="${filters.cat === c}">${icon(cat.icon, { size: 14 })} ${esc(cat.label)}</button>`;
+        return `<button class="chip" data-cat="${esc(c)}" aria-pressed="${filters.cat === c}"><i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i>${icon(cat.icon, { size: 14 })} ${esc(cat.label)}</button>`;
       })
     )
     .join('');

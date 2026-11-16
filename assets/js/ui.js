@@ -622,7 +622,7 @@ export function eventCard(ev) {
     <a href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}" class="event-media" aria-label="${esc(ev.title)}">
       ${imgTag(ev.image_url, `${ev.title} artwork`)}
       <div class="event-media-top">
-        <span class="badge" style="color:${cat.color};border-color:${cat.color}55">${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
+        <span class="badge" style="color:${cat.color};border-color:${cat.color}55"><i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i>${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
         ${ev.featured ? `<span class="badge badge-magenta">${icon('star', { size: 12 })} Featured</span>` : ''}
       </div>
       <div class="date-chip">
@@ -655,7 +655,7 @@ export function scheduleRow(ev) {
       <b><a href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}">${esc(ev.title)}</a></b>
       <small>
         ${icon('map-pin', { size: 12 })} ${esc(loc?.name || 'TBA')}
-        <span aria-hidden="true">·</span> ${esc(cat.label)}
+        <span aria-hidden="true">·</span> <i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i>${esc(cat.label)}
         ${ev.status === 'cancelled' ? '<span class="badge badge-red" style="margin-left:6px">Cancelled</span>' : ''}
         ${ev.featured ? '<span class="badge badge-magenta" style="margin-left:6px">Featured</span>' : ''}
       </small>
@@ -682,7 +682,7 @@ export function vendorCard(vendor) {
           <h3 class="vendor-name">${esc(vendor.name)}</h3>
           ${featured ? `<span class="badge badge-magenta">${icon('star', { size: 11 })} Featured</span>` : ''}
         </div>
-        <div class="meta-row" style="margin-top:3px">${icon(cat.icon, { size: 13 })}<span>${esc(cat.label)}</span></div>
+        <div class="meta-row" style="margin-top:3px">${icon(cat.icon, { size: 13 })}<i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i><span>${esc(cat.label)}</span></div>
       </div>
     </div>
     <p class="vendor-desc">${esc(vendor.description || '')}</p>

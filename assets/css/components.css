@@ -2835,3 +2835,51 @@
 .event-media {
   background: linear-gradient(150deg, #fbf4e4, #f4e8cd);
 }
+
+/* ---------- colour as accent, not backdrop ---------- */
+
+/* tiny category dot: colour carries meaning on a white + gold page */
+.cat-dot {
+  display: inline-block;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dot, #a8852f);
+  box-shadow: 0 0 0 1px rgba(255, 253, 247, 0.5), 0 0 9px -2px var(--dot, #a8852f);
+}
+
+.badge .cat-dot {
+  width: 6px;
+  height: 6px;
+}
+
+/* the fest name gets one muted spectrum sweep; everything else stays gold */
+.hero h1 .gradient-text {
+  background: linear-gradient(
+    100deg,
+    #a83a5c 0%,
+    #a9581a 18%,
+    #8a6a1f 32%,
+    #2f6a5a 50%,
+    #38557a 66%,
+    #643a70 82%,
+    #a83a5c 100%
+  );
+  background-size: 260% 100%;
+  filter: drop-shadow(0 8px 24px rgba(138, 106, 31, 0.2));
+}
+
+/* and the section rule ends in four small colour tips */
+.section-head h2::after {
+  width: 56px;
+  background: linear-gradient(
+    90deg,
+    var(--gold-deep) 0 58%,
+    var(--gold) 58% 76%,
+    #b34a66 76% 82%,
+    #b4792a 82% 88%,
+    #3f7a68 88% 94%,
+    #5b5490 94% 100%
+  );
+}

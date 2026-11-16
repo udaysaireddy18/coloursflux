@@ -12,13 +12,13 @@ const INNER_PETALS = 12;
 const DOTS = 24;
 const RANGOLI_COLOURS = [
   '#c9a24a',
+  '#a8435a',
   '#e3c071',
-  '#b8892f',
-  '#e8d3a0',
+  '#2f6f6a',
   '#8a6a1f',
-  '#d9b45f',
-  '#a8542f',
-  '#c9a24a',
+  '#4f5f8a',
+  '#b06a1f',
+  '#7a4a86',
 ];
 
 function buildRangoli(root) {
@@ -44,7 +44,7 @@ function buildRangoli(root) {
   let dotMarkup = '';
   for (let i = 0; i < DOTS; i += 1) {
     const angle = (360 / DOTS) * i;
-    const colour = RANGOLI_COLOURS[(i * 2) % RANGOLI_COLOURS.length];
+    const colour = RANGOLI_COLOURS[(i * 3) % RANGOLI_COLOURS.length];
     dotMarkup += `<i class="intro-dot" style="--a:${angle}deg;--i:${i};--c:${colour}"></i>`;
   }
   dots.innerHTML = dotMarkup;
