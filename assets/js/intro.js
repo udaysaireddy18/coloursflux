@@ -1,62 +1,10 @@
 /**
- * ColoursFlux — opening animation controller.
+ * ColoursFlux — opening splash controller.
  *
  * The overlay markup lives at the top of index.html so it paints before the
- * hero. This module builds the rangoli, plays the sequence on every visit, and
- * dismisses the overlay on tap, key press, wheel or timeout.
- * Add ?intro=0 to skip it once.
+ * hero. This module starts the sequence timer and dismisses the splash on tap,
+ * key press, wheel or timeout. Add ?intro=0 to skip it once.
  */
-
-const OUTER_PETALS = 20;
-const INNER_PETALS = 12;
-const DOTS = 24;
-const RANGOLI_COLOURS = [
-  '#7c3ad9',
-  '#a8435a',
-  '#c04ad8',
-  '#2f6f6a',
-  '#4a0fae',
-  '#4f5f8a',
-  '#b7209b',
-  '#7a4a86',
-];
-
-function buildRangoli(root) {
-  const petals = root.querySelector('.intro-petals');
-  const dots = root.querySelector('.intro-dots');
-  if (!petals || !dots) return;
-
-  let petalMarkup = '';
-  for (let i = 0; i < OUTER_PETALS; i += 1) {
-    const angle = (360 / OUTER_PETALS) * i;
-    const colour = RANGOLI_COLOURS[i % RANGOLI_COLOURS.length];
-    petalMarkup += `<i class="intro-petal" style="--a:${angle}deg;--i:${i};--c:${colour}"></i>`;
-  }
-  for (let i = 0; i < INNER_PETALS; i += 1) {
-    const angle = (360 / INNER_PETALS) * i + 7.5;
-    const colour = RANGOLI_COLOURS[(i + 3) % RANGOLI_COLOURS.length];
-    petalMarkup += `<i class="intro-petal intro-petal-inner" style="--a:${angle}deg;--i:${
-      i + OUTER_PETALS
-    };--c:${colour}"></i>`;
-  }
-  petals.innerHTML = petalMarkup;
-
-  let dotMarkup = '';
-  for (let i = 0; i < DOTS; i += 1) {
-    const angle = (360 / DOTS) * i;
-    const colour = RANGOLI_COLOURS[(i * 3) % RANGOLI_COLOURS.length];
-    dotMarkup += `<i class="intro-dot" style="--a:${angle}deg;--i:${i};--c:${colour}"></i>`;
-  }
-  dots.innerHTML = dotMarkup;
-}
-
-function markSeen() {
-  try {
-    sessionStorage.setItem(SEEN_KEY, '1');
-  } catch {
-    /* private mode or storage disabled — the intro can simply play again */
-  }
-}
 
 export function mountIntro() {
   const root = document.getElementById('fest-intro');
@@ -68,10 +16,10 @@ export function mountIntro() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reducedMotion || skip || document.documentElement.classList.contains('intro-seen')) {
     root.remove();
+    document.documentElement.classList.remove('intro-open');
     return;
   }
 
-  buildRangoli(root);
   document.documentElement.classList.add('intro-open');
 
   let closed = false;
@@ -93,13 +41,13 @@ export function mountIntro() {
     window.clearTimeout(timer);
     if (instant) root.style.setProperty('--exit-time', '0.38s');
     root.classList.add('is-leaving');
-    window.setTimeout(cleanup, instant ? 430 : 990);
+    window.setTimeout(cleanup, instant ? 430 : 860);
   };
 
   root.addEventListener('click', () => close(true));
   window.addEventListener('keydown', onKey);
   window.addEventListener('wheel', onWheel, { passive: true });
 
-  // Long enough to enjoy the rangoli, short enough not to hold anyone up.
-  timer = window.setTimeout(() => close(false), 6000);
+  // Long enough to read the name and dates, short enough not to hold anyone up.
+  timer = window.setTimeout(() => close(false), 3700);
 }

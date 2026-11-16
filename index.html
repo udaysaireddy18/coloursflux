@@ -50,41 +50,56 @@
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/components.css" />
   <link rel="stylesheet" href="assets/css/pages.css" />
-  <link rel="stylesheet" href="assets/css/intro.css?v=3" />
+  <link rel="stylesheet" href="assets/css/intro.css?v=4" />
   <noscript><style>.intro { display: none; }</style></noscript>
   <script type="module" src="assets/js/pages/home.js"></script>
   <script type="module">
     // Boot the opening animation independently of the cached home bundle, so
     // it still plays for visitors who have an older home.js in the service
     // worker cache.
-    import { mountIntro } from './assets/js/intro.js?v=5';
+    import { mountIntro } from './assets/js/intro.js?v=6';
     mountIntro();
   </script>
 </head>
 <body>
   <div class="intro" id="fest-intro" role="presentation" aria-hidden="true">
-    <div class="intro-rangoli" aria-hidden="true">
-      <span class="intro-ring intro-ring-1"></span>
-      <span class="intro-ring intro-ring-2"></span>
-      <span class="intro-ring intro-ring-3"></span>
-      <div class="intro-petals"></div>
-      <div class="intro-dots"></div>
-      <span class="intro-core"></span>
+    <div class="intro-halo" aria-hidden="true">
+      <span class="intro-orbit intro-orbit-1"></span>
+      <span class="intro-orbit intro-orbit-2"></span>
+      <span class="intro-orbit intro-orbit-3"></span>
     </div>
 
     <div class="intro-copy">
-      <p class="intro-kicker">Aditya University presents</p>
+      <span class="intro-mark" aria-hidden="true">
+        <svg class="intro-wave" viewBox="55 115 435 330" xmlns="http://www.w3.org/2000/svg" focusable="false">
+          <defs>
+            <linearGradient id="intro-flow" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#35097c" />
+              <stop offset=".32" stop-color="#6b2bd0" />
+              <stop offset=".62" stop-color="#c04ad8" />
+              <stop offset="1" stop-color="#b7209b" />
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="url(#intro-flow)" stroke-linecap="round">
+            <path pathLength="100" d="M86 336c66 0 66-132 132-132s66 132 132 132 54-60 76-92" stroke-width="28" />
+            <path pathLength="100" d="M86 232c66 0 66-88 132-88s66 88 132 88" stroke-width="17" opacity=".72" />
+            <path pathLength="100" d="M86 412c66 0 66-56 132-56s66 56 122 56" stroke-width="12" opacity=".45" />
+          </g>
+        </svg>
+      </span>
+
       <h2 class="intro-title" aria-label="Colours Flux">
-        <span class="intro-word">
-          <span class="intro-letter" style="--i: 0; --c: #35097c">C</span><span class="intro-letter" style="--i: 1; --c: #4714a0">O</span><span class="intro-letter" style="--i: 2; --c: #5b1fbd">L</span><span class="intro-letter" style="--i: 3; --c: #7a37d8">O</span><span class="intro-letter" style="--i: 4; --c: #5b1fbd">U</span><span class="intro-letter" style="--i: 5; --c: #4714a0">R</span><span class="intro-letter" style="--i: 6; --c: #35097c">S</span>
-        </span>
-        <span class="intro-word intro-word-flux">
-          <span class="intro-letter intro-letter-flux" style="--f: 0">F</span><span class="intro-letter intro-letter-flux" style="--f: 1">L</span><span class="intro-letter intro-letter-flux" style="--f: 2">U</span><span class="intro-letter intro-letter-flux" style="--f: 3">X</span>
-        </span>
+        <span class="intro-word">Colours</span>
+        <span class="intro-word intro-word-flux">Flux</span>
       </h2>
+
       <span class="intro-underline" aria-hidden="true"></span>
-      <p class="intro-tagline">A cultural festival of colour and flow</p>
-      <p class="intro-brand"><b>Colours<span>Flux</span></b><em>your guide to the fest</em></p>
+
+      <p class="intro-meta">
+        <span>7&ndash;9 January 2027</span>
+        <span class="intro-meta-dot" aria-hidden="true"></span>
+        <span>Aditya University</span>
+      </p>
     </div>
 
     <span class="intro-enter"><span class="intro-enter-dot"></span> Tap to enter</span>
@@ -98,7 +113,7 @@
       if (!intro) return;
       intro.remove();
       document.documentElement.classList.remove('intro-open');
-    }, 8800);
+    }, 5600);
   </script>
 
   <a class="skip-link" href="#main">Skip to content</a>
