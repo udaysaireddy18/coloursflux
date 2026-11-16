@@ -16,35 +16,27 @@
   pointer-events: none;
 }
 
-/* The bar floats as a compact glass island instead of a full-width band. */
+/* The logo and the connection pill sit bare on the page. Only the
+   navigation options travel in the floating glass island. */
 .site-header .nav {
   pointer-events: auto;
-  width: min(100% - 48px, 960px);
-  max-width: 960px;
-  height: 58px;
-  padding: 0 8px 0 14px;
-  border-radius: var(--r-pill);
-  border: 1px solid rgba(90, 32, 170, 0.16);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(246, 239, 253, 0.74));
-  box-shadow:
-    0 18px 38px -26px rgba(44, 14, 100, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  -webkit-backdrop-filter: blur(18px) saturate(1.08);
-  backdrop-filter: blur(18px) saturate(1.08);
-  transition:
-    height 0.34s var(--ease),
-    background 0.28s var(--ease),
-    border-color 0.28s var(--ease),
-    box-shadow 0.28s var(--ease);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 100%;
+  width: min(100% - 48px, var(--container));
+  gap: 12px;
 }
 
-.site-header.is-scrolled .nav {
-  height: 50px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.93), rgba(243, 235, 253, 0.86));
-  border-color: rgba(90, 32, 170, 0.22);
-  box-shadow:
-    0 22px 44px -28px rgba(44, 14, 100, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+.site-header .brand {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.site-header .nav-actions {
+  grid-column: 3;
+  justify-self: end;
 }
 
 /* thin reading-progress line, scroll-driven where supported */
@@ -145,55 +137,145 @@
   height: 100%;
 }
 
-.nav-links {
+/* ---------- dynamic island: the options capsule ---------- */
+
+.site-header .nav-links {
+  position: relative;
+  justify-self: center;
   display: flex;
   align-items: center;
-  gap: 2px;
-  margin-inline: auto;
+  gap: 3px;
+  padding: 5px;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(107, 43, 208, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(245, 237, 253, 0.7));
+  box-shadow:
+    0 16px 34px -24px rgba(35, 8, 84, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 -1px 0 rgba(107, 43, 208, 0.06) inset;
+  -webkit-backdrop-filter: blur(16px) saturate(1.18);
+  backdrop-filter: blur(16px) saturate(1.18);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    padding 0.34s var(--ease),
+    gap 0.34s var(--ease),
+    background 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
 }
 
-.nav-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 12px;
-  border-radius: 7px;
-  color: var(--muted);
-  font-size: 0.86rem;
-  font-weight: 500;
-  transition: color 0.16s, background-color 0.16s;
-}
-
-.nav-link:hover {
-  color: var(--text);
-  background: rgba(49, 25, 77, 0.05);
-}
-
-.nav-link::after {
+/* slowly orbiting violet-magenta hairline around the capsule */
+.site-header .nav-links::before {
   content: "";
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 2px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--grad);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.28s var(--ease);
-  opacity: 0.9;
+  inset: 0;
+  z-index: 2;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--gold-angle),
+    rgba(107, 43, 208, 0) 0deg,
+    rgba(140, 62, 230, 0.75) 58deg,
+    rgba(183, 32, 155, 0.5) 122deg,
+    rgba(107, 43, 208, 0) 190deg,
+    rgba(158, 99, 241, 0.6) 262deg,
+    rgba(107, 43, 208, 0) 328deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: gold-ring 15s linear infinite;
   pointer-events: none;
 }
 
-.nav-link:hover::after,
-.nav-link[aria-current="page"]::after {
-  transform: scaleX(1);
+/* light sweep gliding across the glass */
+.site-header .nav-links::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: 0;
+  width: 38%;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.9) 44%,
+    rgba(214, 177, 255, 0.45) 62%,
+    transparent
+  );
+  filter: blur(6px);
+  opacity: 0;
+  transform: translate3d(-130%, 0, 0) rotate(9deg);
+  animation: island-sheen 9s var(--ease) 1.4s infinite;
+  pointer-events: none;
 }
 
-.nav-link[aria-current="page"] {
+@keyframes island-sheen {
+  0% { transform: translate3d(-130%, 0, 0) rotate(9deg); opacity: 0; }
+  5% { opacity: 0.7; }
+  26% { opacity: 0.7; }
+  38%, 100% { transform: translate3d(340%, 0, 0) rotate(9deg); opacity: 0; }
+}
+
+.site-header .nav-links:hover {
+  border-color: rgba(107, 43, 208, 0.24);
+  box-shadow:
+    0 20px 40px -24px rgba(35, 8, 84, 0.7),
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 -1px 0 rgba(107, 43, 208, 0.1) inset;
+}
+
+.site-header.is-scrolled .nav-links {
+  gap: 2px;
+  padding: 4px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(242, 232, 252, 0.84));
+  border-color: rgba(107, 43, 208, 0.2);
+  box-shadow:
+    0 20px 40px -26px rgba(35, 8, 84, 0.65),
+    0 1px 0 rgba(255, 255, 255, 0.96) inset,
+    0 -1px 0 rgba(107, 43, 208, 0.08) inset;
+}
+
+.site-header .nav-link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 550;
+  letter-spacing: 0.004em;
+  transition:
+    color 0.2s var(--ease),
+    background-color 0.2s var(--ease),
+    box-shadow 0.28s var(--ease),
+    transform 0.28s var(--ease);
+}
+
+.site-header .nav-link:hover {
   color: var(--text);
-  background: rgba(49, 25, 77, 0.07);
+  background: rgba(107, 43, 208, 0.09);
+  transform: translateY(-1px);
+}
+
+.site-header .nav-link[aria-current="page"] {
+  color: #ffffff;
+  background: linear-gradient(118deg, #4a0fae, #7419b6 52%, #b7209b);
+  box-shadow:
+    0 10px 20px -12px rgba(74, 15, 174, 0.8),
+    0 1px 0 rgba(255, 255, 255, 0.28) inset;
+}
+
+.site-header .nav-link:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: -2px;
 }
 
 .nav-actions {
@@ -2088,9 +2170,40 @@
 /* ---------- responsive ---------- */
 
 @media (max-width: 1080px) {
-  .nav-links { display: none; }
+  .site-header .nav-links { display: none; }
   .menu-toggle { display: inline-flex; }
-  .nav-actions { margin-left: auto; }
+  /* below the link breakpoint the menu capsule becomes the island */
+  .site-header .menu-toggle {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(107, 43, 208, 0.16);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 237, 253, 0.74));
+    color: var(--text);
+    box-shadow:
+      0 14px 30px -22px rgba(35, 8, 84, 0.6),
+      0 1px 0 rgba(255, 255, 255, 0.92) inset;
+    -webkit-backdrop-filter: blur(16px) saturate(1.16);
+    backdrop-filter: blur(16px) saturate(1.16);
+    transition:
+      width 0.3s var(--ease),
+      height 0.3s var(--ease),
+      background-color 0.2s var(--ease),
+      border-color 0.2s var(--ease),
+      box-shadow 0.28s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .site-header .menu-toggle:hover {
+    background-color: #f3eafc;
+    border-color: rgba(107, 43, 208, 0.28);
+    box-shadow:
+      0 18px 34px -22px rgba(35, 8, 84, 0.7),
+      0 1px 0 rgba(255, 255, 255, 0.95) inset;
+  }
+  .site-header.is-scrolled .menu-toggle {
+    width: 42px;
+    height: 42px;
+  }
   .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .map-layout { grid-template-columns: minmax(0, 1fr); }
@@ -2103,8 +2216,9 @@
 @media (max-width: 720px) {
   :root { --header-h: 72px; }
   .brand-mark { width: 48px; height: 48px; }
-  .site-header .nav { width: min(100% - 24px, 960px); height: 54px; padding: 0 6px 0 12px; }
-  .site-header.is-scrolled .nav { height: 48px; }
+  .site-header .nav { width: min(100% - 24px, 960px); gap: 10px; }
+  .site-header .menu-toggle { width: 44px; height: 44px; }
+  .site-header.is-scrolled .menu-toggle { width: 40px; height: 40px; }
   .site-header .brand-mark { width: 40px; height: 40px; }
   .site-header.is-scrolled .brand-mark { width: 34px; height: 34px; }
   body { padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
@@ -2598,17 +2712,7 @@
   100% { transform: translate3d(-18px, -88vh, 0) rotate(340deg) scale(0.9); opacity: 0; }
 }
 
-/* header: violet nav pill */
-.nav-link[aria-current="page"] {
-  color: var(--gold-ink);
-  background: linear-gradient(180deg, rgba(124, 58, 217, 0.2), rgba(124, 58, 217, 0.08));
-}
-
-.nav-link:hover {
-  color: var(--gold-ink);
-  background: rgba(124, 58, 217, 0.1);
-}
-
+/* header: logo halo ring */
 .brand::before {
   content: "";
   position: absolute;
