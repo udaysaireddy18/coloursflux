@@ -3106,52 +3106,6 @@
 
 /* ---------- pointer flourish ---------- */
 
-/* soft colour halo that trails the system cursor (fine pointers only) */
-.cursor-halo {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 9998;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(107, 43, 208, 0.55);
-  background: radial-gradient(circle, rgba(183, 32, 155, 0.1), rgba(107, 43, 208, 0.04) 62%, transparent 70%);
-  box-shadow: 0 0 18px -4px rgba(139, 34, 194, 0.6), inset 0 0 12px -6px rgba(183, 32, 155, 0.7);
-  translate: -50% -50%;
-  transform: translate3d(var(--x, -200px), var(--y, -200px), 0);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    transform 0.14s cubic-bezier(0.22, 0.68, 0.32, 1),
-    width 0.22s var(--ease),
-    height 0.22s var(--ease),
-    border-color 0.22s,
-    background-color 0.22s,
-    box-shadow 0.22s,
-    opacity 0.28s;
-  will-change: transform;
-}
-
-.cursor-halo.is-visible {
-  opacity: 1;
-}
-
-.cursor-halo.is-hot {
-  width: 52px;
-  height: 52px;
-  border-color: rgba(183, 32, 155, 0.8);
-  background: radial-gradient(circle, rgba(183, 32, 155, 0.16), rgba(107, 43, 208, 0.08) 60%, transparent 72%);
-  box-shadow: 0 0 26px -4px rgba(183, 32, 155, 0.7), inset 0 0 18px -8px rgba(183, 32, 155, 0.9);
-}
-
-.cursor-halo.is-press {
-  width: 22px;
-  height: 22px;
-  border-color: rgba(71, 18, 151, 0.9);
-  background: radial-gradient(circle, rgba(183, 32, 155, 0.3), transparent 72%);
-}
-
 /* colour burst on every click / tap */
 .tap-burst {
   position: fixed;

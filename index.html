@@ -40,13 +40,28 @@
   <meta property="og:description" content="Feel the Flow. Live the Colours. Events, campus map, stalls and announcements in one app." />
   <meta property="og:type" content="website" />
   <script>
-    // The cultural ident greets a first-time visitor once per release.
+    // The cultural ident greets every fresh visit and every reload, but stays
+    // quiet when the visitor moves around inside the site.
     // ?intro=0 skips it, ?intro=1 replays it.
     try {
       const params = new URLSearchParams(location.search);
       const forced = params.get('intro') === '1';
       const skip = params.get('intro') === '0';
-      if (skip || (!forced && localStorage.getItem('coloursflux:intro') === 'v3')) {
+      let internal = false;
+      if (!forced && !skip) {
+        const entry = performance.getEntriesByType('navigation')[0];
+        const type = entry
+          ? entry.type
+          : (performance.navigation && ['navigate', 'reload', 'back_forward'][performance.navigation.type]) || 'navigate';
+        if (type === 'back_forward') {
+          internal = true;
+        } else if (type !== 'reload' && document.referrer) {
+          try {
+            internal = new URL(document.referrer).origin === location.origin;
+          } catch (e) {}
+        }
+      }
+      if (skip || internal) {
         document.documentElement.classList.add('intro-seen');
       }
     } catch (e) {}
@@ -61,7 +76,7 @@
     // Boot the opening animation independently of the cached home bundle, so
     // it still plays for visitors who have an older home.js in the service
     // worker cache.
-    import { mountIntro } from './assets/js/intro.js?v=8';
+    import { mountIntro } from './assets/js/intro.js?v=9';
     mountIntro();
   </script>
 </head>

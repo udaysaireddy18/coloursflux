@@ -120,9 +120,8 @@ function initReveals() {
 /* ---------------------------------------------------------------- */
 
 const BURST_COLOURS = ['#6b2bd0', '#8b22c2', '#b7209b', '#c0249f', '#7c3ad9', '#a8437a'];
-const HOT_SELECTOR = 'a, button, [role="button"], summary, input, select, textarea, label, .chip, .card';
 
-/** Trailing colour halo on the cursor + a colour burst wherever the user clicks. */
+/** A colour burst wherever the user clicks or taps. */
 function mountPointerFx() {
   if (window.__cfPointerFx) return;
   window.__cfPointerFx = true;
@@ -186,44 +185,6 @@ function mountPointerFx() {
         .addEventListener('finish', () => { dot.remove(); dropIfEmpty(); }, { once: true });
     }
   };
-
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const halo = document.createElement('div');
-    halo.className = 'cursor-halo';
-    halo.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(halo);
-
-    let frame = 0;
-    let tx = -200;
-    let ty = -200;
-    const paint = () => {
-      frame = 0;
-      halo.style.setProperty('--x', `${tx}px`);
-      halo.style.setProperty('--y', `${ty}px`);
-    };
-
-    window.addEventListener(
-      'pointermove',
-      (e) => {
-        if (e.pointerType === 'touch') return;
-        tx = e.clientX;
-        ty = e.clientY;
-        halo.classList.add('is-visible');
-        if (!frame) frame = requestAnimationFrame(paint);
-        const over = e.target instanceof Element ? e.target.closest(HOT_SELECTOR) : null;
-        halo.classList.toggle('is-hot', Boolean(over));
-      },
-      { passive: true }
-    );
-
-    const press = () => halo.classList.add('is-press');
-    const release = () => halo.classList.remove('is-press');
-    window.addEventListener('pointerdown', press, { passive: true });
-    window.addEventListener('pointerup', release, { passive: true });
-    window.addEventListener('pointercancel', release, { passive: true });
-    window.addEventListener('blur', () => halo.classList.remove('is-visible'));
-    document.addEventListener('mouseleave', () => halo.classList.remove('is-visible'));
-  }
 
   window.addEventListener(
     'pointerdown',
