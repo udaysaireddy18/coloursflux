@@ -35,7 +35,7 @@
   /* Ink */
   --text: #1b1813;
   --muted: #5b5346;
-  --muted-dim: #867c6b;
+  --muted-dim: #6f6654;
 
   /* Accents — antique gold leads; the rest are muted supporting hues */
   --purple: #8a6a1f;
@@ -58,8 +58,8 @@
   --hairline: rgba(120, 96, 40, 0.14);
 
   /* Gradients */
-  --grad: linear-gradient(96deg, #3a3226 0%, #8a6a1f 34%, #c9a24a 62%, #8a6a1f 100%);
-  --grad-cta: linear-gradient(100deg, #2a251d, #14110c);
+  --grad: linear-gradient(96deg, #6d5415 0%, #a8852f 28%, #d9b45f 56%, #b8892f 78%, #8a6a1f 100%);
+  --grad-cta: linear-gradient(100deg, #e7c983 0%, #d3aa54 46%, #b8892f 100%);
   --grad-soft: linear-gradient(140deg, rgba(201, 162, 74, 0.18), rgba(201, 162, 74, 0.04));
   --grad-gold: linear-gradient(100deg, #f3ddab, #d9b45f 55%, #b8892f);
 
@@ -432,16 +432,17 @@ p {
 }
 
 .btn-primary {
-  border-color: transparent;
+  border-color: rgba(138, 106, 31, 0.45);
   background: var(--grad-cta);
-  color: #fdfaf3;
-  box-shadow: 0 12px 26px -18px rgba(27, 24, 19, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  color: #2b210c;
+  font-weight: 620;
+  box-shadow: 0 12px 26px -18px rgba(138, 106, 31, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(100deg, #3a342a, #221e17);
-  color: #fff;
-  box-shadow: 0 16px 32px -18px rgba(27, 24, 19, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  background: linear-gradient(100deg, #f2d99b, #ddb666 52%, #c4953a);
+  color: #1b1305;
+  box-shadow: 0 16px 32px -18px rgba(138, 106, 31, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.62);
 }
 
 .btn-gold {
@@ -701,16 +702,16 @@ input[type="radio"] {
 
 .chip[aria-pressed="true"],
 .chip.is-active {
-  color: #fdfaf3;
-  border-color: transparent;
+  color: #2b210c;
+  border-color: rgba(138, 106, 31, 0.45);
   background: var(--grad-cta);
-  box-shadow: 0 8px 18px -14px rgba(27, 24, 19, 0.7);
+  box-shadow: 0 8px 18px -14px rgba(138, 106, 31, 0.75);
 }
 
 .chip[aria-pressed="true"]:hover,
 .chip.is-active:hover {
-  background: linear-gradient(100deg, #3a342a, #221e17);
-  color: #fff;
+  background: linear-gradient(100deg, #f2d99b, #ddb666 52%, #c4953a);
+  color: #1b1305;
 }
 
 .icon {
@@ -751,7 +752,8 @@ input[type="radio"] {
   padding: 10px 16px;
   border-radius: 9px;
   background: var(--grad-cta);
-  color: #fdfaf3;
+  color: #2b210c;
+  font-weight: 620;
   transform: translateY(-160%);
   transition: transform 0.2s;
 }

@@ -2192,15 +2192,16 @@
   padding: 8px 15px;
   border-radius: 9px;
   background: var(--grad-cta);
-  color: #fff;
+  color: #2b210c;
   font-size: 0.83rem;
-  font-weight: 550;
+  font-weight: 620;
   box-shadow: 0 10px 24px -16px rgba(184, 137, 47, 0.9);
   transition: background-color 0.16s, transform 0.16s;
 }
 
 .map-preview-cta:hover {
-  background: linear-gradient(100deg, #3a3226, #14110c);
+  background: linear-gradient(100deg, #f2d99b, #ddb666 52%, #c4953a);
+  color: #1b1305;
   transform: translateY(-1px);
 }
 
@@ -2350,4 +2351,487 @@
   .quick-sub { grid-area: sub; font-size: 0.79rem; }
   .quick-meta { grid-area: meta; margin-top: 4px; }
   .home-map-item b { white-space: normal; }
+}
+
+/* ============================================================
+   Gold festival finish
+   Ornamental, GPU-friendly motion: transforms and opacity only.
+   ============================================================ */
+
+@property --gold-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* warm dust drifting across the whole page */
+.gold-dust {
+  position: fixed;
+  inset: -12% -12%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(circle, rgba(201, 162, 74, 0.75) 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(184, 137, 47, 0.5) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(227, 192, 113, 0.65) 1.4px, transparent 2.1px);
+  background-size: 230px 270px, 350px 320px, 540px 480px;
+  background-position: 0 0, 80px 60px, 160px 30px;
+  will-change: transform;
+  animation: dust-drift 70s linear infinite;
+}
+
+@keyframes dust-drift {
+  to { transform: translate3d(-230px, -270px, 0); }
+}
+
+/* hero: soft champagne light sheets */
+.hero-sheen {
+  position: absolute;
+  inset: -18% -12%;
+  pointer-events: none;
+}
+
+.hero-sheen i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  animation: sheen-drift 26s ease-in-out infinite alternate, sheen-fade 15s ease-in-out infinite alternate;
+}
+
+.hero-sheen i:nth-child(1) {
+  width: 54vw;
+  height: 38vw;
+  left: -8%;
+  top: 2%;
+  background: radial-gradient(circle at 42% 46%, rgba(201, 162, 74, 0.4), transparent 66%);
+  animation-delay: 0s, -2s;
+}
+
+.hero-sheen i:nth-child(2) {
+  width: 44vw;
+  height: 34vw;
+  right: -6%;
+  top: -8%;
+  background: radial-gradient(circle at 50% 50%, rgba(227, 192, 113, 0.34), transparent 68%);
+  animation-duration: 32s, 19s;
+  animation-delay: -8s, -7s;
+}
+
+.hero-sheen i:nth-child(3) {
+  width: 40vw;
+  height: 30vw;
+  left: 30%;
+  bottom: -18%;
+  background: radial-gradient(circle at 50% 50%, rgba(168, 84, 47, 0.16), transparent 70%);
+  animation-duration: 36s, 23s;
+  animation-delay: -15s, -12s;
+}
+
+@keyframes sheen-drift {
+  0% { transform: translate3d(-3%, 2%, 0) scale(0.94); }
+  50% { transform: translate3d(4%, -3%, 0) scale(1.1); }
+  100% { transform: translate3d(-2%, 4%, 0) scale(0.98); }
+}
+
+@keyframes sheen-fade {
+  from { opacity: 0.45; }
+  to { opacity: 0.95; }
+}
+
+/* hero: slow sunburst disc behind the headline panel */
+.hero-sun {
+  position: absolute;
+  right: -14%;
+  top: 50%;
+  width: min(900px, 92vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: repeating-conic-gradient(from 0deg, rgba(201, 162, 74, 0.22) 0deg 0.45deg, transparent 0.45deg 11deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 44%, transparent 71%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 44%, transparent 71%);
+  opacity: 0.75;
+  pointer-events: none;
+  will-change: transform;
+  animation: sun-turn 170s linear infinite;
+}
+
+@keyframes sun-turn {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* hero: three fine orbit rings with travelling gold beads */
+.hero-orbits {
+  position: absolute;
+  right: 1%;
+  top: 50%;
+  width: min(600px, 54vw);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.hero-orbits i {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 137, 47, 0.22);
+  will-change: transform;
+  animation: orbit-turn 54s linear infinite;
+}
+
+.hero-orbits i::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 14px rgba(227, 192, 113, 0.95);
+}
+
+.hero-orbits i:nth-child(2) {
+  inset: 14%;
+  border-color: rgba(201, 162, 74, 0.3);
+  animation-duration: 38s;
+  animation-direction: reverse;
+}
+
+.hero-orbits i:nth-child(3) {
+  inset: 29%;
+  border-color: rgba(138, 106, 31, 0.24);
+  animation-duration: 27s;
+}
+
+.hero-orbits i:nth-child(2)::after { background: var(--gold); }
+.hero-orbits i:nth-child(3)::after { background: var(--gold-deep); box-shadow: 0 0 12px rgba(138, 106, 31, 0.8); }
+
+@keyframes orbit-turn {
+  to { transform: rotate(360deg); }
+}
+
+/* hero: petals rising through the light */
+.hero-petals {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-petals i {
+  position: absolute;
+  bottom: -8%;
+  left: 10%;
+  width: 9px;
+  height: 13px;
+  border-radius: 62% 38% 58% 42%;
+  background: linear-gradient(160deg, rgba(238, 210, 148, 0.95), rgba(184, 137, 47, 0.4));
+  box-shadow: 0 0 10px rgba(227, 192, 113, 0.4);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: petal-rise 21s linear infinite;
+}
+
+.hero-petals i:nth-child(1) { left: 8%; animation-duration: 22s; animation-delay: -2s; }
+.hero-petals i:nth-child(2) { left: 21%; width: 7px; height: 10px; animation-duration: 27s; animation-delay: -11s; }
+.hero-petals i:nth-child(3) { left: 34%; animation-duration: 19s; animation-delay: -6s; }
+.hero-petals i:nth-child(4) { left: 47%; width: 6px; height: 9px; animation-duration: 30s; animation-delay: -18s; }
+.hero-petals i:nth-child(5) { left: 59%; animation-duration: 24s; animation-delay: -14s; }
+.hero-petals i:nth-child(6) { left: 70%; width: 7px; height: 10px; animation-duration: 26s; animation-delay: -4s; }
+.hero-petals i:nth-child(7) { left: 81%; animation-duration: 20s; animation-delay: -9s; }
+.hero-petals i:nth-child(8) { left: 91%; width: 6px; height: 9px; animation-duration: 29s; animation-delay: -21s; }
+
+@keyframes petal-rise {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.8); opacity: 0; }
+  12% { opacity: 0.85; }
+  55% { transform: translate3d(34px, -46vh, 0) rotate(180deg) scale(1); opacity: 0.7; }
+  85% { opacity: 0.4; }
+  100% { transform: translate3d(-18px, -88vh, 0) rotate(340deg) scale(0.9); opacity: 0; }
+}
+
+/* header: permanent gold hairline + gold nav pill */
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 74, 0.55) 22%, rgba(138, 106, 31, 0.4) 55%, rgba(227, 192, 113, 0.6) 80%, transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.site-header.is-scrolled::after {
+  opacity: 1;
+}
+
+.nav-link[aria-current="page"] {
+  color: var(--gold-ink);
+  background: linear-gradient(180deg, rgba(201, 162, 74, 0.2), rgba(201, 162, 74, 0.08));
+}
+
+.nav-link:hover {
+  color: var(--gold-ink);
+  background: rgba(201, 162, 74, 0.1);
+}
+
+.brand::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: conic-gradient(from var(--gold-angle), transparent 0deg, rgba(201, 162, 74, 0.5) 70deg, transparent 150deg, rgba(227, 192, 113, 0.4) 250deg, transparent 330deg);
+  -webkit-mask: radial-gradient(circle, transparent 61%, #000 62%, #000 68%, transparent 69%);
+  mask: radial-gradient(circle, transparent 61%, #000 62%, #000 68%, transparent 69%);
+  opacity: 0;
+  pointer-events: none;
+  animation: gold-ring 9s linear infinite;
+  transition: opacity 0.3s;
+}
+
+.brand:hover::before,
+.brand:focus-visible::before {
+  opacity: 0.9;
+}
+
+/* gold conic edge on the countdown panel */
+.hero-panel::before {
+  background: conic-gradient(
+    from var(--gold-angle),
+    rgba(201, 162, 74, 0.95),
+    rgba(227, 192, 113, 0.3) 26%,
+    rgba(184, 137, 47, 0.9) 48%,
+    rgba(138, 106, 31, 0.28) 72%,
+    rgba(201, 162, 74, 0.95)
+  );
+  animation: gold-ring 16s linear infinite;
+}
+
+@keyframes gold-ring {
+  to { --gold-angle: 360deg; }
+}
+
+.hero-panel {
+  background:
+    radial-gradient(130% 110% at 100% 0%, rgba(227, 192, 113, 0.3), transparent 58%),
+    radial-gradient(120% 120% at 0% 100%, rgba(201, 162, 74, 0.14), transparent 62%),
+    linear-gradient(160deg, #fffdf8, #faf4e7 72%) padding-box;
+  box-shadow: 0 36px 84px -46px rgba(138, 106, 31, 0.55), 0 2px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+.hero-panel-head {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* ornamental diamond finishing the section underline */
+.section-head h2::before {
+  content: "";
+  position: absolute;
+  left: 64px;
+  bottom: 0.5px;
+  width: 5px;
+  height: 5px;
+  background: var(--gold-bright);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(227, 192, 113, 0.9);
+  pointer-events: none;
+}
+
+.section-head h2::after {
+  width: 56px;
+  box-shadow: 0 0 16px -4px rgba(201, 162, 74, 0.8);
+}
+
+/* quick cards: running gold hairline and deeper hover glow */
+.quick-card::before {
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), var(--gold) 50%, transparent);
+  background-size: 220% 100%;
+  opacity: 0.85;
+  animation: sheen-line 8s linear infinite;
+}
+
+.quick-card:nth-child(2)::before { animation-delay: -2s; }
+.quick-card:nth-child(3)::before { animation-delay: -4s; }
+.quick-card:nth-child(4)::before { animation-delay: -6s; }
+
+@keyframes sheen-line {
+  from { background-position: -80% 50%; }
+  to { background-position: 180% 50%; }
+}
+
+.quick-card {
+  background:
+    radial-gradient(130% 96% at 100% 0%, var(--qa-soft), transparent 58%),
+    linear-gradient(180deg, #fffdfa, #fdfaf3);
+}
+
+.quick-card:hover {
+  box-shadow: 0 30px 60px -34px rgba(168, 133, 47, 0.7), 0 0 0 1px rgba(201, 162, 74, 0.18), var(--shadow);
+}
+
+.quick-icon {
+  background: linear-gradient(160deg, rgba(255, 253, 247, 0.9), var(--qa-soft, rgba(201, 162, 74, 0.14)));
+  color: var(--gold-ink);
+  border-color: rgba(184, 137, 47, 0.32);
+}
+
+/* ribbon: brushed gold band */
+.fest-ribbon {
+  background:
+    linear-gradient(100deg, rgba(201, 162, 74, 0.2), rgba(255, 250, 237, 0.5) 30%, rgba(227, 192, 113, 0.24) 52%, rgba(249, 240, 219, 0.5) 74%, rgba(184, 137, 47, 0.18));
+  background-size: 220% 100%;
+  animation: band-sheen 18s ease-in-out infinite alternate;
+}
+
+@keyframes band-sheen {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+.ribbon-item {
+  color: var(--gold-ink);
+}
+
+.ribbon-star {
+  text-shadow: 0 0 10px rgba(227, 192, 113, 0.8);
+}
+
+/* cards: warm media grade and gold-ruled hover */
+.event-media img {
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.event-card:hover .event-media img {
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.event-card:hover {
+  border-color: rgba(184, 137, 47, 0.5);
+}
+
+.event-card::after {
+  width: 4px;
+}
+
+.date-chip {
+  border-color: rgba(227, 192, 113, 0.4);
+  background: rgba(26, 23, 18, 0.66);
+  backdrop-filter: blur(3px);
+}
+
+.date-chip b {
+  color: #fdf6e3;
+}
+
+/* page headings: gold seal and glow */
+.page-head h1::after {
+  width: 78px;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold) 55%, var(--gold-bright));
+  box-shadow: 0 0 18px -2px rgba(201, 162, 74, 0.7);
+}
+
+.page-head::before {
+  background:
+    radial-gradient(48% 100% at 18% 72%, rgba(227, 192, 113, 0.28), transparent 72%),
+    radial-gradient(52% 100% at 82% 28%, rgba(201, 162, 74, 0.22), transparent 72%),
+    radial-gradient(62% 100% at 50% 60%, rgba(138, 106, 31, 0.16), transparent 72%);
+}
+
+/* footer: soft ivory fade with a moving gold hairline */
+.site-footer {
+  background: linear-gradient(180deg, #fbf7ee 0%, #f6efe1 100%);
+}
+
+.site-footer::before {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 74, 0.75), var(--gold-bright) 50%, rgba(184, 137, 47, 0.7), transparent);
+  background-size: 220% 100%;
+  animation: band-sheen 12s linear infinite;
+}
+
+.footer-logo .brand-img {
+  filter: drop-shadow(0 0 14px rgba(201, 162, 74, 0.5));
+}
+
+/* selection + focus stay in the gold family */
+::selection {
+  background: rgba(201, 162, 74, 0.28);
+  color: var(--text);
+}
+
+@media (max-width: 720px) {
+  .gold-dust { opacity: 0.38; }
+  .hero-sun { right: -34%; width: 118vw; opacity: 0.6; }
+  .hero-orbits { right: -12%; width: 82vw; opacity: 0.7; }
+  .hero-sheen { inset: -12% -8%; }
+  .hero-petals i:nth-child(4),
+  .hero-petals i:nth-child(8) { display: none; }
+}
+
+/* hero: warm champagne wash so the white base has depth */
+.hero {
+  background:
+    radial-gradient(120% 92% at 84% 14%, rgba(227, 192, 113, 0.3), transparent 62%),
+    radial-gradient(88% 74% at 6% 96%, rgba(201, 162, 74, 0.16), transparent 64%),
+    linear-gradient(180deg, #fffdf8 0%, #fdf8ee 54%, #fbf4e5 100%);
+}
+
+.hero-art::after {
+  background: linear-gradient(180deg, transparent 68%, rgba(251, 248, 242, 0.92) 100%);
+}
+
+.hero-sun {
+  opacity: 0.88;
+  background: repeating-conic-gradient(from 0deg, rgba(201, 162, 74, 0.3) 0deg 0.45deg, transparent 0.45deg 11deg);
+}
+
+/* gold corner brackets frame the countdown card */
+.hero-panel {
+  background:
+    linear-gradient(var(--gold), var(--gold)) left 14px top 14px / 22px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) left 14px top 14px / 2px 22px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) right 14px top 14px / 22px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) right 14px top 14px / 2px 22px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) left 14px bottom 14px / 22px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) left 14px bottom 14px / 2px 22px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) right 14px bottom 14px / 22px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) right 14px bottom 14px / 2px 22px no-repeat,
+    radial-gradient(130% 110% at 100% 0%, rgba(227, 192, 113, 0.34), transparent 58%),
+    radial-gradient(120% 120% at 0% 100%, rgba(201, 162, 74, 0.16), transparent 62%),
+    linear-gradient(160deg, #fffdf8, #faf4e7 72%) padding-box;
+}
+
+.hero-panel .badge-gold {
+  background: linear-gradient(100deg, #f7e4b6, #e7c983 58%, #d3aa54);
+  border-color: rgba(138, 106, 31, 0.35);
+  color: #40320e;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+/* primary gold buttons get a fine foil edge */
+.btn-gold {
+  border: 1px solid rgba(138, 106, 31, 0.35);
+}
+
+/* warm photo grade so event artwork sits inside the ivory + gold palette */
+.event-media img {
+  filter: saturate(0.82) sepia(0.16) contrast(1.05) brightness(0.93);
+}
+
+.event-card:hover .event-media img {
+  filter: saturate(0.92) sepia(0.1) contrast(1.06) brightness(1);
+}
+
+.event-media {
+  background: linear-gradient(150deg, #fbf4e4, #f4e8cd);
 }

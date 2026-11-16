@@ -14,9 +14,12 @@ import store, { lastSyncLabel, isSampleMode, hasSampleRecords } from './store.js
 
 export const BRAND_MARK = `<img class="brand-img" src="assets/icons/logo-mark.svg" alt="" width="56" height="56" decoding="async" />`;
 
-/** Restrained gold line-art used behind hero sections. */
+/** Layered gold ornamentation used behind hero sections. */
 export function waveArt() {
   return `<div class="hero-art" aria-hidden="true">
+    <div class="hero-sheen"><i></i><i></i><i></i></div>
+    <div class="hero-sun"></div>
+    <div class="hero-orbits"><i></i><i></i><i></i></div>
     <div class="hero-glow"></div>
     <div class="hero-rings"></div>
     <div class="hero-grid"></div>
@@ -33,6 +36,7 @@ export function waveArt() {
       <path class="wave-line w2" d="M-40 480C180 400 340 560 580 500s330-210 520-140 290 200 430 160"/>
       <path class="wave-line w3" d="M-40 330C180 250 300 430 520 380s320-190 520-120 300 210 460 150"/>
     </svg>
+    <div class="hero-petals"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="hero-scrim"></div>
   </div>`;
 }
@@ -199,6 +203,22 @@ export function mountChrome({ active } = {}) {
     progress.className = 'scroll-progress';
     progress.setAttribute('aria-hidden', 'true');
     document.body.prepend(progress);
+  }
+
+  if (!document.querySelector('.gold-dust')) {
+    const dust = document.createElement('div');
+    dust.className = 'gold-dust';
+    dust.setAttribute('aria-hidden', 'true');
+    document.body.prepend(dust);
+  }
+
+  const pageHead = document.querySelector('.page-head');
+  if (pageHead && !pageHead.querySelector('.page-ornament')) {
+    const ornament = document.createElement('div');
+    ornament.className = 'page-ornament';
+    ornament.setAttribute('aria-hidden', 'true');
+    ornament.innerHTML = '<i></i><i></i>';
+    pageHead.prepend(ornament);
   }
 
 
