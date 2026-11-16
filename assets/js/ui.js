@@ -622,7 +622,7 @@ export function eventCard(ev) {
     <a href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}" class="event-media" aria-label="${esc(ev.title)}">
       ${imgTag(ev.image_url, `${ev.title} artwork`)}
       <div class="event-media-top">
-        <span class="badge" style="color:${cat.color};border-color:${cat.color}55"><i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i>${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
+        <span class="badge event-cat-badge cat-badge-solid" style="--cat:${cat.color}">${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
         ${ev.featured ? `<span class="badge badge-magenta">${icon('star', { size: 12 })} Featured</span>` : ''}
       </div>
       <div class="date-chip">
@@ -649,20 +649,24 @@ export function scheduleRow(ev) {
   const loc = store.locationOf(ev);
   const cat = categoryOf(ev.category);
   const saved = store.isBookmarked(ev.id);
+  const href = `event.html?slug=${encodeURIComponent(ev.slug || ev.id)}`;
   return `<div class="schedule-row" style="--cat:${cat.color}">
     <div class="schedule-time">${esc(formatTime(ev.start_time)) || 'TBA'}<small>${esc(formatTime(ev.end_time) || '')}</small></div>
     <div class="schedule-main">
-      <b><a href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}">${esc(ev.title)}</a></b>
-      <small>
-        ${icon('map-pin', { size: 12 })} ${esc(loc?.name || 'TBA')}
-        <span aria-hidden="true">·</span> <i class="cat-dot" style="--dot:${cat.color}" aria-hidden="true"></i>${esc(cat.label)}
-        ${ev.status === 'cancelled' ? '<span class="badge badge-red" style="margin-left:6px">Cancelled</span>' : ''}
-        ${ev.featured ? '<span class="badge badge-magenta" style="margin-left:6px">Featured</span>' : ''}
-      </small>
+      <a class="schedule-thumb" href="${href}" tabindex="-1" aria-hidden="true">${imgTag(ev.image_url, '')}</a>
+      <div class="schedule-text">
+        <b><a href="${href}">${esc(ev.title)}</a></b>
+        <small>
+          ${icon('map-pin', { size: 12 })} ${esc(loc?.name || 'TBA')}
+          <span class="cat-pill" style="--cat:${cat.color}">${icon(cat.icon, { size: 11 })} ${esc(cat.label)}</span>
+          ${ev.status === 'cancelled' ? '<span class="badge badge-red" style="margin-left:6px">Cancelled</span>' : ''}
+          ${ev.featured ? '<span class="badge badge-magenta" style="margin-left:6px">Featured</span>' : ''}
+        </small>
+      </div>
     </div>
     <div class="schedule-actions">
       <button class="bookmark-btn" data-bookmark="${esc(ev.id)}" aria-pressed="${saved}" aria-label="${saved ? 'Remove from saved events' : 'Save this event'}">${icon('bookmark', { size: 16 })}</button>
-      <a class="btn btn-icon" href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}" aria-label="Open ${esc(ev.title)}">${icon('chevron-right', { size: 16 })}</a>
+      <a class="btn btn-icon" href="${href}" aria-label="Open ${esc(ev.title)}">${icon('chevron-right', { size: 16 })}</a>
     </div>
   </div>`;
 }

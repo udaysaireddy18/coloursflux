@@ -10,9 +10,11 @@ import {
   categoryOf,
 } from '../ui.js';
 import { mountIcons, icon } from '../icons.js';
-import { esc, debounce, param, uniqueDays, groupBy, formatDay, sortByDate } from '../util.js';
+import { esc, debounce, param, uniqueDays, groupBy, formatDay, sortByDate, parseDateOnly, formatTime } from '../util.js';
 
 const $ = (sel) => document.querySelector(sel);
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const filters = {
   q: param('q'),
@@ -37,14 +39,54 @@ function syncUrl() {
   history.replaceState(null, '', url);
 }
 
-function buildControls() {
+function buildDayRail() {
+  const host = $('#day-rail');
+  if (!host) return;
   const days = uniqueDays(allEvents);
-  const daySel = $('#day-filter');
-  daySel.innerHTML = `<option value="">All days</option>${days
-    .map((d) => `<option value="${esc(d)}">${esc(formatDay(d))}</option>`)
-    .join('')}`;
-  daySel.value = filters.day;
+  if (days.length < 2) {
+    host.hidden = true;
+    host.innerHTML = '';
+    return;
+  }
+  host.hidden = false;
+  host.innerHTML =
+    `<button class="day-card day-card-all" type="button" data-day="" aria-pressed="false">
+      <span class="day-card-date"><b>${allEvents.length}</b><span>All</span></span>
+      <span class="day-card-body">
+        <span class="day-card-kicker">Full programme</span>
+        <span class="day-card-weekday">Colours 2K27</span>
+        <span class="day-card-meta">${days.length} days · every event</span>
+      </span>
+    </button>` +
+    days
+      .map((day, index) => {
+        const d = parseDateOnly(day);
+        const dayEvents = allEvents.filter((e) => e.event_date === day);
+        const count = dayEvents.length;
+        const firstStart = dayEvents.map((e) => e.start_time).filter(Boolean).sort()[0];
+        const num = d ? String(d.getUTCDate()).padStart(2, '0') : '--';
+        const month = d ? MONTHS[d.getUTCMonth()] : 'TBA';
+        const weekdayLong = d ? d.toLocaleDateString('en-IN', { weekday: 'long', timeZone: 'UTC' }) : 'Date TBA';
+        return `<button class="day-card" type="button" data-day="${esc(day)}" aria-pressed="false">
+          <span class="day-card-date"><b>${esc(num)}</b><span>${esc(month)}</span></span>
+          <span class="day-card-body">
+            <span class="day-card-kicker">Day ${index + 1}</span>
+            <span class="day-card-weekday">${esc(weekdayLong)}</span>
+            <span class="day-card-meta">${count} event${count === 1 ? '' : 's'}${firstStart ? `<span class="day-card-from"> · from ${esc(formatTime(firstStart))}</span>` : ''}</span>
+          </span>
+        </button>`;
+      })
+      .join('');
+  syncDayRail();
+}
 
+function syncDayRail() {
+  document.querySelectorAll('#day-rail [data-day]').forEach((card) => {
+    card.setAttribute('aria-pressed', String((card.dataset.day || '') === filters.day));
+  });
+}
+
+function buildControls() {
   const venues = [...groupBy(allEvents, (e) => store.locationOf(e)?.name || 'TBA').keys()].sort();
   const venueSel = $('#venue-filter');
   venueSel.innerHTML = `<option value="">All venues</option>${venues
@@ -66,6 +108,7 @@ function buildControls() {
   $('#saved-toggle').setAttribute('aria-pressed', String(filters.saved));
   $('#event-search').value = filters.q;
   document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === filters.view)));
+  buildDayRail();
 }
 
 function applyFilters() {
@@ -162,8 +205,11 @@ function bind() {
     }, 180)
   );
 
-  $('#day-filter').addEventListener('change', (e) => {
-    filters.day = e.target.value;
+  $('#day-rail').addEventListener('click', (e) => {
+    const card = e.target.closest('[data-day]');
+    if (!card) return;
+    filters.day = card.dataset.day || '';
+    syncDayRail();
     syncUrl();
     render();
   });

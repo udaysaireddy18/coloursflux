@@ -61,6 +61,7 @@
     </section>
 
     <section class="container" aria-label="Event filters">
+      <div class="day-rail" id="day-rail" role="group" aria-label="Jump to a festival day"></div>
       <div class="filter-panel">
         <div class="filter-row">
           <div class="search-field">
@@ -68,8 +69,6 @@
             <label class="sr-only" for="event-search">Search events</label>
             <input class="input" id="event-search" type="search" placeholder="Search events, e.g. concert, hackathon…" autocomplete="off" />
           </div>
-          <label class="sr-only" for="day-filter">Filter by day</label>
-          <select class="select filter-select" id="day-filter"><option value="">All days</option></select>
           <label class="sr-only" for="venue-filter">Filter by venue</label>
           <select class="select filter-select" id="venue-filter"><option value="">All venues</option></select>
           <button class="chip" id="saved-toggle" aria-pressed="false"><i data-icon="bookmark" data-size="14"></i> Saved</button>
