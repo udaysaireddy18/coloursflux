@@ -17,6 +17,7 @@ export const BRAND_MARK = `<img class="brand-img" src="assets/icons/logo-mark.sv
 /** Layered gold ornamentation used behind hero sections. */
 export function waveArt() {
   return `<div class="hero-art" aria-hidden="true">
+    <div class="hero-aurora"><i></i><i></i><i></i></div>
     <div class="hero-sheen"><i></i><i></i><i></i></div>
     <div class="hero-sun"></div>
     <div class="hero-orbits"><i></i><i></i><i></i></div>

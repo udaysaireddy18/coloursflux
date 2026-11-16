@@ -2543,6 +2543,117 @@
   to { transform: translate3d(-230px, -270px, 0); }
 }
 
+/* hero: violet-magenta aurora drifting behind the art and the headline.
+   Three blurred colour clouds travel on separate slow loops, over a very
+   slow turning ribbon, so the backdrop keeps shifting without ever showing
+   a hard edge. Transforms and opacity only, so it stays on the compositor. */
+.hero-aurora {
+  position: absolute;
+  inset: -24% -12%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+  -webkit-mask-image: radial-gradient(96% 88% at 50% 42%, #000 18%, rgba(0, 0, 0, 0.55) 62%, transparent 96%);
+  mask-image: radial-gradient(96% 88% at 50% 42%, #000 18%, rgba(0, 0, 0, 0.55) 62%, transparent 96%);
+  animation: aurora-breathe 26s ease-in-out infinite alternate;
+}
+
+.hero-aurora i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(34px);
+  will-change: transform, opacity;
+}
+
+.hero-aurora i:nth-child(1) {
+  left: -14%;
+  top: -18%;
+  width: 62vw;
+  height: 52vw;
+  background:
+    radial-gradient(closest-side at 44% 46%, rgba(124, 58, 217, 0.55), rgba(107, 43, 208, 0.34) 46%, transparent 78%),
+    radial-gradient(closest-side at 74% 66%, rgba(183, 32, 155, 0.3), transparent 72%);
+  animation: aurora-drift-a 38s ease-in-out infinite alternate;
+}
+
+.hero-aurora i:nth-child(2) {
+  right: -16%;
+  top: -6%;
+  width: 54vw;
+  height: 46vw;
+  background:
+    radial-gradient(closest-side at 52% 44%, rgba(183, 32, 155, 0.4), rgba(139, 34, 194, 0.28) 48%, transparent 78%),
+    radial-gradient(closest-side at 28% 70%, rgba(139, 92, 246, 0.3), transparent 74%);
+  animation: aurora-drift-b 50s ease-in-out infinite alternate;
+  animation-delay: -9s;
+}
+
+.hero-aurora i:nth-child(3) {
+  left: 18%;
+  bottom: -26%;
+  width: 56vw;
+  height: 42vw;
+  background:
+    radial-gradient(closest-side at 48% 52%, rgba(75, 15, 168, 0.4), rgba(167, 44, 192, 0.24) 50%, transparent 80%);
+  animation: aurora-drift-c 58s ease-in-out infinite alternate;
+  animation-delay: -21s;
+}
+
+/* the turning ribbon adds a faint travelling band of colour */
+.hero-aurora::before {
+  content: "";
+  position: absolute;
+  left: 46%;
+  top: 44%;
+  width: 128vw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(from 200deg,
+    transparent 0deg,
+    rgba(107, 43, 208, 0.2) 42deg,
+    rgba(183, 32, 155, 0.18) 98deg,
+    transparent 156deg,
+    transparent 214deg,
+    rgba(139, 92, 246, 0.16) 272deg,
+    rgba(183, 32, 155, 0.13) 322deg,
+    transparent 360deg);
+  filter: blur(38px);
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  animation: aurora-turn 140s linear infinite;
+}
+
+@keyframes aurora-drift-a {
+  0% { transform: translate3d(-3%, -4%, 0) scale(0.92); opacity: 0.5; }
+  38% { transform: translate3d(12%, 5%, 0) scale(1.16); opacity: 0.85; }
+  68% { transform: translate3d(3%, 8%, 0) scale(1.02); opacity: 0.62; }
+  100% { transform: translate3d(-5%, 1%, 0) scale(1.1); opacity: 0.78; }
+}
+
+@keyframes aurora-drift-b {
+  0% { transform: translate3d(4%, 3%, 0) scale(1.1); opacity: 0.62; }
+  34% { transform: translate3d(-10%, 8%, 0) scale(0.94); opacity: 0.4; }
+  66% { transform: translate3d(-3%, -6%, 0) scale(1.12); opacity: 0.74; }
+  100% { transform: translate3d(6%, -2%, 0) scale(1); opacity: 0.55; }
+}
+
+@keyframes aurora-drift-c {
+  0% { transform: translate3d(0, 2%, 0) scale(1.06); opacity: 0.55; }
+  45% { transform: translate3d(-7%, -5%, 0) scale(0.94); opacity: 0.36; }
+  100% { transform: translate3d(5%, -9%, 0) scale(1.14); opacity: 0.68; }
+}
+
+@keyframes aurora-breathe {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
+@keyframes aurora-turn {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 /* hero: soft lilac light sheets */
 .hero-sheen {
   position: absolute;
@@ -2910,6 +3021,12 @@
   .hero-sun { right: -34%; width: 118vw; opacity: 0.6; }
   .hero-orbits { right: -12%; width: 82vw; opacity: 0.7; }
   .hero-sheen { inset: -12% -8%; }
+  .hero-aurora { inset: -16% -10%; opacity: 0.82; animation: none; }
+  .hero-aurora i { filter: blur(22px); }
+  .hero-aurora i:nth-child(1) { width: 96vw; height: 74vw; }
+  .hero-aurora i:nth-child(2) { width: 86vw; height: 68vw; }
+  .hero-aurora i:nth-child(3) { display: none; }
+  .hero-aurora::before { width: 190vw; filter: blur(26px); }
   .hero-petals i:nth-child(4),
   .hero-petals i:nth-child(8) { display: none; }
 }
