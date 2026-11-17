@@ -3343,7 +3343,11 @@
 
   .footer-col h4 { margin-bottom: 10px; font-size: 0.72rem; }
   .footer-col ul { gap: 7px; }
-  .footer-col a { font-size: 0.83rem; }
+  .footer-col a {
+    display: inline-block;
+    padding-block: 3px;
+    font-size: 0.83rem;
+  }
   .footer-bottom {
     margin-top: 24px;
     padding-block: 16px;
@@ -3358,7 +3362,7 @@
   .bottom-nav a {
     gap: 2px;
     padding: 5px 1px;
-    font-size: 0.6rem;
+    font-size: clamp(0.6rem, 2.8vw, 0.68rem);
     letter-spacing: 0;
     white-space: nowrap;
   }
@@ -3398,7 +3402,7 @@
   .hero-panel .cd-value { font-size: 1.45rem; }
 
   .hero-panel .cd-label {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.06em;
   }
 
@@ -3446,6 +3450,17 @@
   .map-preview { min-height: 0; }
   .home-map-panel { padding: 16px; }
 
+  /* the drawn pin stays small, but its thumb target does not */
+  .map-marker::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 11px;
+    width: 36px;
+    height: 36px;
+    transform: translate(-50%, -50%);
+  }
+
   .map-marker .pin-label {
     max-width: 104px;
     font-size: 0.62rem;
@@ -3475,4 +3490,10 @@
   }
 
   .stack > .meta-row span { white-space: normal; }
+}
+
+/* ---------- narrow phones: give the primary actions a full row ---------- */
+
+@media (max-width: 360px) {
+  .hero-actions .btn { flex: 1 1 100%; }
 }

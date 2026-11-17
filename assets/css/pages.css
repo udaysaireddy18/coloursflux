@@ -1103,6 +1103,8 @@
     font-size: 0.74rem;
   }
 
+  .page-head .crumbs a { padding-block: 3px; }
+
   .page-head h1 {
     margin: 10px 0 8px;
     padding-bottom: 12px;
