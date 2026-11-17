@@ -3,8 +3,8 @@
  *
  * The overlay markup lives at the top of index.html so it paints before the
  * hero. This module builds the rangoli rings around the emblem and dismisses
- * the ident on tap, key press, wheel or timeout. It greets every visit to the
- * home page; index.html marks internal arrivals to stay quiet.
+ * the ident on tap, key press, wheel or timeout. It greets the first home-page
+ * load of a browsing session; index.html marks later arrivals to stay quiet.
  * ?intro=0 skips it, ?intro=1 replays it.
  */
 
