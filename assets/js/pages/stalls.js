@@ -74,7 +74,7 @@ function render() {
            <span class="eyebrow">${icon('star', { size: 12 })} Featured stalls</span>
            <h2 style="font-size:1.35rem;margin-top:8px">Worth a stop</h2>
          </div>
-         <span class="badge badge-amber">Promoted placements are labelled</span>
+         <span class="badge badge-magenta">Promoted placements are labelled</span>
        </div>
        <div class="featured-vendor-rail">${featured.map(vendorCard).join('')}</div>`
     : '';
@@ -143,7 +143,7 @@ function openVendor(id) {
       <div>
         <div class="cluster" style="gap:6px">
           <span class="badge" style="color:${cat.color};border-color:${cat.color}55">${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
-          ${vendor.is_featured && !isExpired(vendor.featured_until) ? '<span class="badge badge-amber">Sponsored</span>' : ''}
+          ${vendor.is_featured && !isExpired(vendor.featured_until) ? '<span class="badge badge-magenta">Sponsored</span>' : ''}
         </div>
         <p class="micro dim" style="margin-top:6px">${esc(loc?.name || 'Location to be announced')}</p>
       </div>

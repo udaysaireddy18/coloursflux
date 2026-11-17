@@ -788,7 +788,7 @@ export function vendorCard(vendor) {
     <p class="vendor-desc">${esc(vendor.description || '')}</p>
     <div class="cluster" style="gap:8px">
       <span class="badge badge-neutral">${icon('map-pin', { size: 12 })} ${esc(loc?.name || 'Location TBA')}</span>
-      ${featured ? '<span class="badge badge-amber">Sponsored placement</span>' : ''}
+      ${featured ? '<span class="badge badge-magenta">Sponsored placement</span>' : ''}
     </div>
     ${offers.slice(0, 2).map((o) => `<div class="offer-line">${icon('tag', { size: 13 })}<span><b>${esc(o.title)}</b>${o.description ? ` — ${esc(o.description)}` : ''}</span></div>`).join('')}
     <div class="event-foot">
@@ -800,7 +800,7 @@ export function vendorCard(vendor) {
 
 const PRIORITY = {
   urgent: { label: 'Urgent', cls: 'badge-red', icon: 'alert-triangle' },
-  high: { label: 'High priority', cls: 'badge-amber', icon: 'alert-circle' },
+  high: { label: 'High priority', cls: 'badge-magenta', icon: 'alert-circle' },
   normal: { label: 'Notice', cls: 'badge-purple', icon: 'megaphone' },
   low: { label: 'Info', cls: 'badge-cyan', icon: 'info' },
 };

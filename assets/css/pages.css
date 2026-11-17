@@ -1092,3 +1092,158 @@
     backdrop-filter: none;
   }
 }
+
+/* ---------- phone layout: compact page rhythm ---------- */
+
+@media (max-width: 720px) {
+  .page-head { padding-block: 26px 18px; }
+
+  .page-head .crumbs {
+    margin-bottom: 10px;
+    font-size: 0.74rem;
+  }
+
+  .page-head h1 {
+    margin: 10px 0 8px;
+    padding-bottom: 12px;
+    font-size: clamp(1.85rem, 8.2vw, 2.3rem);
+  }
+
+  .page-head .lead { font-size: 0.93rem; }
+
+  .page-head-meta {
+    margin-top: 12px;
+    gap: 6px;
+  }
+
+  .page-head-meta .badge {
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: 0.74rem;
+  }
+
+  /* filters */
+  .filter-panel {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .filter-row { gap: 8px; }
+
+  .search-field { flex: 1 1 100%; }
+  .search-field .input {
+    min-height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .filter-select {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 0;
+    min-height: 42px;
+  }
+
+  .chip-row { gap: 6px; }
+
+  .results-line {
+    margin: 16px 0 12px;
+    font-size: 0.8rem;
+  }
+
+  /* schedule: time on its own line, title full width, actions right */
+  .day-block { margin-top: 22px; }
+
+  .day-badge {
+    min-width: 46px;
+    padding: 6px 9px;
+  }
+
+  .day-head h2 { font-size: 1.02rem; }
+  .day-head small { font-size: 0.77rem; }
+  .day-badge span { font-size: 0.66rem; }
+
+  .schedule-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 10px;
+    padding: 12px 12px 12px 14px;
+    align-items: start;
+  }
+
+  .schedule-time {
+    grid-column: 1 / -1;
+    font-size: 0.78rem;
+  }
+
+  .schedule-time small {
+    display: inline;
+    margin-left: 2px;
+    font-size: 0.74rem;
+  }
+
+  .schedule-time small::before { content: "– "; }
+
+  .schedule-main { grid-column: 1; }
+
+  .schedule-main b {
+    white-space: normal;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+
+  .schedule-main small {
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+  }
+
+  .schedule-actions {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    justify-content: flex-end;
+  }
+
+  /* event detail */
+  .detail-layout { gap: 18px; }
+  .detail-hero { aspect-ratio: 16 / 9; }
+
+  .detail-title {
+    margin-top: 14px;
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .detail-desc {
+    margin-top: 10px;
+    font-size: 0.93rem;
+  }
+
+  .detail-facts { margin-top: 16px; }
+
+  .fact {
+    padding: 11px 13px;
+    gap: 10px;
+  }
+
+  .side-card {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .side-card .badge { align-self: flex-start; }
+
+  /* map */
+  .map-layout { gap: 14px; }
+
+  .map-layout .map-board {
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+
+  .map-tool {
+    width: 34px;
+    height: 34px;
+  }
+
+  .segmented button { min-height: 40px; }
+
+  /* stalls */
+  .featured-vendor-rail { grid-auto-columns: minmax(240px, 84%); }
+}
