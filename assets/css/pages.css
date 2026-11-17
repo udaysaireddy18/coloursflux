@@ -1249,3 +1249,40 @@
   /* stalls */
   .featured-vendor-rail { grid-auto-columns: minmax(240px, 84%); }
 }
+
+/* ---------- phone-wide compact scale for inner pages ---------- */
+
+@media (max-width: 720px) {
+  .page-head { padding-block: 22px 16px; }
+  .page-head .crumbs { margin-bottom: 8px; font-size: 0.7rem; }
+  .page-head h1 {
+    margin: 8px 0 6px;
+    padding-bottom: 10px;
+    font-size: clamp(1.7rem, 7.6vw, 2.1rem);
+  }
+  .page-head .lead { font-size: 0.84rem; }
+  .page-head-meta { margin-top: 10px; gap: 5px; }
+  .page-head-meta .badge { min-height: 26px; font-size: 0.7rem; }
+
+  .filter-panel { gap: 8px; padding: 10px; }
+  .search-field .input { min-height: 40px; font-size: 0.84rem; }
+  .filter-select { min-height: 40px; }
+  .results-line { margin: 12px 0 10px; font-size: 0.74rem; }
+
+  .day-block { margin-top: 18px; }
+  .day-head h2 { font-size: 0.96rem; }
+  .day-head small { font-size: 0.72rem; }
+  .schedule-row { padding: 10px 10px 10px 12px; gap: 5px 8px; }
+  .schedule-time { font-size: 0.72rem; }
+  .schedule-time small { font-size: 0.68rem; }
+  .schedule-main b { font-size: 0.86rem; }
+  .schedule-main small { font-size: 0.72rem; }
+
+  .detail-title { margin-top: 12px; font-size: clamp(1.4rem, 6.6vw, 1.8rem); }
+  .detail-desc { margin-top: 8px; font-size: 0.84rem; }
+  .fact { padding: 10px 12px; gap: 8px; }
+  .side-card { gap: 10px; padding: 14px; }
+
+  .map-tool { width: 32px; height: 32px; }
+  .featured-vendor-rail { grid-auto-columns: minmax(220px, 84%); }
+}
