@@ -3620,6 +3620,7 @@
   .footer-col a {
     display: flex;
     align-items: center;
+    width: 100%;
     min-height: 34px;
   }
 
