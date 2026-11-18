@@ -3579,3 +3579,52 @@
   .footer-grid { gap: 18px 14px; }
   .footer-col a { font-size: 0.78rem; }
 }
+
+/* ---------- phone UX: same look, easier taps ---------- */
+
+@media (max-width: 720px) {
+  html { scroll-padding-top: calc(var(--header-h) + 12px); }
+
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* invisible hit padding for compact standalone text links */
+  .crumbs a,
+  .schedule-main b a,
+  .event-title a,
+  .footer-bottom a {
+    position: relative;
+  }
+
+  .crumbs a::after,
+  .schedule-main b a::after,
+  .event-title a::after,
+  .footer-bottom a::after {
+    content: "";
+    position: absolute;
+    inset: -10px -8px;
+  }
+
+  .footer-col ul { gap: 0; }
+  .footer-col a {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+  }
+
+  .map-tool {
+    width: 36px;
+    height: 36px;
+  }
+}

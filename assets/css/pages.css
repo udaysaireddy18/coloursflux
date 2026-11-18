@@ -1283,6 +1283,6 @@
   .fact { padding: 10px 12px; gap: 8px; }
   .side-card { gap: 10px; padding: 14px; }
 
-  .map-tool { width: 32px; height: 32px; }
+  .map-tool { width: 36px; height: 36px; }
   .featured-vendor-rail { grid-auto-columns: minmax(220px, 84%); }
 }
