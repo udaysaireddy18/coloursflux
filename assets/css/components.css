@@ -3501,7 +3501,7 @@
 /* ---------- phone-wide compact scale ---------- */
 
 @media (max-width: 720px) {
-  html { font-size: 15px; }
+  html { font-size: 14.5px; }
 
   /* the three-line menu icon sits beside Online on desktop only */
   .menu-toggle { display: none; }
