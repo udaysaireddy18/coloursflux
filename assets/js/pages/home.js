@@ -5,12 +5,10 @@ import {
   mountCountdown,
   mountSyncBar,
   eventCard,
-  vendorCard,
   announcementCard,
   emptyState,
   wireBookmarks,
   wireDataDownload,
-  categoryOf,
   mapPlate,
   staticMapMarkers,
   locationTypeOf,
@@ -52,7 +50,6 @@ function festivalPhase() {
 function render() {
   const s = store.state;
   const events = store.publishedEvents();
-  const vendors = store.featuredVendors();
   const announcements = store.publishedAnnouncements();
 
   // dates + phase
@@ -68,7 +65,6 @@ function render() {
   // quick card meta
   const mapped = s.locations.filter((loc) => loc.map_x != null && loc.map_y != null);
   const days = new Set(events.map((ev) => ev.event_date)).size;
-  const offerCount = store.activeOffers().length;
   const setText = (sel, text) => {
     const el = $(sel);
     if (el) el.textContent = text;
@@ -76,7 +72,7 @@ function render() {
 
   setText('#quick-events', `${events.length} event${events.length === 1 ? '' : 's'}${days ? ` · ${days} day${days === 1 ? '' : 's'}` : ''}`);
   setText('#quick-locations', `${mapped.length} mapped location${mapped.length === 1 ? '' : 's'}`);
-  setText('#quick-vendors', `${s.vendors.length} stall${s.vendors.length === 1 ? '' : 's'}${offerCount ? ` · ${offerCount} offer${offerCount === 1 ? '' : 's'}` : ''}`);
+  setText('#quick-vendors', 'Coming soon · updated shortly');
   setText(
     '#quick-announcements',
     announcements.length
@@ -84,25 +80,10 @@ function render() {
       : 'No notices yet'
   );
 
-  // vendor category chips link into the stalls directory
+  // stall categories are hidden until the listings are updated
   const chipHost = $('#home-vendor-chips');
   if (chipHost) {
-    const counts = new Map();
-    for (const vendor of s.vendors) {
-      if (!vendor.category) continue;
-      counts.set(vendor.category, (counts.get(vendor.category) || 0) + 1);
-    }
-    const chips = [...counts.entries()]
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-      .slice(0, 6);
-    chipHost.innerHTML = chips.length
-      ? chips
-          .map(([key, count]) => {
-            const cat = categoryOf(key);
-            return `<a class="chip" href="stalls.html?cat=${encodeURIComponent(key)}">${icon(cat.icon, { size: 14 })} ${esc(cat.label)} <span class="micro dim">${count}</span></a>`;
-          })
-          .join('')
-      : `<a class="chip" href="stalls.html">${icon('store', { size: 14 })} Browse all stalls</a>`;
+    chipHost.innerHTML = `<a class="chip" href="stalls.html">${icon('clock', { size: 14 })} Coming soon</a>`;
   }
 
   // campus map preview — real configured markers
@@ -155,17 +136,15 @@ function render() {
         });
   }
 
-  // vendors
+  // vendors — listings are held until the final stall list is confirmed
   const vendorHost = $('#featured-vendors');
   if (vendorHost) {
-    const picks = (vendors.length ? vendors : s.vendors).slice(0, 3);
-    vendorHost.innerHTML = picks.length
-      ? picks.map(vendorCard).join('')
-      : emptyState({
-          iconName: 'store',
-          title: 'No approved stalls yet',
-          text: 'Vendor listings appear here once organisers approve them.',
-        });
+    vendorHost.innerHTML = emptyState({
+      iconName: 'store',
+      title: 'Stalls are coming soon',
+      text: 'Vendor listings and offers will be updated here as they are confirmed.',
+      action: '<a class="btn btn-sm btn-outline" href="announcements.html">Check announcements</a>',
+    });
   }
 
   // announcements

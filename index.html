@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.20';
+        var stamp = 'v2.0.21';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -72,11 +72,11 @@
     } catch (e) {}
   </script>
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.20" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.20" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.21" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.21" />
   <link rel="stylesheet" href="assets/css/intro.css?v=6" />
   <noscript><style>.intro { display: none; }</style></noscript>
-  <script type="module" src="assets/js/pages/home.js"></script>
+  <script type="module" src="assets/js/pages/home.js?v=2"></script>
   <script type="module">
     // Boot the opening animation independently of the cached home bundle, so
     // it still plays for visitors who have an older home.js in the service
@@ -291,12 +291,18 @@
           <div>
             <span class="eyebrow"><i data-icon="store" data-size="13"></i> Food · Merch · Art</span>
             <h2 id="vendors-title" style="margin-top:10px">Stalls &amp; offers</h2>
-            <p>Grab a bite, pick up festival merch and check the offers before you queue.</p>
+            <p>Stall listings and offers will be updated here soon.</p>
           </div>
-          <a class="btn btn-outline" href="stalls.html">All stalls <i data-icon="arrow-right" data-size="15"></i></a>
+          <a class="btn btn-outline" href="stalls.html">Stall updates <i data-icon="arrow-right" data-size="15"></i></a>
         </div>
-        <div class="chip-row vendor-chips" id="home-vendor-chips" role="navigation" aria-label="Browse stall categories"></div>
-        <div class="grid grid-3" id="featured-vendors"></div>
+        <div class="chip-row vendor-chips" id="home-vendor-chips" role="navigation" aria-label="Stall updates"></div>
+        <div class="grid grid-3" id="featured-vendors">
+          <div class="state">
+            <div class="state-icon"><i data-icon="store" data-size="24"></i></div>
+            <h3>Stalls are coming soon</h3>
+            <p>Vendor listings and offers will be updated here as they are confirmed.</p>
+          </div>
+        </div>
       </div>
     </section>
 
