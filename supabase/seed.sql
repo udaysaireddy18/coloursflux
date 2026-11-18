@@ -36,7 +36,7 @@ insert into public.app_config (
   'Asia/Kolkata',
   '',
   '',
-  '+91 96660 66844',
+  '',
   '[]'::jsonb,
   2,
   true
@@ -496,11 +496,11 @@ values
    'high', 'published', '2027-01-01T09:00:00+05:30', '2027-01-10T00:00:00+05:30', true),
 
   ('55555555-5555-4555-8555-000000000002', 'Registration desks',
-   'Registration and other details: Dr. N. Raja Babu 9849265690, Mr. P. Raju 8374245400, Dr. N. Ravi 9912393905, Dr. B. Srinivas 9866732745.',
+   'Registration and other details are available at the on-campus registration desks.',
    'normal', 'published', '2027-01-01T09:00:00+05:30', '2027-01-10T00:00:00+05:30', true),
 
-  ('55555555-5555-4555-8555-000000000003', 'Helpdesk numbers',
-   'For on-campus help during the fest: Dr. Akash Gupta 9666066844, B. Govindarajulu 9666893731, M. Prasanthi Kumari 9391410983.',
+  ('55555555-5555-4555-8555-000000000003', 'On-campus help',
+   'For on-campus help during the fest, ask at the registration desk or look for the organiser team.',
    'normal', 'published', '2027-01-01T09:00:00+05:30', '2027-01-10T00:00:00+05:30', true),
 
   ('55555555-5555-4555-8555-000000000004', 'Sports reporting time',

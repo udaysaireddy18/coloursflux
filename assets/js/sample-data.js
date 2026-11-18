@@ -410,8 +410,8 @@ export const sampleOffers = [
 
 export const sampleAnnouncements = [
   { id: 'ann-001', title: 'Colours 2K27 schedule is live', message: 'The full CREO, cultural and sports schedule runs from 7 to 9 January 2027. Check the Events page for dates, times and venues.', priority: 'high', published_at: '2027-01-01T09:00:00+05:30', expires_at: '2027-01-10T00:00:00+05:30', status: 'published' },
-  { id: 'ann-002', title: 'Registration desks', message: 'Registration and other details: Dr. N. Raja Babu 9849265690, Mr. P. Raju 8374245400, Dr. N. Ravi 9912393905, Dr. B. Srinivas 9866732745.', priority: 'normal', published_at: '2027-01-01T09:00:00+05:30', expires_at: '2027-01-10T00:00:00+05:30', status: 'published' },
-  { id: 'ann-003', title: 'Helpdesk numbers', message: 'For on-campus help during the fest: Dr. Akash Gupta 9666066844, B. Govindarajulu 9666893731, M. Prasanthi Kumari 9391410983.', priority: 'normal', published_at: '2027-01-01T09:00:00+05:30', expires_at: '2027-01-10T00:00:00+05:30', status: 'published' },
+  { id: 'ann-002', title: 'Registration desks', message: 'Registration and other details are available at the on-campus registration desks.', priority: 'normal', published_at: '2027-01-01T09:00:00+05:30', expires_at: '2027-01-10T00:00:00+05:30', status: 'published' },
+  { id: 'ann-003', title: 'On-campus help', message: 'For on-campus help during the fest, ask at the registration desk or look for the organiser team.', priority: 'normal', published_at: '2027-01-01T09:00:00+05:30', expires_at: '2027-01-10T00:00:00+05:30', status: 'published' },
   { id: 'ann-004', title: 'Sports reporting time', message: 'Sports participants should report 30 minutes before their event. Football is at BPED Ground; track events and volleyball/basketball are at KL Rao Ground.', priority: 'high', published_at: '2027-01-07T09:00:00+05:30', expires_at: '2027-01-10T00:00:00+05:30', status: 'published' },
   { id: 'ann-005', title: 'Venue guide', message: 'RTB Ratan Tata Bhavan, CB Cotton Bhavan, KLRB KL Rao Bhavan, VB Visweswaraya Bhavan, CVB CV Raman Bhavan, RB Ramanujan Bhavan, NB Newton Bhavan. Use the Campus Map for directions.', priority: 'normal', published_at: '2027-01-08T09:00:00+05:30', expires_at: null, status: 'published' },
   { id: 'ann-006', title: 'Campus map updated', message: 'The map now shows all event venues, grounds, hostels, parking and college blocks across the Aditya University campus.', priority: 'low', published_at: '2027-01-09T09:00:00+05:30', expires_at: null, status: 'published' },
@@ -433,7 +433,7 @@ export const sampleConfig = {
   logo_url: '',
   data_version: 2,
   contact_email: '',
-  contact_phone: '+91 96660 66844',
+  contact_phone: '',
   social_links: [
     { label: 'Instagram', url: '', icon: 'instagram' },
     { label: 'YouTube', url: '', icon: 'globe' },
