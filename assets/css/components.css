@@ -3628,3 +3628,79 @@
     height: 36px;
   }
 }
+
+/* ---------- phone bottom island: the same capsule, at the thumb ---------- */
+
+@media (max-width: 720px) {
+  .bottom-nav {
+    left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right));
+    bottom: calc(8px + env(safe-area-inset-bottom));
+    padding: 6px;
+    border: 1px solid rgba(78, 32, 148, 0.2);
+    border-radius: var(--r-pill);
+    background: linear-gradient(180deg, rgba(252, 249, 255, 0.97), rgba(238, 229, 250, 0.92));
+    box-shadow:
+      0 18px 36px -22px rgba(35, 8, 84, 0.7),
+      0 1px 0 rgba(255, 255, 255, 0.94) inset,
+      0 -1px 0 rgba(107, 43, 208, 0.08) inset;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* still violet-magenta hairline, held still to avoid per-frame repaints */
+  .bottom-nav::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 210deg,
+      rgba(107, 43, 208, 0) 0deg,
+      rgba(140, 62, 230, 0.75) 58deg,
+      rgba(183, 32, 155, 0.5) 122deg,
+      rgba(107, 43, 208, 0) 190deg,
+      rgba(158, 99, 241, 0.6) 262deg,
+      rgba(107, 43, 208, 0) 328deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .bottom-nav::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    bottom: -60%;
+    left: 0;
+    width: 32%;
+    z-index: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 255, 255, 0.9) 44%,
+      rgba(214, 177, 255, 0.45) 62%,
+      transparent
+    );
+    opacity: 0;
+    transform: translate3d(-130%, 0, 0) rotate(9deg);
+    animation: island-sheen 9s var(--ease) 1.4s infinite;
+    pointer-events: none;
+  }
+
+  .bottom-nav ul {
+    position: relative;
+    z-index: 1;
+  }
+
+  .bottom-nav a[aria-current="page"] {
+    background: linear-gradient(180deg, rgba(107, 43, 208, 0.16), rgba(183, 32, 155, 0.12));
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  }
+}
