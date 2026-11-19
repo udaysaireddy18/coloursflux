@@ -863,10 +863,9 @@ function wireDirections() {
 
 const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-const TILE_URL =
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_ATTRIBUTION =
-  'Tiles &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener noreferrer">Esri</a> &middot; &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>';
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>';
 const LIVE_ZOOM = 16;
 const LABEL_MIN_ZOOM = 15;
 
@@ -1259,7 +1258,7 @@ async function setMapView(name) {
 
   if (shell) shell.hidden = false;
   frame?.classList.add('is-live');
-  if (note) note.textContent = 'Approximate positions · Tiles © Esri · © OpenStreetMap';
+  if (note) note.textContent = 'Approximate positions · © OpenStreetMap contributors';
   await initLiveMap();
 }
 
