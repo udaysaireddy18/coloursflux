@@ -109,6 +109,7 @@ const P = {
   activity:
     '<path d="M3 12h3.5l2.5-7 4 14 2.5-7H21"/>',
   'rotate-ccw': '<path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.3 3.5V9h5.4"/>',
+  swap: '<path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/>',
   'maximize': '<path d="M8 3.5H3.5V8M16 3.5h4.5V8M20.5 16v4.5H16M8 20.5H3.5V16"/>',
   'minimize': '<path d="M8 3.5V8H3.5M16 3.5V8h4.5M20.5 16H16v4.5M8 20.5V16H3.5"/>',
   minus: '<path d="M4.5 12h15"/>',

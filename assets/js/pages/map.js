@@ -8,7 +8,224 @@ const $ = (sel) => document.querySelector(sel);
 const typeOf = locationTypeOf;
 
 const filters = { q: '', type: '', selected: param('location') };
+const directions = { from: param('from'), to: param('to'), route: null };
 let locations = [];
+
+/* ---------------------------------------------------------------- */
+/* In-campus waypoint graph                                           */
+/*                                                                   */
+/* These are the main walking junctions on the official campus plate. */
+/* Every mapped place is attached to its nearest junction, then the   */
+/* shortest path across the junction graph becomes the route.         */
+/* ---------------------------------------------------------------- */
+
+const WAYPOINTS = [
+  { id: 'west', name: 'the west gate near Parking', x: 13, y: 38 },
+  { id: 'nwest', name: 'the west end of the bhavan row', x: 20, y: 24 },
+  { id: 'nmid', name: 'the middle of the bhavan row', x: 48, y: 24 },
+  { id: 'neast', name: 'the east end of the bhavan row', x: 80, y: 24 },
+  { id: 'centre', name: 'the Water Pond junction', x: 44, y: 50 },
+  { id: 'east', name: 'the Guest House side', x: 84, y: 44 },
+  { id: 'bus', name: 'the Bus Ground junction', x: 67, y: 62 },
+  { id: 'smid', name: 'the Abdul Kalam Bhavan junction', x: 44, y: 70 },
+  { id: 'swest', name: 'the college block row', x: 29, y: 81 },
+  { id: 'seast', name: 'the BPD Ground side', x: 67, y: 82 },
+];
+
+const NODE_BY_ID = Object.fromEntries(WAYPOINTS.map((n) => [n.id, n]));
+
+const LINKS = [
+  ['nwest', 'nmid', 'the bhavan row road'],
+  ['nmid', 'neast', 'the bhavan row road past Visweswaraya Bhavan'],
+  ['nwest', 'west', 'the west gate road'],
+  ['nmid', 'centre', 'the central path by KL Rao Ground'],
+  ['neast', 'east', 'the east side road by the bhavan grounds'],
+  ['west', 'centre', 'the road past the Incubator'],
+  ['centre', 'east', 'the central road by the temples'],
+  ['centre', 'bus', 'the road by the Bus Ground'],
+  ['centre', 'smid', 'the central road beside the pond'],
+  ['east', 'bus', 'the east road by the hostels'],
+  ['bus', 'smid', 'the road by Abdul Kalam Bhavan'],
+  ['bus', 'seast', 'the east road near the BPD Ground'],
+  ['smid', 'swest', 'the college block row'],
+  ['smid', 'seast', 'the college block row'],
+  ['west', 'swest', 'the west road past the girls hostels'],
+];
+
+/* Explicit attachments keep well-known places on their natural road. */
+const LOCATION_NODE = {
+  'loc-rtb': 'nwest',
+  'loc-cotton': 'nwest',
+  'loc-klrao-bhavan': 'nwest',
+  'loc-billgates': 'nmid',
+  'loc-visweswaraya': 'nmid',
+  'loc-cvraman-bhavan': 'neast',
+  'loc-ramanujan': 'neast',
+  'loc-newton': 'neast',
+  'loc-ramanujan-ground': 'neast',
+  'loc-cvraman-ground': 'neast',
+  'loc-open-air-auditorium': 'centre',
+  'loc-klrao-ground': 'centre',
+  'loc-klrao-bhavan-ground': 'centre',
+  'loc-fete': 'centre',
+  'loc-mango-garden': 'centre',
+  'loc-temples': 'centre',
+  'loc-water-pond': 'centre',
+  'loc-boys-hostel': 'east',
+  'loc-guest-house': 'east',
+  'loc-parking': 'west',
+  'loc-girls-hostel': 'west',
+  'loc-incubator': 'west',
+  'loc-bus-ground': 'bus',
+  'loc-pharmacy-college': 'swest',
+  'loc-abdul-kalam': 'smid',
+  'loc-degree-college': 'smid',
+  'loc-acop': 'swest',
+  'loc-polytechnic': 'swest',
+  'loc-bpd-ground': 'seast',
+};
+
+function buildAdjacency() {
+  const graph = Object.fromEntries(WAYPOINTS.map((n) => [n.id, []]));
+  LINKS.forEach(([a, b, hint]) => {
+    if (!graph[a] || !graph[b]) return;
+    const weight = Math.hypot(NODE_BY_ID[a].x - NODE_BY_ID[b].x, NODE_BY_ID[a].y - NODE_BY_ID[b].y);
+    graph[a].push({ id: b, weight, hint });
+    graph[b].push({ id: a, weight, hint });
+  });
+  return graph;
+}
+
+const ADJACENCY = buildAdjacency();
+
+function nodeFor(loc) {
+  if (!loc || loc.map_x == null || loc.map_y == null) return null;
+  const pinned = LOCATION_NODE[loc.id] && NODE_BY_ID[LOCATION_NODE[loc.id]];
+  if (pinned) return pinned;
+  let best = null;
+  let bestDistance = Infinity;
+  const x = Number(loc.map_x);
+  const y = Number(loc.map_y);
+  WAYPOINTS.forEach((node) => {
+    const distance = Math.hypot(node.x - x, node.y - y);
+    if (distance < bestDistance) {
+      best = node;
+      bestDistance = distance;
+    }
+  });
+  return best;
+}
+
+function shortestNodePath(startId, endId) {
+  if (startId === endId) return [startId];
+  const distance = Object.fromEntries(WAYPOINTS.map((n) => [n.id, Infinity]));
+  const previous = {};
+  const visited = new Set();
+  distance[startId] = 0;
+
+  while (visited.size < WAYPOINTS.length) {
+    let current = null;
+    let best = Infinity;
+    WAYPOINTS.forEach((node) => {
+      if (!visited.has(node.id) && distance[node.id] < best) {
+        best = distance[node.id];
+        current = node.id;
+      }
+    });
+    if (!current || current === endId) break;
+    visited.add(current);
+    ADJACENCY[current].forEach((edge) => {
+      const candidate = distance[current] + edge.weight;
+      if (candidate < distance[edge.id]) {
+        distance[edge.id] = candidate;
+        previous[edge.id] = current;
+      }
+    });
+  }
+
+  if (!Number.isFinite(distance[endId])) return null;
+  const path = [endId];
+  while (path[0] !== startId) {
+    const parent = previous[path[0]];
+    if (!parent) return null;
+    path.unshift(parent);
+  }
+  return path;
+}
+
+function linkHint(aId, bId) {
+  return (ADJACENCY[aId] || []).find((edge) => edge.id === bId)?.hint || '';
+}
+
+function compass(a, b) {
+  const names = ['east', 'south-east', 'south', 'south-west', 'west', 'north-west', 'north', 'north-east'];
+  const angle = Math.atan2(b.y - a.y, b.x - a.x);
+  return names[(Math.round(angle / (Math.PI / 4)) + 8) % 8];
+}
+
+function pointOfLocation(loc) {
+  return { id: loc.id, name: loc.name, x: Number(loc.map_x), y: Number(loc.map_y), isPlace: true };
+}
+
+function pointOfNode(node) {
+  return { id: node.id, name: node.name, x: node.x, y: node.y, isJunction: true };
+}
+
+function describeRoute(points, toName) {
+  const steps = [`Start at ${points[0].name}.`];
+  let previousDirection = '';
+
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const from = points[i];
+    const to = points[i + 1];
+    const direction = compass(from, to);
+    let step;
+
+    if (i === 0) {
+      const target = to.isJunction ? `toward ${to.name}` : `to ${to.name}`;
+      step = `Head ${direction} ${target}.`;
+    } else if (i === points.length - 2) {
+      step = `${direction === previousDirection ? 'Continue' : 'Turn'} ${direction} to ${toName}.`;
+    } else {
+      const hint = linkHint(from.id, to.id);
+      const lead = direction === previousDirection ? 'Continue' : `At ${from.name}, turn`;
+      step = `${lead} ${direction} toward ${to.name}${hint ? ` via ${hint}` : ''}.`;
+    }
+
+    steps.push(step);
+    previousDirection = direction;
+  }
+
+  steps.push(`Arrive at ${toName}.`);
+  return steps;
+}
+
+function buildRoute(from, to) {
+  const startNode = nodeFor(from);
+  const endNode = nodeFor(to);
+  if (!startNode || !endNode) return null;
+  const nodePath = shortestNodePath(startNode.id, endNode.id);
+  if (!nodePath) return null;
+
+  const points =
+    nodePath.length === 1
+      ? [pointOfLocation(from), pointOfLocation(to)]
+      : [pointOfLocation(from), ...nodePath.map((id) => pointOfNode(NODE_BY_ID[id])), pointOfLocation(to)];
+
+  let metres = 0;
+  points.slice(0, -1).forEach((point, i) => {
+    const next = points[i + 1];
+    metres += Math.hypot((next.x - point.x) * 7, (next.y - point.y) * 5);
+  });
+
+  return {
+    from,
+    to,
+    points,
+    steps: describeRoute(points, to.name),
+    minutes: Math.max(1, Math.round(metres / 75)),
+  };
+}
 
 /* ---------------------------------------------------------------- */
 /* Pan / zoom view                                                   */
@@ -96,6 +313,43 @@ function centerOn(id) {
   view.scale = scale;
   view.x = rect.width / 2 - wx * scale;
   view.y = rect.height / 2 - wy * scale + 14;
+  clampView();
+  animateView();
+  applyView();
+  hideHint();
+}
+
+function centerOnPoint(x, y, minimumScale = 1.7) {
+  const board = boardEl();
+  if (!board) return;
+  const rect = board.getBoundingClientRect();
+  view.scale = Math.max(view.scale, minimumScale);
+  view.x = rect.width / 2 - (x / 100) * rect.width * view.scale;
+  view.y = rect.height / 2 - (y / 100) * rect.height * view.scale;
+  clampView();
+  animateView();
+  applyView();
+  hideHint();
+}
+
+function fitRoute() {
+  const route = directions.route;
+  const board = boardEl();
+  if (!route || !board) return;
+  const xs = route.points.map((p) => p.x);
+  const ys = route.points.map((p) => p.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const spanX = Math.max((maxX - minX) / 100, 0.06);
+  const spanY = Math.max((maxY - minY) / 100, 0.06);
+  const rect = board.getBoundingClientRect();
+  const scale = Math.min(MAX_SCALE, Math.max(1.15, Math.min(0.82 / spanX, 0.82 / spanY)));
+
+  view.scale = scale;
+  view.x = rect.width / 2 - ((minX + maxX) / 2 / 100) * rect.width * scale;
+  view.y = rect.height / 2 - ((minY + maxY) / 2 / 100) * rect.height * scale;
   clampView();
   animateView();
   applyView();
@@ -293,11 +547,17 @@ function visible() {
 }
 
 function markers(rows) {
+  const route = directions.route;
   return rows
     .filter((loc) => loc.map_x != null && loc.map_y != null)
     .map((loc) => {
       const t = typeOf(loc.location_type);
-      return `<button class="map-marker ${loc.id === filters.selected ? 'is-active' : ''}"
+      const routeClass = route
+        ? loc.id === route.from.id || loc.id === route.to.id
+          ? ' is-route-end'
+          : ' is-route-dim'
+        : '';
+      return `<button class="map-marker ${loc.id === filters.selected ? 'is-active' : ''}${routeClass}"
         style="left:${Number(loc.map_x)}%;top:${Number(loc.map_y)}%;--mc:${t.color}"
         data-loc="${esc(loc.id)}"
         aria-label="${esc(loc.name)} — show details"
@@ -359,15 +619,208 @@ function detail(loc) {
     <div class="divider" style="margin:14px 0"></div>
     <div class="stack" style="--gap:8px">
       <button class="btn btn-sm btn-outline btn-block" data-focus-loc="${esc(loc.id)}">${icon('map', { size: 15 })} Show on map</button>
+      <button class="btn btn-sm btn-primary btn-block" data-dir-to="${esc(loc.id)}">${icon('navigation', { size: 15 })} Directions to here</button>
+      <button class="btn btn-sm btn-ghost btn-block" data-dir-from="${esc(loc.id)}">${icon('map-pin', { size: 15 })} Start directions here</button>
       ${mapsUrl
-        ? `<a class="btn btn-sm btn-ghost btn-block" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer">${icon('navigation', { size: 15 })} Open in maps</a>`
-        : `<p class="micro dim">No verified coordinates for this location, so directions are not available. Ask at the registration desk.</p>`}
+        ? `<a class="btn btn-sm btn-ghost btn-block" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer">${icon('external-link', { size: 15 })} Open in maps</a>`
+        : ''}
     </div>`;
 
   host.querySelector('[data-focus-loc]')?.addEventListener('click', () => {
     focusLocation(loc.id);
   });
+  host.querySelector('[data-dir-to]')?.addEventListener('click', () => setDirectionEndpoint('to', loc.id));
+  host.querySelector('[data-dir-from]')?.addEventListener('click', () => setDirectionEndpoint('from', loc.id));
   mountIcons(host);
+}
+
+/* ---------------------------------------------------------------- */
+/* Directions UI                                                      */
+/* ---------------------------------------------------------------- */
+
+function populateDirections() {
+  const from = $('#dir-from');
+  const to = $('#dir-to');
+  if (!from || !to) return;
+
+  const options = (placeholder) =>
+    `<option value="">${placeholder}</option>` +
+    locations
+      .filter((loc) => loc.map_x != null && loc.map_y != null)
+      .map((loc) => `<option value="${esc(loc.id)}">${esc(loc.name)}</option>`)
+      .join('');
+
+  from.innerHTML = options('Choose your starting point');
+  to.innerHTML = options('Choose your destination');
+  if (directions.from && !locations.some((loc) => loc.id === directions.from)) directions.from = '';
+  if (directions.to && !locations.some((loc) => loc.id === directions.to)) directions.to = '';
+  from.value = directions.from;
+  to.value = directions.to;
+}
+
+function syncRouteUrl() {
+  try {
+    const url = new URL(location.href);
+    if (directions.from) url.searchParams.set('from', directions.from);
+    else url.searchParams.delete('from');
+    if (directions.to) url.searchParams.set('to', directions.to);
+    else url.searchParams.delete('to');
+    history.replaceState(null, '', url);
+  } catch {
+    /* history access can be blocked in sandboxed frames — ignore */
+  }
+}
+
+function renderRoute() {
+  const svg = $('#map-route');
+  const host = $('#map-route-points');
+  if (!svg || !host) return;
+  const route = directions.route;
+
+  if (!route) {
+    svg.innerHTML = '';
+    host.innerHTML = '';
+    return;
+  }
+
+  const path = route.points
+    .map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(2)} ${p.y.toFixed(2)}`)
+    .join(' ');
+  svg.innerHTML = `<path class="map-route-glow" d="${path}"></path><path class="map-route-line" d="${path}"></path>`;
+
+  const first = route.points[0];
+  const last = route.points[route.points.length - 1];
+  host.innerHTML = [
+    `<span class="route-point route-point-a" style="left:${first.x}%;top:${first.y}%">A</span>`,
+    ...route.points
+      .slice(1, -1)
+      .map((p) => `<span class="route-point route-point-mid" style="left:${p.x}%;top:${p.y}%"></span>`),
+    `<span class="route-point route-point-b" style="left:${last.x}%;top:${last.y}%">B</span>`,
+  ].join('');
+}
+
+function renderDirectionResult() {
+  const host = $('#dir-result');
+  const route = directions.route;
+  if (!host) return;
+  const clear = $('#dir-clear');
+  if (clear) clear.hidden = false;
+  if (!route) {
+    host.innerHTML = '';
+    return;
+  }
+
+  host.innerHTML = `
+    <div class="dir-summary">
+      <span class="dir-endpoint dir-endpoint-a">A</span>
+      <span class="dir-summary-names"><b>${esc(route.from.name)}</b><span>to</span><b>${esc(route.to.name)}</b></span>
+      <span class="dir-time">${icon('clock', { size: 13 })} About ${route.minutes} min walk</span>
+    </div>
+    <p class="micro dim dir-note">Approximate walking time. Tap a step to zoom in on that point.</p>
+    <ol class="dir-steps">
+      ${route.steps.map((step, i) => `<li tabindex="0" data-step="${i}" title="Zoom to this point">${esc(step)}</li>`).join('')}
+    </ol>
+    <div class="dir-actions">
+      <button class="btn btn-sm btn-outline" id="dir-fit" type="button">${icon('maximize', { size: 14 })} Show full route</button>
+      <button class="btn btn-sm btn-ghost" id="dir-clear-route" type="button">${icon('x', { size: 14 })} Clear route</button>
+    </div>`;
+
+  host.querySelector('#dir-fit')?.addEventListener('click', fitRoute);
+  host.querySelector('#dir-clear-route')?.addEventListener('click', clearDirections);
+  host.querySelectorAll('[data-step]').forEach((item) => {
+    const focus = () => {
+      const point = route.points[Math.min(Number(item.dataset.step), route.points.length - 1)];
+      if (point) centerOnPoint(point.x, point.y);
+    };
+    item.addEventListener('click', focus);
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        focus();
+      }
+    });
+  });
+}
+
+function scrollToDirections() {
+  const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  $('#directions-panel')?.scrollIntoView({ behavior, block: 'start' });
+}
+
+function computeDirections({ scroll = false } = {}) {
+  const from = locations.find((loc) => loc.id === directions.from) || null;
+  const to = locations.find((loc) => loc.id === directions.to) || null;
+  const host = $('#dir-result');
+  const clear = $('#dir-clear');
+
+  if (!from || !to) {
+    directions.route = null;
+    if (host) {
+      host.innerHTML = to && !from ? '<p class="micro dim">Now choose your starting point above to see the route.</p>' : '';
+    }
+    if (clear) clear.hidden = true;
+  } else if (from.id === to.id) {
+    directions.route = null;
+    if (host) host.innerHTML = '<p class="micro dim">Choose two different places to get directions.</p>';
+    if (clear) clear.hidden = false;
+  } else {
+    directions.route = buildRoute(from, to);
+    renderDirectionResult();
+  }
+
+  renderRoute();
+  render();
+  syncRouteUrl();
+  if (scroll) scrollToDirections();
+}
+
+function clearDirections() {
+  directions.from = '';
+  directions.to = '';
+  directions.route = null;
+  const from = $('#dir-from');
+  const to = $('#dir-to');
+  if (from) from.value = '';
+  if (to) to.value = '';
+  const clear = $('#dir-clear');
+  if (clear) clear.hidden = true;
+  const host = $('#dir-result');
+  if (host) host.innerHTML = '';
+  renderRoute();
+  render();
+  syncRouteUrl();
+}
+
+function setDirectionEndpoint(which, id) {
+  directions[which] = id;
+  const select = $(`#dir-${which}`);
+  if (select) select.value = id;
+  computeDirections({ scroll: true });
+}
+
+function wireDirections() {
+  const from = $('#dir-from');
+  const to = $('#dir-to');
+  if (!from || !to) return;
+
+  from.addEventListener('change', () => {
+    directions.from = from.value;
+    computeDirections();
+  });
+  to.addEventListener('change', () => {
+    directions.to = to.value;
+    computeDirections();
+  });
+  $('#dir-go')?.addEventListener('click', () => computeDirections({ scroll: true }));
+  $('#dir-swap')?.addEventListener('click', () => {
+    const previous = from.value;
+    from.value = to.value;
+    to.value = previous;
+    directions.from = from.value;
+    directions.to = to.value;
+    computeDirections();
+  });
+  $('#dir-clear')?.addEventListener('click', clearDirections);
 }
 
 function render() {
@@ -447,6 +900,9 @@ async function boot() {
   buildTypeChips();
   buildKey();
   render();
+  populateDirections();
+  wireDirections();
+  if (directions.from && directions.to) computeDirections();
   if (filters.selected) window.requestAnimationFrame(() => centerOn(filters.selected));
 
   $('#location-search').addEventListener(

@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.26';
+        var stamp = 'v2.0.27';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -37,8 +37,8 @@
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.26" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.26" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.27" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.27" />
   <script type="module" src="assets/js/pages/map.js"></script>
 </head>
 <body>
@@ -51,7 +51,7 @@
         <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Campus Map</span></nav>
         <span class="eyebrow"><i data-icon="navigation" data-size="13"></i> Campus navigation</span>
         <h1>Campus <span class="gradient-text">map</span></h1>
-        <p class="lead">Event venues, grounds, hostels, parking and college blocks across the Aditya University campus. Tap a marker or a location to see details.</p>
+        <p class="lead">Event venues, grounds, hostels, parking and college blocks across the Aditya University campus. Tap a marker for details, or pick a starting point and destination for walking directions anywhere on campus.</p>
         <div class="page-head-meta">
           <span class="badge badge-purple"><i data-icon="map" data-size="12"></i> Aditya University campus</span>
           <span class="badge badge-cyan"><i data-icon="wifi-off" data-size="12"></i> Works offline</span>
@@ -71,6 +71,38 @@
         </div>
         <div class="chip-row" id="type-chips" role="group" aria-label="Filter by location type"></div>
       </div>
+
+      <section class="card card-pad directions-panel" id="directions-panel" aria-labelledby="directions-title">
+        <div class="dir-head">
+          <div class="dir-heading">
+            <span class="dir-head-icon"><i data-icon="navigation" data-size="16"></i></span>
+            <span>
+              <h2 id="directions-title">Campus directions</h2>
+              <p class="micro dim">Choose where you are and where you want to go — the route works offline.</p>
+            </span>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="dir-clear" type="button" hidden><i data-icon="x" data-size="13"></i> Clear</button>
+        </div>
+
+        <div class="dir-fields">
+          <label class="dir-field">
+            <span class="dir-field-label">From</span>
+            <select class="select" id="dir-from"><option value="">Choose your starting point</option></select>
+          </label>
+          <button class="dir-swap" id="dir-swap" type="button" aria-label="Swap starting point and destination" title="Swap places">
+            <i data-icon="swap" data-size="17"></i>
+          </button>
+          <label class="dir-field">
+            <span class="dir-field-label">To</span>
+            <select class="select" id="dir-to"><option value="">Choose your destination</option></select>
+          </label>
+        </div>
+
+        <div class="dir-actions">
+          <button class="btn btn-primary btn-sm" id="dir-go" type="button"><i data-icon="navigation" data-size="14"></i> Get directions</button>
+        </div>
+        <div class="dir-result" id="dir-result" aria-live="polite"></div>
+      </section>
 
       <div id="map-status"></div>
 
@@ -104,7 +136,9 @@
             <div class="map-board map-interactive" id="map-board" aria-label="Campus map with markers" role="group" tabindex="0">
               <div class="map-canvas" id="map-canvas">
                 <div id="map-art"></div>
+                <svg class="map-route" id="map-route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
                 <div id="map-markers"></div>
+                <div class="map-route-points" id="map-route-points" aria-hidden="true"></div>
               </div>
               <div class="map-hud">
                 <span class="map-scale" id="map-scale">100%</span>
