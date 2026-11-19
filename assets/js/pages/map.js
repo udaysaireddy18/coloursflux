@@ -9,7 +9,30 @@ const typeOf = locationTypeOf;
 
 const filters = { q: '', type: '', selected: param('location') };
 const directions = { from: param('from'), to: param('to'), route: null };
+const requestedView = param('view') === 'live' ? 'live' : 'plate';
 let locations = [];
+
+/* ---------------------------------------------------------------- */
+/* Real-world coordinates                                             */
+/*                                                                   */
+/* The published campus plate has no GPS data, so real-world points    */
+/* are derived from the illustrated campus anchor. They are useful for */
+/* orientation, not survey-grade placement.                            */
+/* ---------------------------------------------------------------- */
+
+const CAMPUS_CENTRE = { lat: 17.0893372, lng: 82.0670772 };
+const CAMPUS_HALF_SPAN = { lat: 0.0044, lng: 0.0048 };
+
+function geoFromPercent(x, y) {
+  return [
+    +(CAMPUS_CENTRE.lat + ((50 - Number(y)) / 50) * CAMPUS_HALF_SPAN.lat).toFixed(6),
+    +(CAMPUS_CENTRE.lng + ((Number(x) - 50) / 50) * CAMPUS_HALF_SPAN.lng).toFixed(6),
+  ];
+}
+
+function geoForLocation(loc) {
+  return loc.map_x == null || loc.map_y == null ? null : geoFromPercent(loc.map_x, loc.map_y);
+}
 
 /* ---------------------------------------------------------------- */
 /* In-campus waypoint graph                                           */
@@ -770,6 +793,7 @@ function computeDirections({ scroll = false } = {}) {
 
   renderRoute();
   render();
+  syncLiveRoute();
   syncRouteUrl();
   if (scroll) scrollToDirections();
 }
@@ -788,6 +812,7 @@ function clearDirections() {
   if (host) host.innerHTML = '';
   renderRoute();
   render();
+  syncLiveRoute();
   syncRouteUrl();
 }
 
@@ -821,6 +846,193 @@ function wireDirections() {
     computeDirections();
   });
   $('#dir-clear')?.addEventListener('click', clearDirections);
+}
+
+/* ---------------------------------------------------------------- */
+/* Real-world map view — loaded only when the visitor asks for it      */
+/* ---------------------------------------------------------------- */
+
+const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+let liveMap = null;
+let livePlaces = null;
+let liveRouteLine = null;
+let liveRouteEnds = null;
+let leafletPromise = null;
+
+function liveStatus(message) {
+  const host = $('#live-map-status');
+  if (!host) return;
+  const label = host.querySelector('span');
+  if (label) label.textContent = message || '';
+  host.hidden = !message;
+}
+
+function selectMapTab(name) {
+  document.querySelectorAll('[data-map-view]').forEach((btn) => {
+    const active = btn.dataset.mapView === name;
+    btn.classList.toggle('is-active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+  try {
+    const url = new URL(location.href);
+    if (name === 'live') url.searchParams.set('view', 'live');
+    else url.searchParams.delete('view');
+    history.replaceState(null, '', url);
+  } catch {
+    /* ignore blocked history */
+  }
+}
+
+function loadLeaflet() {
+  if (window.L) return Promise.resolve(window.L);
+  if (leafletPromise) return leafletPromise;
+  leafletPromise = new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = LEAFLET_CSS;
+    document.head.appendChild(link);
+
+    const script = document.createElement('script');
+    script.src = LEAFLET_JS;
+    script.async = true;
+    script.onload = () => (window.L ? resolve(window.L) : reject(new Error('Map library unavailable')));
+    script.onerror = () => reject(new Error('Map library could not load'));
+    document.head.appendChild(script);
+  });
+  return leafletPromise;
+}
+
+function syncLiveMarkers() {
+  if (!liveMap || !window.L) return;
+  const L = window.L;
+  if (livePlaces) liveMap.removeLayer(livePlaces);
+  livePlaces = L.layerGroup().addTo(liveMap);
+
+  locations.forEach((loc) => {
+    const geo = geoForLocation(loc);
+    if (!geo) return;
+    const t = typeOf(loc.location_type);
+    const marker = L.circleMarker(geo, {
+      radius: 7,
+      color: '#ffffff',
+      weight: 2,
+      fillColor: t.color,
+      fillOpacity: 1,
+    });
+    marker.bindTooltip(esc(loc.name), { direction: 'top', offset: [0, -6] });
+    marker.bindPopup(`<b>${esc(loc.name)}</b><small>${esc(t.label)}${loc.description ? ` · ${esc(loc.description)}` : ''}</small>`);
+    marker.on('click', () => {
+      filters.selected = loc.id;
+      try {
+        const url = new URL(location.href);
+        url.searchParams.set('location', loc.id);
+        history.replaceState(null, '', url);
+      } catch {
+        /* ignore blocked history */
+      }
+      render();
+    });
+    livePlaces.addLayer(marker);
+  });
+}
+
+function syncLiveRoute() {
+  if (!liveMap || !window.L) return;
+  const L = window.L;
+  if (liveRouteLine) {
+    liveMap.removeLayer(liveRouteLine);
+    liveRouteLine = null;
+  }
+  if (liveRouteEnds) {
+    liveMap.removeLayer(liveRouteEnds);
+    liveRouteEnds = null;
+  }
+  if (!directions.route) return;
+
+  const latlngs = directions.route.points.map((p) => geoFromPercent(p.x, p.y));
+  liveRouteLine = L.polyline(latlngs, {
+    color: '#7c3ad9',
+    weight: 5,
+    opacity: 0.92,
+    dashArray: '9 7',
+  }).addTo(liveMap);
+
+  liveRouteEnds = L.layerGroup().addTo(liveMap);
+  const ends = [
+    [latlngs[0], 'live-end live-end-a', 'A'],
+    [latlngs[latlngs.length - 1], 'live-end live-end-b', 'B'],
+  ];
+  ends.forEach(([position, className, label]) => {
+    L.marker(position, {
+      icon: L.divIcon({ className, html: label, iconSize: [24, 24], iconAnchor: [12, 12] }),
+    }).addTo(liveRouteEnds);
+  });
+  liveMap.fitBounds(liveRouteLine.getBounds(), { padding: [46, 46], maxZoom: 16 });
+}
+
+async function initLiveMap() {
+  liveStatus('Loading real-world map…');
+  try {
+    const L = await loadLeaflet();
+    if (!liveMap) {
+      liveMap = L.map('live-map', { zoomControl: true, scrollWheelZoom: true }).setView(
+        [CAMPUS_CENTRE.lat, CAMPUS_CENTRE.lng],
+        15
+      );
+      L.tileLayer(TILE_URL, {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(liveMap);
+    }
+    syncLiveMarkers();
+    syncLiveRoute();
+    liveStatus('');
+    window.requestAnimationFrame(() => liveMap?.invalidateSize());
+    return true;
+  } catch {
+    liveStatus('');
+    selectMapTab('plate');
+    $('#map-frame')?.classList.remove('is-live');
+    const shell = $('#live-map-shell');
+    if (shell) shell.hidden = true;
+    const note = $('#map-view-note');
+    if (note) note.textContent = 'Live map needs internet — showing the offline campus plate.';
+    return false;
+  }
+}
+
+async function setMapView(name) {
+  const frame = $('#map-frame');
+  const shell = $('#live-map-shell');
+  const note = $('#map-view-note');
+
+  if (name === 'live' && !navigator.onLine) {
+    selectMapTab('plate');
+    if (note) note.textContent = 'Live map needs internet — showing the offline campus plate.';
+    return;
+  }
+
+  selectMapTab(name);
+  if (name === 'plate') {
+    frame?.classList.remove('is-live');
+    if (shell) shell.hidden = true;
+    if (note) note.textContent = 'Offline-ready · real-world positions are approximate';
+    return;
+  }
+
+  if (shell) shell.hidden = false;
+  frame?.classList.add('is-live');
+  if (note) note.textContent = 'Approximate positions from the campus illustration · © OpenStreetMap';
+  await initLiveMap();
+}
+
+function wireLiveView() {
+  document.querySelectorAll('[data-map-view]').forEach((btn) =>
+    btn.addEventListener('click', () => setMapView(btn.dataset.mapView))
+  );
 }
 
 function render() {
@@ -902,8 +1114,11 @@ async function boot() {
   render();
   populateDirections();
   wireDirections();
+  wireLiveView();
+  syncLiveMarkers();
   if (directions.from && directions.to) computeDirections();
   if (filters.selected) window.requestAnimationFrame(() => centerOn(filters.selected));
+  if (requestedView === 'live') setMapView('live');
 
   $('#location-search').addEventListener(
     'input',
