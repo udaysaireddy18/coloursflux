@@ -380,6 +380,15 @@ function fitRoute() {
 }
 
 function focusLocation(id) {
+  if (liveMap && $('#map-frame')?.classList.contains('is-live')) {
+    const loc = locations.find((l) => l.id === id);
+    const geo = loc && geoForLocation(loc);
+    if (!geo) return;
+    filters.selected = id;
+    liveMap.setView(geo, Math.max(liveMap.getZoom(), 17), { animate: true });
+    syncLiveSelection();
+    return;
+  }
   const marker = document.querySelector(`.map-marker[data-loc="${CSS.escape(id)}"]`);
   if (!marker) return;
   centerOn(id);
@@ -854,12 +863,15 @@ function wireDirections() {
 
 const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_URL = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>';
+const LIVE_ZOOM = 16;
+const LABEL_MIN_ZOOM = 15;
 
 let liveMap = null;
 let livePlaces = null;
-let liveRouteLine = null;
-let liveRouteEnds = null;
+let liveRouteLayer = null;
 let leafletPromise = null;
 
 function liveStatus(message) {
@@ -905,25 +917,91 @@ function loadLeaflet() {
   return leafletPromise;
 }
 
+function livePinHtml(loc, index, { selected, end, dim }) {
+  const t = typeOf(loc.location_type);
+  const cls = [
+    'live-pin',
+    index % 2 === 1 ? 'is-above' : '',
+    selected ? 'is-selected' : '',
+    end ? 'is-end' : '',
+    dim ? 'is-dim' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  return `<div class="${cls}" style="--pin-color:${t.color}">
+    <span class="live-pin-dot">${icon(t.icon, { size: 13 })}</span>
+    <span class="live-pin-label">${esc(loc.name)}</span>
+  </div>`;
+}
+
+function livePopupHtml(loc) {
+  const t = typeOf(loc.location_type);
+  const events = store.publishedEvents().filter((e) => e.location_id === loc.id).length;
+  return `<div class="live-popup">
+    <span class="live-popup-type" style="--pc:${t.color}">${icon(t.icon, { size: 12 })} ${esc(t.label)}</span>
+    <b>${esc(loc.name)}</b>
+    ${loc.description ? `<p>${esc(loc.description)}</p>` : ''}
+    ${events ? `<small>${events} event${events === 1 ? '' : 's'} here</small>` : ''}
+    <button type="button" class="live-popup-dir" data-live-dir="${esc(loc.id)}">${icon('navigation', { size: 13 })} Directions to here</button>
+  </div>`;
+}
+
+function buildLiveLegend() {
+  const host = $('#live-map-legend');
+  if (!host) return;
+  const types = [...new Set(locations.map((l) => l.location_type).filter(Boolean))].sort();
+  host.innerHTML =
+    '<b>Map key</b>' +
+    types
+      .map((type) => {
+        const t = typeOf(type);
+        return `<span style="--kc:${t.color}"><i></i>${esc(t.label)}</span>`;
+      })
+      .join('');
+}
+
+function syncLiveSelection() {
+  if (!livePlaces) return;
+  livePlaces.getLayers().forEach((marker) => {
+    const pin = marker.getElement()?.querySelector('.live-pin');
+    if (!pin || !marker._locId) return;
+    const on = marker._locId === filters.selected;
+    pin.classList.toggle('is-selected', on);
+    marker.setZIndexOffset(on ? 900 : marker._baseZ || 0);
+  });
+}
+
 function syncLiveMarkers() {
   if (!liveMap || !window.L) return;
   const L = window.L;
   if (livePlaces) liveMap.removeLayer(livePlaces);
   livePlaces = L.layerGroup().addTo(liveMap);
 
-  locations.forEach((loc) => {
+  const route = directions.route;
+  const endpoints = route ? new Set([route.from.id, route.to.id]) : null;
+  const rows = visible().filter((loc) => loc.map_x != null && loc.map_y != null);
+
+  rows.forEach((loc, index) => {
     const geo = geoForLocation(loc);
     if (!geo) return;
-    const t = typeOf(loc.location_type);
-    const marker = L.circleMarker(geo, {
-      radius: 7,
-      color: '#ffffff',
-      weight: 2,
-      fillColor: t.color,
-      fillOpacity: 1,
+    const selected = loc.id === filters.selected;
+    const end = Boolean(endpoints && endpoints.has(loc.id));
+    const baseZ = selected ? 900 : end ? 600 : 0;
+    const marker = L.marker(geo, {
+      icon: L.divIcon({
+        className: 'live-pin-wrap',
+        html: livePinHtml(loc, index, { selected, end, dim: Boolean(route) && !end }),
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
+      }),
+      riseOnHover: true,
+      zIndexOffset: baseZ,
+      title: loc.name,
     });
-    marker.bindTooltip(esc(loc.name), { direction: 'top', offset: [0, -6] });
-    marker.bindPopup(`<b>${esc(loc.name)}</b><small>${esc(t.label)}${loc.description ? ` · ${esc(loc.description)}` : ''}</small>`);
+    marker._locId = loc.id;
+    marker._baseZ = end ? 600 : 0;
+    marker.bindTooltip(esc(loc.name), { direction: 'top', offset: [0, -16], className: 'live-tip' });
+    marker.bindPopup(livePopupHtml(loc), { closeButton: true, maxWidth: 240, className: 'live-popup-box' });
     marker.on('click', () => {
       filters.selected = loc.id;
       try {
@@ -933,44 +1011,192 @@ function syncLiveMarkers() {
       } catch {
         /* ignore blocked history */
       }
-      render();
+      syncLiveSelection();
+      detail(loc);
+      document.querySelectorAll('#location-list .location-item').forEach((node) =>
+        node.classList.toggle('is-active', node.dataset.loc === loc.id)
+      );
+    });
+    marker.on('popupopen', () => {
+      document.querySelector('.live-popup-dir')?.addEventListener('click', () => setDirectionEndpoint('to', loc.id));
     });
     livePlaces.addLayer(marker);
+
+    const el = marker.getElement();
+    if (el) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', `${loc.name} — show details`);
+    }
   });
+
+  declutterLiveLabels();
+}
+
+function bearingBetween(a, b) {
+  const toRad = (d) => (d * Math.PI) / 180;
+  const y = Math.sin(toRad(b[1] - a[1])) * Math.cos(toRad(b[0]));
+  const x =
+    Math.cos(toRad(a[0])) * Math.sin(toRad(b[0])) -
+    Math.sin(toRad(a[0])) * Math.cos(toRad(b[0])) * Math.cos(toRad(b[1] - a[1]));
+  return (Math.atan2(y, x) * 180) / Math.PI;
+}
+
+function hideLiveChip() {
+  const chip = $('#live-map-chip');
+  if (!chip) return;
+  chip.hidden = true;
+  chip.innerHTML = '';
 }
 
 function syncLiveRoute() {
   if (!liveMap || !window.L) return;
   const L = window.L;
-  if (liveRouteLine) {
-    liveMap.removeLayer(liveRouteLine);
-    liveRouteLine = null;
+  if (liveRouteLayer) {
+    liveMap.removeLayer(liveRouteLayer);
+    liveRouteLayer = null;
   }
-  if (liveRouteEnds) {
-    liveMap.removeLayer(liveRouteEnds);
-    liveRouteEnds = null;
-  }
-  if (!directions.route) return;
+  hideLiveChip();
+  const route = directions.route;
+  if (!route) return;
 
-  const latlngs = directions.route.points.map((p) => geoFromPercent(p.x, p.y));
-  liveRouteLine = L.polyline(latlngs, {
-    color: '#7c3ad9',
-    weight: 5,
-    opacity: 0.92,
-    dashArray: '9 7',
-  }).addTo(liveMap);
+  const latlngs = route.points.map((p) => geoFromPercent(p.x, p.y));
+  liveRouteLayer = L.layerGroup().addTo(liveMap);
 
-  liveRouteEnds = L.layerGroup().addTo(liveMap);
-  const ends = [
-    [latlngs[0], 'live-end live-end-a', 'A'],
-    [latlngs[latlngs.length - 1], 'live-end live-end-b', 'B'],
+  // Four stacked strokes: soft glow, white casing, violet core, light tread.
+  const strokes = [
+    { color: '#7c3ad9', weight: 20, opacity: 0.1, dashArray: null },
+    { color: '#ffffff', weight: 10, opacity: 0.97, dashArray: null },
+    { color: '#7c3ad9', weight: 5, opacity: 1, dashArray: null },
+    { color: '#ffffff', weight: 2, opacity: 0.85, dashArray: '1 9' },
   ];
-  ends.forEach(([position, className, label]) => {
-    L.marker(position, {
-      icon: L.divIcon({ className, html: label, iconSize: [24, 24], iconAnchor: [12, 12] }),
-    }).addTo(liveRouteEnds);
+  strokes.forEach((s) =>
+    L.polyline(latlngs, {
+      color: s.color,
+      weight: s.weight,
+      opacity: s.opacity,
+      dashArray: s.dashArray,
+      lineCap: 'round',
+      lineJoin: 'round',
+      interactive: false,
+    }).addTo(liveRouteLayer)
+  );
+
+  // Heading arrows sit at each segment midpoint, rotated to face travel.
+  for (let i = 0; i < latlngs.length - 1; i += 1) {
+    const a = latlngs[i];
+    const b = latlngs[i + 1];
+    const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const angle = Math.round(bearingBetween(a, b) - 90);
+    L.marker(mid, {
+      interactive: false,
+      keyboard: false,
+      icon: L.divIcon({
+        className: 'live-arrow-wrap',
+        html: `<span class="live-arrow" style="transform:rotate(${angle}deg)">${icon('chevron-right', { size: 11 })}</span>`,
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
+      }),
+    }).addTo(liveRouteLayer);
+  }
+
+  // Numbered junctions make the step list easier to follow on the map.
+  route.points.forEach((p, i) => {
+    if (i === 0 || i === route.points.length - 1) return;
+    L.marker(geoFromPercent(p.x, p.y), {
+      interactive: false,
+      keyboard: false,
+      zIndexOffset: 400,
+      icon: L.divIcon({
+        className: 'live-waypoint-wrap',
+        html: `<span class="live-waypoint">${i}</span>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      }),
+    }).addTo(liveRouteLayer);
   });
-  liveMap.fitBounds(liveRouteLine.getBounds(), { padding: [46, 46], maxZoom: 16 });
+
+  const ends = [
+    {
+      position: latlngs[0],
+      className: 'live-end live-end-a',
+      badge: 'A',
+      label: route.from.name,
+      role: 'Start',
+    },
+    {
+      position: latlngs[latlngs.length - 1],
+      className: 'live-end live-end-b',
+      badge: 'B',
+      label: route.to.name,
+      role: 'Destination',
+    },
+  ];
+  ends.forEach(({ position, className, badge, label, role }) => {
+    L.marker(position, {
+      keyboard: false,
+      zIndexOffset: 1000,
+      icon: L.divIcon({
+        className: 'live-end-wrap',
+        html: `<span class="${className}"><span class="live-end-dot">${badge}</span><span class="live-end-label"><b>${esc(label)}</b><i>${role}</i></span></span>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+      }),
+    }).addTo(liveRouteLayer);
+  });
+
+  liveMap.fitBounds(L.polyline(latlngs).getBounds(), { padding: [56, 56], maxZoom: 17 });
+
+  const chip = $('#live-map-chip');
+  if (chip) {
+    chip.hidden = false;
+    chip.innerHTML = `<span class="live-chip-a">A</span>${esc(route.from.name)}<i>${icon('arrow-right', { size: 12 })}</i><span class="live-chip-b">B</span>${esc(route.to.name)}<b>${icon('clock', { size: 12 })} ${route.minutes} min</b>`;
+  }
+}
+
+function syncLiveZoomClass() {
+  const host = $('#live-map');
+  if (!host || !liveMap) return;
+  host.classList.toggle('labels-off', liveMap.getZoom() < LABEL_MIN_ZOOM);
+}
+
+/* Greedy label declutter: keep the most important labels, drop the rest until
+ * the visitor hovers or zooms in. Keeps the overview readable instead of a
+ * pile of overlapping names. */
+let declutterFrame = 0;
+
+function declutterLiveLabels() {
+  const host = $('#live-map');
+  if (!host || declutterFrame) return;
+  declutterFrame = window.requestAnimationFrame(() => {
+    declutterFrame = 0;
+    const items = [...host.querySelectorAll('.live-pin-wrap')]
+      .map((wrap) => {
+        const pin = wrap.querySelector('.live-pin');
+        const label = pin?.querySelector('.live-pin-label');
+        if (!pin || !label) return null;
+        return { pin, label, r: label.getBoundingClientRect() };
+      })
+      .filter(Boolean);
+
+    items.forEach((item) => item.label.classList.remove('is-hidden'));
+
+    const priority = (item) =>
+      item.pin.classList.contains('is-selected') ? 0 : item.pin.classList.contains('is-end') ? 1 : 2;
+    items.sort((a, b) => priority(a) - priority(b) || a.r.top - b.r.top || a.r.left - b.r.left);
+
+    const kept = [];
+    items.forEach((item) => {
+      const collides = kept.some(
+        (k) =>
+          item.r.left < k.r.right + 3 &&
+          item.r.right > k.r.left - 3 &&
+          item.r.top < k.r.bottom + 3 &&
+          item.r.bottom > k.r.top - 3
+      );
+      if (collides && priority(item) === 2) item.label.classList.add('is-hidden');
+      else kept.push(item);
+    });
+  });
 }
 
 async function initLiveMap() {
@@ -978,17 +1204,25 @@ async function initLiveMap() {
   try {
     const L = await loadLeaflet();
     if (!liveMap) {
-      liveMap = L.map('live-map', { zoomControl: true, scrollWheelZoom: true }).setView(
+      liveMap = L.map('live-map', { zoomControl: false, scrollWheelZoom: true }).setView(
         [CAMPUS_CENTRE.lat, CAMPUS_CENTRE.lng],
-        15
+        LIVE_ZOOM
       );
+      L.control.zoom({ position: 'topright' }).addTo(liveMap);
       L.tileLayer(TILE_URL, {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 20,
+        detectRetina: true,
+        attribution: TILE_ATTRIBUTION,
       }).addTo(liveMap);
+      liveMap.on('zoomend moveend', () => {
+        syncLiveZoomClass();
+        declutterLiveLabels();
+      });
     }
+    buildLiveLegend();
     syncLiveMarkers();
     syncLiveRoute();
+    syncLiveZoomClass();
     liveStatus('');
     window.requestAnimationFrame(() => liveMap?.invalidateSize());
     return true;
@@ -1025,7 +1259,7 @@ async function setMapView(name) {
 
   if (shell) shell.hidden = false;
   frame?.classList.add('is-live');
-  if (note) note.textContent = 'Approximate positions from the campus illustration · © OpenStreetMap';
+  if (note) note.textContent = 'Approximate positions · © OpenStreetMap · © CARTO';
   await initLiveMap();
 }
 
@@ -1060,6 +1294,8 @@ function render() {
       focusLocation(filters.selected);
     });
   });
+
+  syncLiveMarkers();
 }
 
 function buildTypeChips() {
