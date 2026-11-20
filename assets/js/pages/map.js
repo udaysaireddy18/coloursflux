@@ -12,11 +12,13 @@ const directions = { from: param('from'), to: param('to'), route: null };
 let locations = [];
 
 /* ---------------------------------------------------------------- */
-/* In-campus waypoint graph                                           */
+/* Road-only walking network                                          */
 /*                                                                   */
-/* These are the main walking junctions on the official campus plate. */
-/* Every mapped place is attached to its nearest junction, then the   */
-/* shortest path across the junction graph becomes the route.         */
+/* The campus plate is offline, so directions follow the roads drawn  */
+/* on it. Every road is a short polyline in plate coordinates. A venue */
+/* snaps to the closest point on a road, then the route follows only   */
+/* those road polylines — never a straight cut across a ground,        */
+/* building or the pond.                                               */
 /* ---------------------------------------------------------------- */
 
 const WAYPOINTS = [
@@ -34,127 +36,137 @@ const WAYPOINTS = [
 
 const NODE_BY_ID = Object.fromEntries(WAYPOINTS.map((n) => [n.id, n]));
 
-const LINKS = [
-  ['nwest', 'nmid', 'the bhavan row road'],
-  ['nmid', 'neast', 'the bhavan row road past Visweswaraya Bhavan'],
-  ['nwest', 'west', 'the west gate road'],
-  ['nmid', 'centre', 'the central path by KL Rao Ground'],
-  ['neast', 'east', 'the east side road by the bhavan grounds'],
-  ['west', 'centre', 'the road past the Incubator'],
-  ['centre', 'east', 'the central road by the temples'],
-  ['centre', 'bus', 'the road by the Bus Ground'],
-  ['centre', 'smid', 'the central road beside the pond'],
-  ['east', 'bus', 'the east road by the hostels'],
-  ['bus', 'smid', 'the road by Abdul Kalam Bhavan'],
-  ['bus', 'seast', 'the east road near the BPD Ground'],
-  ['smid', 'swest', 'the college block row'],
-  ['smid', 'seast', 'the college block row'],
-  ['west', 'swest', 'the west road past the girls hostels'],
+/*
+ * Each road runs between two junctions. `path` lists plate percentages in
+ * order; extra vertices bend the line along the drawn road (notably around
+ * the Water Pond) so the rendered route stays on tarmac.
+ */
+const ROAD_DEFS = [
+  ['nwest', 'nmid', 'the bhavan row road', [[20, 24], [34, 24], [48, 24]]],
+  ['nmid', 'neast', 'the bhavan row road past Visweswaraya Bhavan', [[48, 24], [64, 24], [80, 24]]],
+  ['nwest', 'west', 'the west gate road', [[20, 24], [16, 31], [13, 38]]],
+  ['nmid', 'centre', 'the central road by KL Rao Ground', [[48, 24], [46, 34], [44, 42], [44, 50]]],
+  ['neast', 'east', 'the east side road by the bhavan grounds', [[80, 24], [82, 34], [84, 44]]],
+  ['west', 'centre', 'the road past the Incubator', [[13, 38], [24, 42], [34, 46], [44, 50]]],
+  ['centre', 'east', 'the central road by the temples', [[44, 50], [58, 49], [72, 46], [84, 44]]],
+  ['centre', 'bus', 'the road by the Bus Ground', [[44, 50], [55, 55], [67, 62]]],
+  ['centre', 'smid', 'the road west of the Water Pond', [[44, 50], [38, 55], [38, 63], [44, 70]]],
+  ['east', 'bus', 'the east road by the hostels', [[84, 44], [78, 52], [72, 58], [67, 62]]],
+  ['bus', 'smid', 'the road by Abdul Kalam Bhavan', [[67, 62], [55, 66], [44, 70]]],
+  ['bus', 'seast', 'the east road near the BPD Ground', [[67, 62], [67, 72], [67, 82]]],
+  ['smid', 'swest', 'the college block row', [[44, 70], [37, 75], [29, 81]]],
+  ['smid', 'seast', 'the college block row', [[44, 70], [55, 76], [67, 82]]],
+  ['west', 'swest', 'the west road past the girls hostels', [[13, 38], [16, 52], [22, 67], [29, 81]]],
 ];
 
-/* Explicit attachments keep well-known places on their natural road. */
-const LOCATION_NODE = {
-  'loc-rtb': 'nwest',
-  'loc-cotton': 'nwest',
-  'loc-klrao-bhavan': 'nwest',
-  'loc-billgates': 'nmid',
-  'loc-visweswaraya': 'nmid',
-  'loc-cvraman-bhavan': 'neast',
-  'loc-ramanujan': 'neast',
-  'loc-newton': 'neast',
-  'loc-ramanujan-ground': 'neast',
-  'loc-cvraman-ground': 'neast',
-  'loc-open-air-auditorium': 'centre',
-  'loc-klrao-ground': 'centre',
-  'loc-klrao-bhavan-ground': 'centre',
-  'loc-fete': 'centre',
-  'loc-mango-garden': 'centre',
-  'loc-temples': 'centre',
-  'loc-water-pond': 'centre',
-  'loc-boys-hostel': 'east',
-  'loc-guest-house': 'east',
-  'loc-parking': 'west',
-  'loc-girls-hostel': 'west',
-  'loc-incubator': 'west',
-  'loc-bus-ground': 'bus',
-  'loc-pharmacy-college': 'swest',
-  'loc-abdul-kalam': 'smid',
-  'loc-degree-college': 'smid',
-  'loc-acop': 'swest',
-  'loc-polytechnic': 'swest',
-  'loc-bpd-ground': 'seast',
-};
-
-function buildAdjacency() {
-  const graph = Object.fromEntries(WAYPOINTS.map((n) => [n.id, []]));
-  LINKS.forEach(([a, b, hint]) => {
-    if (!graph[a] || !graph[b]) return;
-    const weight = Math.hypot(NODE_BY_ID[a].x - NODE_BY_ID[b].x, NODE_BY_ID[a].y - NODE_BY_ID[b].y);
-    graph[a].push({ id: b, weight, hint });
-    graph[b].push({ id: a, weight, hint });
-  });
-  return graph;
+function makeRoad([a, b, hint, coords]) {
+  const points = coords.map(([x, y]) => ({ x, y }));
+  const at = [0];
+  for (let i = 1; i < points.length; i += 1) {
+    at.push(at[i - 1] + Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y));
+  }
+  return { a, b, hint, points, at, length: at[at.length - 1] };
 }
 
-const ADJACENCY = buildAdjacency();
+const ROADS = ROAD_DEFS.map(makeRoad);
 
-function nodeFor(loc) {
-  if (!loc || loc.map_x == null || loc.map_y == null) return null;
-  const pinned = LOCATION_NODE[loc.id] && NODE_BY_ID[LOCATION_NODE[loc.id]];
-  if (pinned) return pinned;
-  let best = null;
-  let bestDistance = Infinity;
+function roadBetween(aId, bId) {
+  return ROADS.find((r) => (r.a === aId && r.b === bId) || (r.a === bId && r.b === aId)) || null;
+}
+
+function linkHint(aId, bId) {
+  return roadBetween(aId, bId)?.hint || '';
+}
+
+function pointAt(road, s) {
+  const target = Math.min(Math.max(s, 0), road.length);
+  for (let i = 1; i < road.points.length; i += 1) {
+    if (target <= road.at[i] || i === road.points.length - 1) {
+      const span = road.at[i] - road.at[i - 1];
+      const t = span ? (target - road.at[i - 1]) / span : 0;
+      const a = road.points[i - 1];
+      const b = road.points[i];
+      return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+    }
+  }
+  return { ...road.points[0] };
+}
+
+function roadSlice(road, fromS, toS) {
+  if (fromS > toS) return roadSlice(road, toS, fromS).reverse();
+  const pts = [pointAt(road, fromS)];
+  for (let i = 0; i < road.points.length; i += 1) {
+    const s = road.at[i];
+    if (s > fromS + 0.01 && s < toS - 0.01) pts.push({ ...road.points[i] });
+  }
+  pts.push(pointAt(road, toS));
+  return pts;
+}
+
+function nearestRoadPoint(loc) {
   const x = Number(loc.map_x);
   const y = Number(loc.map_y);
-  WAYPOINTS.forEach((node) => {
-    const distance = Math.hypot(node.x - x, node.y - y);
-    if (distance < bestDistance) {
-      best = node;
-      bestDistance = distance;
+  let best = null;
+  ROADS.forEach((road) => {
+    for (let i = 0; i < road.points.length - 1; i += 1) {
+      const a = road.points[i];
+      const b = road.points[i + 1];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const span = road.at[i + 1] - road.at[i];
+      const t = span ? Math.min(1, Math.max(0, ((x - a.x) * dx + (y - a.y) * dy) / (span * span))) : 0;
+      const px = a.x + dx * t;
+      const py = a.y + dy * t;
+      const distance = Math.hypot(x - px, y - py);
+      if (!best || distance < best.distance) {
+        best = { road, s: road.at[i] + span * t, point: { x: px, y: py }, distance };
+      }
     }
   });
   return best;
 }
 
-function shortestNodePath(startId, endId) {
-  if (startId === endId) return [startId];
-  const distance = Object.fromEntries(WAYPOINTS.map((n) => [n.id, Infinity]));
+function routeEdge(edges, from, to, road, s1, s2) {
+  edges.push({ from, to, road, s1, s2, weight: Math.abs(s2 - s1) });
+}
+
+function shortestEdgePath(startId, endId, edges) {
+  const ids = [...new Set(edges.flatMap((e) => [e.from, e.to]))];
+  const dist = { [startId]: 0 };
   const previous = {};
   const visited = new Set();
-  distance[startId] = 0;
 
-  while (visited.size < WAYPOINTS.length) {
+  while (true) {
     let current = null;
     let best = Infinity;
-    WAYPOINTS.forEach((node) => {
-      if (!visited.has(node.id) && distance[node.id] < best) {
-        best = distance[node.id];
-        current = node.id;
+    ids.forEach((id) => {
+      if (!visited.has(id) && (dist[id] ?? Infinity) < best) {
+        best = dist[id];
+        current = id;
       }
     });
     if (!current || current === endId) break;
     visited.add(current);
-    ADJACENCY[current].forEach((edge) => {
-      const candidate = distance[current] + edge.weight;
-      if (candidate < distance[edge.id]) {
-        distance[edge.id] = candidate;
-        previous[edge.id] = current;
+    edges.forEach((edge) => {
+      if (edge.from !== current) return;
+      const candidate = best + edge.weight;
+      if (candidate < (dist[edge.to] ?? Infinity)) {
+        dist[edge.to] = candidate;
+        previous[edge.to] = edge;
       }
     });
   }
 
-  if (!Number.isFinite(distance[endId])) return null;
-  const path = [endId];
-  while (path[0] !== startId) {
-    const parent = previous[path[0]];
-    if (!parent) return null;
-    path.unshift(parent);
+  if (!(endId in dist)) return null;
+  const chain = [];
+  let node = endId;
+  while (node !== startId) {
+    const edge = previous[node];
+    if (!edge) return null;
+    chain.unshift(edge);
+    node = edge.from;
   }
-  return path;
-}
-
-function linkHint(aId, bId) {
-  return (ADJACENCY[aId] || []).find((edge) => edge.id === bId)?.hint || '';
+  return chain;
 }
 
 function compass(a, b) {
@@ -167,8 +179,12 @@ function pointOfLocation(loc) {
   return { id: loc.id, name: loc.name, x: Number(loc.map_x), y: Number(loc.map_y), isPlace: true };
 }
 
-function pointOfNode(node) {
-  return { id: node.id, name: node.name, x: node.x, y: node.y, isJunction: true };
+function pointOfNode(node, hint = '') {
+  return { id: node.id, name: node.name, x: node.x, y: node.y, isJunction: true, hint };
+}
+
+function pointOnRoad(point, road) {
+  return { ...point, name: road.hint, hint: road.hint, isRoad: true };
 }
 
 function describeRoute(points, toName) {
@@ -182,14 +198,15 @@ function describeRoute(points, toName) {
     let step;
 
     if (i === 0) {
-      const target = to.isJunction ? `toward ${to.name}` : `to ${to.name}`;
-      step = `Head ${direction} ${target}.`;
+      step = `Head ${direction} ${to.isJunction ? 'toward' : 'to'} ${to.name}.`;
     } else if (i === points.length - 2) {
       step = `${direction === previousDirection ? 'Continue' : 'Turn'} ${direction} to ${toName}.`;
     } else {
-      const hint = linkHint(from.id, to.id);
+      const hint = to.hint || (from.isJunction && to.isJunction ? linkHint(from.id, to.id) : '');
       const lead = direction === previousDirection ? 'Continue' : `At ${from.name}, turn`;
-      step = `${lead} ${direction} toward ${to.name}${hint ? ` via ${hint}` : ''}.`;
+      const target = hint && to.name === hint ? '' : ` toward ${to.name}`;
+      const via = hint && hint !== from.name ? ` via ${hint}` : '';
+      step = `${lead} ${direction}${target}${via}.`;
     }
 
     steps.push(step);
@@ -200,18 +217,48 @@ function describeRoute(points, toName) {
   return steps;
 }
 
+function dedupePoints(points) {
+  return points.filter((p, i) => {
+    if (i === 0) return true;
+    const prev = points[i - 1];
+    return Math.hypot(p.x - prev.x, p.y - prev.y) > 0.05;
+  });
+}
+
 function buildRoute(from, to) {
-  const startNode = nodeFor(from);
-  const endNode = nodeFor(to);
-  if (!startNode || !endNode) return null;
-  const nodePath = shortestNodePath(startNode.id, endNode.id);
-  if (!nodePath) return null;
+  if (from.map_x == null || to.map_x == null) return null;
+  const start = nearestRoadPoint(from);
+  const end = nearestRoadPoint(to);
+  if (!start || !end) return null;
 
-  const points =
-    nodePath.length === 1
-      ? [pointOfLocation(from), pointOfLocation(to)]
-      : [pointOfLocation(from), ...nodePath.map((id) => pointOfNode(NODE_BY_ID[id])), pointOfLocation(to)];
+  const edges = [];
+  ROADS.forEach((road) => {
+    routeEdge(edges, road.a, road.b, road, 0, road.length);
+    routeEdge(edges, road.b, road.a, road, road.length, 0);
+  });
+  if (start.road === end.road) {
+    routeEdge(edges, 'S', 'E', start.road, start.s, end.s);
+  } else {
+    routeEdge(edges, 'S', start.road.a, start.road, start.s, 0);
+    routeEdge(edges, 'S', start.road.b, start.road, start.s, start.road.length);
+    routeEdge(edges, end.road.a, 'E', end.road, 0, end.s);
+    routeEdge(edges, end.road.b, 'E', end.road, end.road.length, end.s);
+  }
 
+  const chain = shortestEdgePath('S', 'E', edges);
+  if (!chain) return null;
+
+  const drawn = [pointOfLocation(from), start.point];
+  chain.forEach((edge) => drawn.push(...roadSlice(edge.road, edge.s1, edge.s2)));
+
+  const concept = [pointOfLocation(from), pointOnRoad(start.point, start.road)];
+  chain.forEach((edge) => {
+    if (edge.to !== 'E') concept.push(pointOfNode(NODE_BY_ID[edge.to], edge.road.hint));
+  });
+  concept.push(pointOnRoad(end.point, end.road), pointOfLocation(to));
+  drawn.push(end.point, pointOfLocation(to));
+
+  const points = dedupePoints(drawn);
   let metres = 0;
   points.slice(0, -1).forEach((point, i) => {
     const next = points[i + 1];
@@ -222,7 +269,8 @@ function buildRoute(from, to) {
     from,
     to,
     points,
-    steps: describeRoute(points, to.name),
+    stepPoints: dedupePoints(concept),
+    steps: describeRoute(concept, to.name),
     minutes: Math.max(1, Math.round(metres / 75)),
   };
 }
@@ -716,7 +764,7 @@ function renderDirectionResult() {
       <span class="dir-summary-names"><b>${esc(route.from.name)}</b><span>to</span><b>${esc(route.to.name)}</b></span>
       <span class="dir-time">${icon('clock', { size: 13 })} About ${route.minutes} min walk</span>
     </div>
-    <p class="micro dim dir-note">Approximate walking time. Tap a step to zoom in on that point.</p>
+    <p class="micro dim dir-note">Routes follow campus roads only. Approximate walking time — tap a step to zoom in.</p>
     <ol class="dir-steps">
       ${route.steps.map((step, i) => `<li tabindex="0" data-step="${i}" title="Zoom to this point">${esc(step)}</li>`).join('')}
     </ol>
@@ -729,7 +777,8 @@ function renderDirectionResult() {
   host.querySelector('#dir-clear-route')?.addEventListener('click', clearDirections);
   host.querySelectorAll('[data-step]').forEach((item) => {
     const focus = () => {
-      const point = route.points[Math.min(Number(item.dataset.step), route.points.length - 1)];
+      const targets = route.stepPoints || route.points;
+      const point = targets[Math.min(Number(item.dataset.step), targets.length - 1)];
       if (point) centerOnPoint(point.x, point.y);
     };
     item.addEventListener('click', focus);
