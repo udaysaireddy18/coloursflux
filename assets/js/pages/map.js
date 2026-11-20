@@ -15,48 +15,78 @@ let locations = [];
 /* Road-only walking network                                          */
 /*                                                                   */
 /* The campus plate is offline, so directions follow the roads drawn  */
-/* on it. Every road is a short polyline in plate coordinates. A venue */
-/* snaps to the closest point on a road, then the route follows only   */
-/* those road polylines — never a straight cut across a ground,        */
-/* building or the pond.                                               */
+/* on it. Every road below is traced from a road centreline in the     */
+/* picture (plate percentages). A venue snaps to the closest road,     */
+/* then the route follows only those roads — never a straight cut      */
+/* across a ground, building or the pond.                              */
 /* ---------------------------------------------------------------- */
 
 const WAYPOINTS = [
-  { id: 'west', name: 'the west gate near Parking', x: 13, y: 38 },
-  { id: 'nwest', name: 'the west end of the bhavan row', x: 20, y: 24 },
-  { id: 'nmid', name: 'the middle of the bhavan row', x: 48, y: 24 },
-  { id: 'neast', name: 'the east end of the bhavan row', x: 80, y: 24 },
-  { id: 'centre', name: 'the Water Pond junction', x: 44, y: 50 },
-  { id: 'east', name: 'the Guest House side', x: 84, y: 44 },
-  { id: 'bus', name: 'the Bus Ground junction', x: 67, y: 62 },
-  { id: 'smid', name: 'the Abdul Kalam Bhavan junction', x: 44, y: 70 },
-  { id: 'swest', name: 'the college block row', x: 29, y: 81 },
-  { id: 'seast', name: 'the BPD Ground side', x: 67, y: 82 },
+  { id: 'nw-tip', name: 'the west end of the bhavan road', x: 16.5, y: 25.5 },
+  { id: 'n-west', name: 'the bhavan road at the west road', x: 27, y: 25.5 },
+  { id: 'n-midwest', name: 'the bhavan road at the pharmacy road', x: 39, y: 25.5 },
+  { id: 'n-centre', name: 'the bhavan road at the central road', x: 51, y: 25.5 },
+  { id: 'n-eastmid', name: 'the bhavan road at the east bhavan road', x: 63, y: 25.5 },
+  { id: 'n-east', name: 'the bhavan road at the guest house road', x: 87, y: 25.5 },
+  { id: 'ne-tip', name: 'the east end of the bhavan road', x: 96, y: 25.5 },
+  { id: 'west-north', name: 'the north end of the west road', x: 27, y: 13.6 },
+  { id: 'west-gate', name: 'the west gate junction', x: 27, y: 47 },
+  { id: 'west-south', name: 'the west road at the lower cross road', x: 27, y: 64.7 },
+  { id: 'edge-north', name: 'the north end of the boundary road', x: 2.3, y: 9.3 },
+  { id: 'edge-gate', name: 'the west gate on the boundary road', x: 2.3, y: 40 },
+  { id: 'edge-south', name: 'the south end of the boundary road', x: 2.3, y: 97.5 },
+  { id: 'midwest-south', name: 'the pharmacy road at the lower cross road', x: 39, y: 64.7 },
+  { id: 'midwest-end', name: 'the south end of the pharmacy road', x: 39, y: 90.2 },
+  { id: 'centre-north', name: 'the north end of the central road', x: 51, y: 13.6 },
+  { id: 'centre-top', name: 'the south end of the upper central road', x: 51, y: 49.5 },
+  { id: 'centre-low', name: 'the north end of the lower central road', x: 51, y: 56 },
+  { id: 'middle-west', name: 'the west end of the middle cross road', x: 53.5, y: 52.5 },
+  { id: 'centre-south', name: 'the central road at the lower cross road', x: 51, y: 64.7 },
+  { id: 'centre-end', name: 'the central road at the south cross road', x: 51, y: 90.2 },
+  { id: 'centre-tip', name: 'the south end of the central road', x: 51, y: 97.5 },
+  { id: 'eastmid-north', name: 'the north end of the east bhavan road', x: 63, y: 13.6 },
+  { id: 'eastmid-south', name: 'the east bhavan road at the middle cross road', x: 63, y: 53 },
+  { id: 'east-north', name: 'the north end of the guest house road', x: 87, y: 19.5 },
+  { id: 'east-south', name: 'the guest house road at the middle cross road', x: 87, y: 53 },
 ];
 
 const NODE_BY_ID = Object.fromEntries(WAYPOINTS.map((n) => [n.id, n]));
 
 /*
- * Each road runs between two junctions. `path` lists plate percentages in
- * order; extra vertices bend the line along the drawn road (notably around
- * the Water Pond) so the rendered route stays on tarmac.
+ * These polylines are traced from the roads drawn on campus-map.webp (plate
+ * percentages, not guesses). Each segment follows a dark road centreline on
+ * the picture: the bhavan road, the west/boundary roads, the central road and
+ * the three cross roads. Venues snap to the nearest of these lines.
  */
 const ROAD_DEFS = [
-  ['nwest', 'nmid', 'the bhavan row road', [[20, 24], [34, 24], [48, 24]]],
-  ['nmid', 'neast', 'the bhavan row road past Visweswaraya Bhavan', [[48, 24], [64, 24], [80, 24]]],
-  ['nwest', 'west', 'the west gate road', [[20, 24], [16, 31], [13, 38]]],
-  ['nmid', 'centre', 'the central road by KL Rao Ground', [[48, 24], [46, 34], [44, 42], [44, 50]]],
-  ['neast', 'east', 'the east side road by the bhavan grounds', [[80, 24], [82, 34], [84, 44]]],
-  ['west', 'centre', 'the road past the Incubator', [[13, 38], [24, 42], [34, 46], [44, 50]]],
-  ['centre', 'east', 'the central road by the temples', [[44, 50], [58, 49], [72, 46], [84, 44]]],
-  ['centre', 'bus', 'the road by the Bus Ground', [[44, 50], [55, 55], [67, 62]]],
-  ['centre', 'smid', 'the road west of the Water Pond', [[44, 50], [38, 55], [38, 63], [44, 70]]],
-  ['east', 'bus', 'the east road by the hostels', [[84, 44], [78, 52], [72, 58], [67, 62]]],
-  ['bus', 'smid', 'the road by Abdul Kalam Bhavan', [[67, 62], [55, 66], [44, 70]]],
-  ['bus', 'seast', 'the east road near the BPD Ground', [[67, 62], [67, 72], [67, 82]]],
-  ['smid', 'swest', 'the college block row', [[44, 70], [37, 75], [29, 81]]],
-  ['smid', 'seast', 'the college block row', [[44, 70], [55, 76], [67, 82]]],
-  ['west', 'swest', 'the west road past the girls hostels', [[13, 38], [16, 52], [22, 67], [29, 81]]],
+  ['nw-tip', 'n-west', 'the bhavan road', [[16.5, 25.5], [27, 25.5]]],
+  ['n-west', 'n-midwest', 'the bhavan road', [[27, 25.5], [39, 25.5]]],
+  ['n-midwest', 'n-centre', 'the bhavan road', [[39, 25.5], [51, 25.5]]],
+  ['n-centre', 'n-eastmid', 'the bhavan road', [[51, 25.5], [63, 25.5]]],
+  ['n-eastmid', 'n-east', 'the bhavan road', [[63, 25.5], [87, 25.5]]],
+  ['n-east', 'ne-tip', 'the bhavan road', [[87, 25.5], [96, 25.5]]],
+  ['west-north', 'n-west', 'the west road', [[27, 13.6], [27, 25.5]]],
+  ['n-west', 'west-gate', 'the west road', [[27, 25.5], [27, 47]]],
+  ['west-gate', 'west-south', 'the west road', [[27, 47], [27, 64.7]]],
+  ['edge-north', 'edge-gate', 'the west boundary road', [[2.3, 9.3], [2.3, 40]]],
+  ['edge-gate', 'edge-south', 'the west boundary road', [[2.3, 40], [2.3, 97.5]]],
+  ['edge-gate', 'west-gate', 'the west gate road', [[2.3, 40], [12, 42], [20, 45], [27, 47]]],
+  ['n-midwest', 'midwest-south', 'the pharmacy college road', [[39, 25.5], [39, 64.7]]],
+  ['midwest-south', 'midwest-end', 'the pharmacy college road', [[39, 64.7], [39, 90.2]]],
+  ['centre-north', 'n-centre', 'the central road', [[51, 13.6], [51, 25.5]]],
+  ['n-centre', 'centre-top', 'the upper central road', [[51, 25.5], [51, 49.5]]],
+  ['centre-low', 'centre-south', 'the lower central road', [[51, 56], [51, 64.7]]],
+  ['centre-south', 'centre-end', 'the central road', [[51, 64.7], [51, 90.2]]],
+  ['centre-end', 'centre-tip', 'the central road', [[51, 90.2], [51, 97.5]]],
+  ['eastmid-north', 'n-eastmid', 'the east bhavan road', [[63, 13.6], [63, 25.5]]],
+  ['n-eastmid', 'eastmid-south', 'the east bhavan road', [[63, 25.5], [63, 53]]],
+  ['east-north', 'n-east', 'the guest house road', [[87, 19.5], [87, 25.5]]],
+  ['n-east', 'east-south', 'the guest house road', [[87, 25.5], [87, 53]]],
+  ['middle-west', 'eastmid-south', 'the middle cross road', [[53.5, 52.5], [63, 53]]],
+  ['eastmid-south', 'east-south', 'the middle cross road', [[63, 53], [87, 53]]],
+  ['west-south', 'midwest-south', 'the lower cross road', [[27, 64.7], [39, 64.7]]],
+  ['midwest-south', 'centre-south', 'the lower cross road', [[39, 64.7], [51, 64.7]]],
+  ['midwest-end', 'centre-end', 'the south cross road', [[39, 90.2], [51, 90.2]]],
 ];
 
 function makeRoad([a, b, hint, coords]) {
