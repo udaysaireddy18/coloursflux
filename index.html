@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.35';
+        var stamp = 'v2.0.36';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -40,16 +40,13 @@
   <meta property="og:description" content="Feel the Flow. Live the Colours. Events, campus map, stalls and announcements in one app." />
   <meta property="og:type" content="website" />
   <script>
-    // The cultural ident greets the first home-page load of a browsing
-    // session. Reloads, returns from other pages and later home visits stay
-    // quiet. ?intro=0 skips it, ?intro=1 replays it.
+    // The cultural ident greets every fresh open of the website, even on the
+    // same device. Moving from another page of the site, reloading or going
+    // back stays quiet. ?intro=0 skips it, ?intro=1 replays it.
     try {
       const params = new URLSearchParams(location.search);
       const forced = params.get('intro') === '1';
       const skip = params.get('intro') === '0';
-      const key = 'cf.introSeen';
-      let seen = false;
-      try { seen = sessionStorage.getItem(key) === '1'; } catch (e) {}
       let internal = false;
       if (!forced && !skip) {
         const entry = performance.getEntriesByType('navigation')[0];
@@ -64,16 +61,14 @@
           } catch (e) {}
         }
       }
-      if (skip || (!forced && (internal || seen))) {
+      if (skip || (!forced && internal)) {
         document.documentElement.classList.add('intro-seen');
-      } else {
-        try { sessionStorage.setItem(key, '1'); } catch (e) {}
       }
     } catch (e) {}
   </script>
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.35" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.35" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.36" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.36" />
   <link rel="stylesheet" href="assets/css/intro.css?v=6" />
   <noscript><style>.intro { display: none; }</style></noscript>
   <script type="module" src="assets/js/pages/home.js?v=2"></script>
@@ -81,7 +76,7 @@
     // Boot the opening animation independently of the cached home bundle, so
     // it still plays for visitors who have an older home.js in the service
     // worker cache.
-    import { mountIntro } from './assets/js/intro.js?v=11';
+    import { mountIntro } from './assets/js/intro.js?v=12';
     mountIntro();
   </script>
 </head>
