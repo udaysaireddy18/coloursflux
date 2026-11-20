@@ -333,7 +333,7 @@ export function mountChrome({ active } = {}) {
 function mountBottomNav(page) {
   const items = NAV.filter((n) => n.href !== 'about.html').map((n) => ({
     ...n,
-    label: n.href === 'announcements.html' ? 'Alerts' : n.label,
+    label: n.href === 'announcements.html' ? 'Alerts' : n.href === 'map.html' ? 'Map' : n.label,
   }));
   const nav = document.createElement('nav');
   nav.className = 'bottom-nav';
