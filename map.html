@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.32';
+        var stamp = 'v2.0.33';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -37,8 +37,8 @@
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.32" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.32" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.33" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.33" />
   <script type="module" src="assets/js/pages/map.js"></script>
 </head>
 <body>
@@ -108,12 +108,6 @@
 
       <div class="map-layout" style="margin-top:16px">
         <div>
-          <div class="map-view-bar" role="group" aria-label="Map view">
-            <button class="map-view-tab is-active" type="button" data-map-view="plate" aria-pressed="true"><i data-icon="map" data-size="13"></i> Campus plate</button>
-            <button class="map-view-tab" type="button" data-map-view="live" aria-pressed="false"><i data-icon="globe" data-size="13"></i> Live map</button>
-            <span class="map-view-note" id="map-view-note">Offline-ready · real-world positions are approximate</span>
-          </div>
-
           <div class="map-frame" id="map-frame">
             <div class="map-frame-bar">
               <div class="map-frame-title">
@@ -151,16 +145,6 @@
                 <span class="map-hint" id="map-hint"><i data-icon="navigation" data-size="12"></i> Drag to pan · scroll or pinch to zoom</span>
               </div>
 
-            </div>
-
-            <div class="live-map-shell" id="live-map-shell" hidden>
-              <div class="live-map" id="live-map"></div>
-              <div class="live-map-legend" id="live-map-legend" aria-hidden="true"></div>
-              <div class="live-map-chip" id="live-map-chip" hidden></div>
-              <div class="live-map-status" id="live-map-status" role="status">
-                <i data-icon="globe" data-size="15"></i>
-                <span>Loading real-world map…</span>
-              </div>
             </div>
 
             <div class="map-frame-foot">

@@ -9,30 +9,7 @@ const typeOf = locationTypeOf;
 
 const filters = { q: '', type: '', selected: param('location') };
 const directions = { from: param('from'), to: param('to'), route: null };
-const requestedView = param('view') === 'live' ? 'live' : 'plate';
 let locations = [];
-
-/* ---------------------------------------------------------------- */
-/* Real-world coordinates                                             */
-/*                                                                   */
-/* The published campus plate has no GPS data, so real-world points    */
-/* are derived from the illustrated campus anchor. They are useful for */
-/* orientation, not survey-grade placement.                            */
-/* ---------------------------------------------------------------- */
-
-const CAMPUS_CENTRE = { lat: 17.0893372, lng: 82.0670772 };
-const CAMPUS_HALF_SPAN = { lat: 0.0044, lng: 0.0048 };
-
-function geoFromPercent(x, y) {
-  return [
-    +(CAMPUS_CENTRE.lat + ((50 - Number(y)) / 50) * CAMPUS_HALF_SPAN.lat).toFixed(6),
-    +(CAMPUS_CENTRE.lng + ((Number(x) - 50) / 50) * CAMPUS_HALF_SPAN.lng).toFixed(6),
-  ];
-}
-
-function geoForLocation(loc) {
-  return loc.map_x == null || loc.map_y == null ? null : geoFromPercent(loc.map_x, loc.map_y);
-}
 
 /* ---------------------------------------------------------------- */
 /* In-campus waypoint graph                                           */
@@ -380,15 +357,6 @@ function fitRoute() {
 }
 
 function focusLocation(id) {
-  if (liveMap && $('#map-frame')?.classList.contains('is-live')) {
-    const loc = locations.find((l) => l.id === id);
-    const geo = loc && geoForLocation(loc);
-    if (!geo) return;
-    filters.selected = id;
-    liveMap.setView(geo, Math.max(liveMap.getZoom(), 17), { animate: true });
-    syncLiveSelection();
-    return;
-  }
   const marker = document.querySelector(`.map-marker[data-loc="${CSS.escape(id)}"]`);
   if (!marker) return;
   centerOn(id);
@@ -802,7 +770,6 @@ function computeDirections({ scroll = false } = {}) {
 
   renderRoute();
   render();
-  syncLiveRoute();
   syncRouteUrl();
   if (scroll) scrollToDirections();
 }
@@ -821,7 +788,6 @@ function clearDirections() {
   if (host) host.innerHTML = '';
   renderRoute();
   render();
-  syncLiveRoute();
   syncRouteUrl();
 }
 
@@ -857,417 +823,6 @@ function wireDirections() {
   $('#dir-clear')?.addEventListener('click', clearDirections);
 }
 
-/* ---------------------------------------------------------------- */
-/* Real-world map view — loaded only when the visitor asks for it      */
-/* ---------------------------------------------------------------- */
-
-const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-const LEAFLET_JS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const TILE_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>';
-const LIVE_ZOOM = 16;
-const LABEL_MIN_ZOOM = 15;
-
-let liveMap = null;
-let livePlaces = null;
-let liveRouteLayer = null;
-let leafletPromise = null;
-
-function liveStatus(message) {
-  const host = $('#live-map-status');
-  if (!host) return;
-  const label = host.querySelector('span');
-  if (label) label.textContent = message || '';
-  host.hidden = !message;
-}
-
-function selectMapTab(name) {
-  document.querySelectorAll('[data-map-view]').forEach((btn) => {
-    const active = btn.dataset.mapView === name;
-    btn.classList.toggle('is-active', active);
-    btn.setAttribute('aria-pressed', String(active));
-  });
-  try {
-    const url = new URL(location.href);
-    if (name === 'live') url.searchParams.set('view', 'live');
-    else url.searchParams.delete('view');
-    history.replaceState(null, '', url);
-  } catch {
-    /* ignore blocked history */
-  }
-}
-
-function loadLeaflet() {
-  if (window.L) return Promise.resolve(window.L);
-  if (leafletPromise) return leafletPromise;
-  leafletPromise = new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = LEAFLET_CSS;
-    document.head.appendChild(link);
-
-    const script = document.createElement('script');
-    script.src = LEAFLET_JS;
-    script.async = true;
-    script.onload = () => (window.L ? resolve(window.L) : reject(new Error('Map library unavailable')));
-    script.onerror = () => reject(new Error('Map library could not load'));
-    document.head.appendChild(script);
-  });
-  return leafletPromise;
-}
-
-function livePinHtml(loc, index, { selected, end, dim }) {
-  const t = typeOf(loc.location_type);
-  const cls = [
-    'live-pin',
-    index % 2 === 1 ? 'is-above' : '',
-    selected ? 'is-selected' : '',
-    end ? 'is-end' : '',
-    dim ? 'is-dim' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-  return `<div class="${cls}" style="--pin-color:${t.color}">
-    <span class="live-pin-dot">${icon(t.icon, { size: 13 })}</span>
-    <span class="live-pin-label">${esc(loc.name)}</span>
-  </div>`;
-}
-
-function livePopupHtml(loc) {
-  const t = typeOf(loc.location_type);
-  const events = store.publishedEvents().filter((e) => e.location_id === loc.id).length;
-  return `<div class="live-popup">
-    <span class="live-popup-type" style="--pc:${t.color}">${icon(t.icon, { size: 12 })} ${esc(t.label)}</span>
-    <b>${esc(loc.name)}</b>
-    ${loc.description ? `<p>${esc(loc.description)}</p>` : ''}
-    ${events ? `<small>${events} event${events === 1 ? '' : 's'} here</small>` : ''}
-    <button type="button" class="live-popup-dir" data-live-dir="${esc(loc.id)}">${icon('navigation', { size: 13 })} Directions to here</button>
-  </div>`;
-}
-
-function buildLiveLegend() {
-  const host = $('#live-map-legend');
-  if (!host) return;
-  const types = [...new Set(locations.map((l) => l.location_type).filter(Boolean))].sort();
-  host.innerHTML =
-    '<b>Map key</b>' +
-    types
-      .map((type) => {
-        const t = typeOf(type);
-        return `<span style="--kc:${t.color}"><i></i>${esc(t.label)}</span>`;
-      })
-      .join('');
-}
-
-function syncLiveSelection() {
-  if (!livePlaces) return;
-  livePlaces.getLayers().forEach((marker) => {
-    const pin = marker.getElement()?.querySelector('.live-pin');
-    if (!pin || !marker._locId) return;
-    const on = marker._locId === filters.selected;
-    pin.classList.toggle('is-selected', on);
-    marker.setZIndexOffset(on ? 900 : marker._baseZ || 0);
-  });
-}
-
-function syncLiveMarkers() {
-  if (!liveMap || !window.L) return;
-  const L = window.L;
-  if (livePlaces) liveMap.removeLayer(livePlaces);
-  livePlaces = L.layerGroup().addTo(liveMap);
-
-  const route = directions.route;
-  const endpoints = route ? new Set([route.from.id, route.to.id]) : null;
-  const rows = visible().filter((loc) => loc.map_x != null && loc.map_y != null);
-
-  rows.forEach((loc, index) => {
-    const geo = geoForLocation(loc);
-    if (!geo) return;
-    const selected = loc.id === filters.selected;
-    const end = Boolean(endpoints && endpoints.has(loc.id));
-    const baseZ = selected ? 900 : end ? 600 : 0;
-    const marker = L.marker(geo, {
-      icon: L.divIcon({
-        className: 'live-pin-wrap',
-        html: livePinHtml(loc, index, { selected, end, dim: Boolean(route) && !end }),
-        iconSize: [26, 26],
-        iconAnchor: [13, 13],
-      }),
-      riseOnHover: true,
-      zIndexOffset: baseZ,
-      title: loc.name,
-    });
-    marker._locId = loc.id;
-    marker._baseZ = end ? 600 : 0;
-    marker.bindTooltip(esc(loc.name), { direction: 'top', offset: [0, -16], className: 'live-tip' });
-    marker.bindPopup(livePopupHtml(loc), { closeButton: true, maxWidth: 240, className: 'live-popup-box' });
-    marker.on('click', () => {
-      filters.selected = loc.id;
-      try {
-        const url = new URL(location.href);
-        url.searchParams.set('location', loc.id);
-        history.replaceState(null, '', url);
-      } catch {
-        /* ignore blocked history */
-      }
-      syncLiveSelection();
-      detail(loc);
-      document.querySelectorAll('#location-list .location-item').forEach((node) =>
-        node.classList.toggle('is-active', node.dataset.loc === loc.id)
-      );
-    });
-    marker.on('popupopen', () => {
-      document.querySelector('.live-popup-dir')?.addEventListener('click', () => setDirectionEndpoint('to', loc.id));
-    });
-    livePlaces.addLayer(marker);
-
-    const el = marker.getElement();
-    if (el) {
-      el.setAttribute('role', 'button');
-      el.setAttribute('aria-label', `${loc.name} — show details`);
-    }
-  });
-
-  declutterLiveLabels();
-}
-
-function bearingBetween(a, b) {
-  const toRad = (d) => (d * Math.PI) / 180;
-  const y = Math.sin(toRad(b[1] - a[1])) * Math.cos(toRad(b[0]));
-  const x =
-    Math.cos(toRad(a[0])) * Math.sin(toRad(b[0])) -
-    Math.sin(toRad(a[0])) * Math.cos(toRad(b[0])) * Math.cos(toRad(b[1] - a[1]));
-  return (Math.atan2(y, x) * 180) / Math.PI;
-}
-
-function hideLiveChip() {
-  const chip = $('#live-map-chip');
-  if (!chip) return;
-  chip.hidden = true;
-  chip.innerHTML = '';
-}
-
-function syncLiveRoute() {
-  if (!liveMap || !window.L) return;
-  const L = window.L;
-  if (liveRouteLayer) {
-    liveMap.removeLayer(liveRouteLayer);
-    liveRouteLayer = null;
-  }
-  hideLiveChip();
-  const route = directions.route;
-  if (!route) return;
-
-  const latlngs = route.points.map((p) => geoFromPercent(p.x, p.y));
-  liveRouteLayer = L.layerGroup().addTo(liveMap);
-
-  // Four stacked strokes: soft glow, white casing, violet core, light tread.
-  const strokes = [
-    { color: '#7c3ad9', weight: 20, opacity: 0.1, dashArray: null },
-    { color: '#ffffff', weight: 10, opacity: 0.97, dashArray: null },
-    { color: '#7c3ad9', weight: 5, opacity: 1, dashArray: null },
-    { color: '#ffffff', weight: 2, opacity: 0.85, dashArray: '1 9' },
-  ];
-  strokes.forEach((s) =>
-    L.polyline(latlngs, {
-      color: s.color,
-      weight: s.weight,
-      opacity: s.opacity,
-      dashArray: s.dashArray,
-      lineCap: 'round',
-      lineJoin: 'round',
-      interactive: false,
-    }).addTo(liveRouteLayer)
-  );
-
-  // Heading arrows sit at each segment midpoint, rotated to face travel.
-  for (let i = 0; i < latlngs.length - 1; i += 1) {
-    const a = latlngs[i];
-    const b = latlngs[i + 1];
-    const mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    const angle = Math.round(bearingBetween(a, b) - 90);
-    L.marker(mid, {
-      interactive: false,
-      keyboard: false,
-      icon: L.divIcon({
-        className: 'live-arrow-wrap',
-        html: `<span class="live-arrow" style="transform:rotate(${angle}deg)">${icon('chevron-right', { size: 11 })}</span>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8],
-      }),
-    }).addTo(liveRouteLayer);
-  }
-
-  // Numbered junctions make the step list easier to follow on the map.
-  route.points.forEach((p, i) => {
-    if (i === 0 || i === route.points.length - 1) return;
-    L.marker(geoFromPercent(p.x, p.y), {
-      interactive: false,
-      keyboard: false,
-      zIndexOffset: 400,
-      icon: L.divIcon({
-        className: 'live-waypoint-wrap',
-        html: `<span class="live-waypoint">${i}</span>`,
-        iconSize: [18, 18],
-        iconAnchor: [9, 9],
-      }),
-    }).addTo(liveRouteLayer);
-  });
-
-  const ends = [
-    {
-      position: latlngs[0],
-      className: 'live-end live-end-a',
-      badge: 'A',
-      label: route.from.name,
-      role: 'Start',
-    },
-    {
-      position: latlngs[latlngs.length - 1],
-      className: 'live-end live-end-b',
-      badge: 'B',
-      label: route.to.name,
-      role: 'Destination',
-    },
-  ];
-  ends.forEach(({ position, className, badge, label, role }) => {
-    L.marker(position, {
-      keyboard: false,
-      zIndexOffset: 1000,
-      icon: L.divIcon({
-        className: 'live-end-wrap',
-        html: `<span class="${className}"><span class="live-end-dot">${badge}</span><span class="live-end-label"><b>${esc(label)}</b><i>${role}</i></span></span>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
-      }),
-    }).addTo(liveRouteLayer);
-  });
-
-  liveMap.fitBounds(L.polyline(latlngs).getBounds(), { padding: [56, 56], maxZoom: 17 });
-
-  const chip = $('#live-map-chip');
-  if (chip) {
-    chip.hidden = false;
-    chip.innerHTML = `<span class="live-chip-a">A</span>${esc(route.from.name)}<i>${icon('arrow-right', { size: 12 })}</i><span class="live-chip-b">B</span>${esc(route.to.name)}<b>${icon('clock', { size: 12 })} ${route.minutes} min</b>`;
-  }
-}
-
-function syncLiveZoomClass() {
-  const host = $('#live-map');
-  if (!host || !liveMap) return;
-  host.classList.toggle('labels-off', liveMap.getZoom() < LABEL_MIN_ZOOM);
-}
-
-/* Greedy label declutter: keep the most important labels, drop the rest until
- * the visitor hovers or zooms in. Keeps the overview readable instead of a
- * pile of overlapping names. */
-let declutterFrame = 0;
-
-function declutterLiveLabels() {
-  const host = $('#live-map');
-  if (!host || declutterFrame) return;
-  declutterFrame = window.requestAnimationFrame(() => {
-    declutterFrame = 0;
-    const items = [...host.querySelectorAll('.live-pin-wrap')]
-      .map((wrap) => {
-        const pin = wrap.querySelector('.live-pin');
-        const label = pin?.querySelector('.live-pin-label');
-        if (!pin || !label) return null;
-        return { pin, label, r: label.getBoundingClientRect() };
-      })
-      .filter(Boolean);
-
-    items.forEach((item) => item.label.classList.remove('is-hidden'));
-
-    const priority = (item) =>
-      item.pin.classList.contains('is-selected') ? 0 : item.pin.classList.contains('is-end') ? 1 : 2;
-    items.sort((a, b) => priority(a) - priority(b) || a.r.top - b.r.top || a.r.left - b.r.left);
-
-    const kept = [];
-    items.forEach((item) => {
-      const collides = kept.some(
-        (k) =>
-          item.r.left < k.r.right + 3 &&
-          item.r.right > k.r.left - 3 &&
-          item.r.top < k.r.bottom + 3 &&
-          item.r.bottom > k.r.top - 3
-      );
-      if (collides && priority(item) === 2) item.label.classList.add('is-hidden');
-      else kept.push(item);
-    });
-  });
-}
-
-async function initLiveMap() {
-  liveStatus('Loading real-world map…');
-  try {
-    const L = await loadLeaflet();
-    if (!liveMap) {
-      liveMap = L.map('live-map', { zoomControl: false, scrollWheelZoom: true }).setView(
-        [CAMPUS_CENTRE.lat, CAMPUS_CENTRE.lng],
-        LIVE_ZOOM
-      );
-      L.control.zoom({ position: 'topright' }).addTo(liveMap);
-      L.tileLayer(TILE_URL, {
-        maxZoom: 19,
-        attribution: TILE_ATTRIBUTION,
-      }).addTo(liveMap);
-      liveMap.on('zoomend moveend', () => {
-        syncLiveZoomClass();
-        declutterLiveLabels();
-      });
-    }
-    buildLiveLegend();
-    syncLiveMarkers();
-    syncLiveRoute();
-    syncLiveZoomClass();
-    liveStatus('');
-    window.requestAnimationFrame(() => liveMap?.invalidateSize());
-    return true;
-  } catch {
-    liveStatus('');
-    selectMapTab('plate');
-    $('#map-frame')?.classList.remove('is-live');
-    const shell = $('#live-map-shell');
-    if (shell) shell.hidden = true;
-    const note = $('#map-view-note');
-    if (note) note.textContent = 'Live map needs internet — showing the offline campus plate.';
-    return false;
-  }
-}
-
-async function setMapView(name) {
-  const frame = $('#map-frame');
-  const shell = $('#live-map-shell');
-  const note = $('#map-view-note');
-
-  if (name === 'live' && !navigator.onLine) {
-    selectMapTab('plate');
-    if (note) note.textContent = 'Live map needs internet — showing the offline campus plate.';
-    return;
-  }
-
-  selectMapTab(name);
-  if (name === 'plate') {
-    frame?.classList.remove('is-live');
-    if (shell) shell.hidden = true;
-    if (note) note.textContent = 'Offline-ready · real-world positions are approximate';
-    return;
-  }
-
-  if (shell) shell.hidden = false;
-  frame?.classList.add('is-live');
-  if (note) note.textContent = 'Approximate positions · © OpenStreetMap contributors';
-  await initLiveMap();
-}
-
-function wireLiveView() {
-  document.querySelectorAll('[data-map-view]').forEach((btn) =>
-    btn.addEventListener('click', () => setMapView(btn.dataset.mapView))
-  );
-}
-
 function render() {
   const rows = visible();
   $('#map-markers').innerHTML = markers(rows);
@@ -1293,8 +848,6 @@ function render() {
       focusLocation(filters.selected);
     });
   });
-
-  syncLiveMarkers();
 }
 
 function buildTypeChips() {
@@ -1349,11 +902,8 @@ async function boot() {
   render();
   populateDirections();
   wireDirections();
-  wireLiveView();
-  syncLiveMarkers();
   if (directions.from && directions.to) computeDirections();
   if (filters.selected) window.requestAnimationFrame(() => centerOn(filters.selected));
-  if (requestedView === 'live') setMapView('live');
 
   $('#location-search').addEventListener(
     'input',
