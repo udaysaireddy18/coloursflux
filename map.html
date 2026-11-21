@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.44';
+        var stamp = 'v2.0.45';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -37,11 +37,11 @@
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.44" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.44" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.45" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.45" />
   <script type="module" src="assets/js/pages/map.js"></script>
 </head>
-<body>
+<body class="map-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header id="site-header" class="site-header"></header>
 
@@ -51,7 +51,8 @@
         <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Campus Map</span></nav>
         <span class="eyebrow"><i data-icon="navigation" data-size="13"></i> Campus navigation</span>
         <h1>Campus <span class="gradient-text">map</span></h1>
-        <p class="lead">Event venues, grounds, hostels, parking and college blocks across the Aditya University campus. Tap a marker for details, or pick a starting point and destination for walking directions anywhere on campus.</p>
+        <p class="lead map-lead-desktop">Event venues, grounds, hostels, parking and college blocks across the Aditya University campus. Tap a marker for details, or pick a starting point and destination for walking directions anywhere on campus.</p>
+        <p class="lead map-lead-mobile">Find campus places and walk between them — offline.</p>
         <div class="page-head-meta">
           <span class="badge badge-purple"><i data-icon="map" data-size="12"></i> Aditya University campus</span>
           <span class="badge badge-cyan"><i data-icon="wifi-off" data-size="12"></i> Works offline</span>
@@ -59,54 +60,20 @@
       </div>
     </section>
 
-    <section class="container" aria-label="Campus map and locations">
-      <div class="filter-panel" style="margin-bottom:18px">
+    <section class="container map-page-stack" aria-label="Campus map and locations">
+      <div class="filter-panel">
         <div class="filter-row">
           <div class="search-field">
             <i data-icon="search" data-size="18"></i>
             <label class="sr-only" for="location-search">Search locations</label>
-            <input class="input" id="location-search" type="search" placeholder="Search venues, grounds, hostels…" autocomplete="off" />
+            <input class="input" id="location-search" type="search" placeholder="Search campus places…" autocomplete="off" />
           </div>
           <button class="chip" id="reset-location" aria-pressed="false"><i data-icon="rotate-ccw" data-size="14"></i> Reset</button>
         </div>
         <div class="chip-row" id="type-chips" role="group" aria-label="Filter by location type"></div>
       </div>
 
-      <section class="card card-pad directions-panel" id="directions-panel" aria-labelledby="directions-title">
-        <div class="dir-head">
-          <div class="dir-heading">
-            <span class="dir-head-icon"><i data-icon="navigation" data-size="16"></i></span>
-            <span>
-              <h2 id="directions-title">Campus directions</h2>
-              <p class="micro dim">Choose where you are and where you want to go — the route works offline.</p>
-            </span>
-          </div>
-          <button class="btn btn-ghost btn-sm" id="dir-clear" type="button" hidden><i data-icon="x" data-size="13"></i> Clear</button>
-        </div>
-
-        <div class="dir-fields">
-          <label class="dir-field">
-            <span class="dir-field-label">From</span>
-            <select class="select" id="dir-from"><option value="">Choose your starting point</option></select>
-          </label>
-          <button class="dir-swap" id="dir-swap" type="button" aria-label="Swap starting point and destination" title="Swap places">
-            <i data-icon="swap" data-size="17"></i>
-          </button>
-          <label class="dir-field">
-            <span class="dir-field-label">To</span>
-            <select class="select" id="dir-to"><option value="">Choose your destination</option></select>
-          </label>
-        </div>
-
-        <div class="dir-actions">
-          <button class="btn btn-primary btn-sm" id="dir-go" type="button"><i data-icon="navigation" data-size="14"></i> Get directions</button>
-        </div>
-        <div class="dir-result" id="dir-result" aria-live="polite"></div>
-      </section>
-
-      <div id="map-status"></div>
-
-      <div class="map-layout" style="margin-top:16px">
+      <div class="map-layout">
         <div>
           <div class="map-frame" id="map-frame">
             <div class="map-frame-bar">
@@ -144,8 +111,11 @@
                 <span class="map-scale" id="map-scale">100%</span>
                 <span class="map-hint" id="map-hint"><i data-icon="navigation" data-size="12"></i> Drag to pan · scroll or pinch to zoom</span>
               </div>
-
             </div>
+
+            <a class="map-route-fab" href="#directions-panel" aria-label="Open campus directions">
+              <i data-icon="navigation" data-size="15"></i><span>Route</span>
+            </a>
 
             <div class="map-frame-foot">
               <div class="map-key" id="map-key" aria-label="Location type key"></div>
@@ -153,19 +123,53 @@
             </div>
           </div>
 
-          <p class="micro dim" style="margin-top:10px">
+          <div id="map-status"></div>
+
+          <p class="micro dim map-tip">
             <i data-icon="info" data-size="12"></i>
             Positions follow the official Aditya University campus map. Tap a marker for venue details.
           </p>
         </div>
-
-        <aside class="stack" style="--gap:12px" aria-label="Location directory">
-          <div class="card card-pad" id="location-detail">
-            <p class="small muted">Select a location to see its details.</p>
-          </div>
-          <div class="location-list" id="location-list"></div>
-        </aside>
       </div>
+
+      <div class="card card-pad" id="location-detail">
+        <p class="small muted">Select a location to see its details.</p>
+      </div>
+
+      <section class="card card-pad directions-panel" id="directions-panel" aria-labelledby="directions-title">
+        <div class="dir-head">
+          <div class="dir-heading">
+            <span class="dir-head-icon"><i data-icon="navigation" data-size="16"></i></span>
+            <span>
+              <h2 id="directions-title">Campus directions</h2>
+              <p class="micro dim dir-description">Choose where you are and where you want to go — the route works offline.</p>
+              <p class="micro dim dir-description-short">Road-only walking directions, offline.</p>
+            </span>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="dir-clear" type="button" hidden><i data-icon="x" data-size="13"></i> Clear</button>
+        </div>
+
+        <div class="dir-fields">
+          <label class="dir-field">
+            <span class="dir-field-label">From</span>
+            <select class="select" id="dir-from"><option value="">Choose your starting point</option></select>
+          </label>
+          <button class="dir-swap" id="dir-swap" type="button" aria-label="Swap starting point and destination" title="Swap places">
+            <i data-icon="swap" data-size="17"></i>
+          </button>
+          <label class="dir-field">
+            <span class="dir-field-label">To</span>
+            <select class="select" id="dir-to"><option value="">Choose your destination</option></select>
+          </label>
+        </div>
+
+        <div class="dir-actions">
+          <button class="btn btn-primary btn-sm" id="dir-go" type="button"><i data-icon="navigation" data-size="14"></i> Get directions</button>
+        </div>
+        <div class="dir-result" id="dir-result" aria-live="polite"></div>
+      </section>
+
+      <div class="location-list" id="location-list" aria-label="Location directory"></div>
     </section>
   </main>
 
