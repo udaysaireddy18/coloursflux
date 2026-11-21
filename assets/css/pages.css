@@ -1335,3 +1335,18 @@
   .map-tool { width: 36px; height: 36px; }
   .featured-vendor-rail { grid-auto-columns: minmax(220px, 84%); }
 }
+
+/* subtle scroll-linked depth on existing artwork */
+.page-ornament {
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+}
+
+.detail-hero img {
+  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(1.025);
+}
+
+@media (max-width: 720px) {
+  .detail-hero img {
+    transform: none;
+  }
+}

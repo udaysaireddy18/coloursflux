@@ -10,6 +10,8 @@ import {
   phaseBadge,
   eventPhase,
   toast,
+  previewButton,
+  mountMotion,
 } from '../ui.js';
 import { mountIcons, icon } from '../icons.js';
 import { esc, param, formatDay, formatTimeRange, slugify } from '../util.js';
@@ -118,6 +120,7 @@ function render(ev) {
       <article>
         <div class="detail-hero">
           ${imgTag(ev.image_url, `${ev.title} artwork`, { eager: true })}
+          ${previewButton(ev.image_url, ev.title, { cls: 'detail-preview' })}
           <div class="hero-tags">
             <span class="badge cat-badge-solid" style="--cat:${cat.color}">${icon(cat.icon, { size: 12 })} ${esc(cat.label)}</span>
             ${ev.featured ? `<span class="badge badge-magenta">${icon('star', { size: 12 })} Featured</span>` : ''}
@@ -217,6 +220,7 @@ async function boot() {
     }
   }
 
+  mountMotion(document);
   wireBookmarks(document);
   document.querySelectorAll('[data-icon]').forEach(() => mountIcons());
   mountIcons();

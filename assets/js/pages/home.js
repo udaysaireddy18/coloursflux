@@ -12,6 +12,8 @@ import {
   mapPlate,
   staticMapMarkers,
   locationTypeOf,
+  imgTag,
+  mountMotion,
 } from '../ui.js';
 import { mountIcons, icon } from '../icons.js';
 import { esc } from '../util.js';
@@ -185,7 +187,7 @@ function render() {
       ? `<p class="micro dim" style="margin-bottom:8px">Supported by</p>
          <div class="sponsor-strip">${sponsors
            .map(
-             (sp) => `<span class="sponsor-pill">${sp.logo_url ? `<img src="${esc(sp.logo_url)}" alt="">` : icon('sparkles', { size: 14 })}${esc(sp.sponsor_name)}</span>`
+             (sp) => `<span class="sponsor-pill">${sp.logo_url ? imgTag(sp.logo_url, '', { cls: 'sponsor-logo' }) : icon('sparkles', { size: 14 })}${esc(sp.sponsor_name)}</span>`
            )
            .join('')}</div>
          <p class="micro dim" style="margin-top:8px">Paid placements are labelled and managed by the organisers.</p>`
@@ -212,6 +214,7 @@ async function boot() {
   await store.init();
   mountChrome();
   render();
+  mountMotion(document);
 
   wireBookmarks(document);
   wireDataDownload(document.querySelector('[data-download-data]'));

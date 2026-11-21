@@ -263,6 +263,29 @@
   color: var(--text);
   background: rgba(107, 43, 208, 0.09);
   transform: translateY(-1px);
+  box-shadow:
+    0 10px 22px -16px rgba(71, 18, 151, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.66);
+}
+
+.site-header .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 5px;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-deep) 28%, var(--magenta) 72%, transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.28s var(--ease);
+  pointer-events: none;
+}
+
+.site-header .nav-link:hover::after,
+.site-header .nav-link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 .site-header .nav-link[aria-current="page"] {
@@ -367,6 +390,7 @@
 }
 
 .mobile-nav a {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -376,6 +400,30 @@
   font-weight: 500;
   border: 1px solid transparent;
   font-size: 0.92rem;
+  overflow: hidden;
+  transition: transform 0.2s var(--ease), background-color 0.2s, border-color 0.2s;
+}
+
+.mobile-nav a::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--grad-cta);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.24s var(--ease);
+}
+
+.mobile-nav a:hover,
+.mobile-nav a:focus-visible,
+.mobile-nav a[aria-current="page"]::after {
+  transform: none;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a:focus-visible {
+  transform: translateX(3px);
 }
 
 .mobile-nav a[aria-current="page"] {
@@ -1053,13 +1101,16 @@
 .event-card {
   display: flex;
   flex-direction: column;
+  transform-style: preserve-3d;
   transition: transform 0.18s var(--ease), border-color 0.18s, box-shadow 0.18s;
 }
 
-.event-card:hover {
-  transform: translateY(-3px);
+.event-card:hover,
+.event-card.is-tilting {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-3px);
   border-color: var(--border-strong);
   box-shadow: 0 28px 58px -34px rgba(89, 32, 183, 0.75), var(--shadow);
+  transition: transform 0.1s ease-out, border-color 0.18s, box-shadow 0.18s;
 }
 
 /* luminous gradient edge on card hover */
@@ -1071,7 +1122,9 @@
   z-index: 4;
   padding: 1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(89, 32, 183, 0.75), rgba(113, 30, 201, 0.6) 50%, rgba(113, 30, 201, 0.65));
+  background:
+    radial-gradient(220px circle at var(--tilt-glow-x, 50%) var(--tilt-glow-y, 50%), rgba(183, 32, 155, 0.42), transparent 72%),
+    linear-gradient(135deg, rgba(89, 32, 183, 0.75), rgba(113, 30, 201, 0.6) 50%, rgba(113, 30, 201, 0.65));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -1181,6 +1234,50 @@
 .date-chip span {
   font-size: 0.7rem;
   color: var(--muted);
+}
+
+/* quiet artwork preview affordance — never replaces the card link */
+.image-preview-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  z-index: 6;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: rgba(24, 14, 40, 0.72);
+  color: #ffffff;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.9);
+  transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), background-color 0.22s;
+}
+
+.image-preview-btn:hover,
+.image-preview-btn:focus-visible {
+  background: rgba(74, 15, 174, 0.9);
+}
+
+.event-card:hover .image-preview-btn,
+.event-card:focus-within .image-preview-btn,
+.detail-hero .image-preview-btn {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.detail-hero .image-preview-btn {
+  right: 16px;
+}
+
+@media (hover: none) {
+  .image-preview-btn {
+    opacity: 0.88;
+    transform: translateY(-50%) scale(1);
+  }
 }
 
 .event-body {
@@ -1575,6 +1672,170 @@
   padding: 14px 20px;
   border-top: 1px solid var(--hairline);
   background: rgba(49, 25, 77, 0.02);
+}
+
+/* ---------- full-screen artwork preview ---------- */
+
+.lightbox {
+  width: min(1180px, 94vw);
+  max-width: none;
+  max-height: 92dvh;
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  color: #ffffff;
+  overflow: visible;
+}
+
+.lightbox::backdrop {
+  background:
+    radial-gradient(60% 70% at 50% 40%, rgba(86, 22, 190, 0.28), transparent 72%),
+    rgba(18, 12, 28, 0.78);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  animation: lightbox-backdrop-in 0.28s ease both;
+}
+
+.lightbox-shell {
+  position: relative;
+  padding: 14px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(155deg, rgba(35, 16, 62, 0.96), rgba(20, 12, 34, 0.98));
+  box-shadow: 0 44px 100px -34px rgba(7, 3, 18, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.lightbox[open] .lightbox-shell {
+  animation: lightbox-in 0.34s var(--ease) both;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(20, 12, 34, 0.7);
+  color: #ffffff;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(123, 30, 201, 0.9);
+  transform: rotate(4deg);
+}
+
+.lightbox-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
+  align-items: center;
+  gap: 8px;
+}
+
+.lightbox-figure {
+  margin: 0;
+  min-width: 0;
+  text-align: center;
+}
+
+.lightbox-image {
+  width: 100%;
+  max-height: calc(92dvh - 110px);
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lightbox-caption {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+
+.lightbox-caption:empty {
+  display: none;
+}
+
+.lightbox-nav {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.lightbox-nav:hover {
+  background: rgba(139, 34, 194, 0.65);
+  transform: scale(1.06);
+}
+
+.lightbox-nav[hidden] {
+  display: none;
+}
+
+html.lightbox-open .gold-dust,
+html.lightbox-open .ambient-light i {
+  animation-play-state: paused;
+}
+
+@keyframes lightbox-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes lightbox-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .lightbox {
+    width: 100vw;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+
+  .lightbox-shell {
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    padding: 10px;
+  }
+
+  .lightbox-stage {
+    grid-template-columns: minmax(0, 1fr);
+    height: 100%;
+  }
+
+  .lightbox-image {
+    max-height: calc(100dvh - 110px);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-nav:hover {
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
 }
 
 /* ---------- skeletons / states ---------- */
@@ -2761,7 +3022,8 @@
 }
 
 @keyframes sun-turn {
-  to { transform: translateY(-50%) rotate(360deg); }
+  from { transform: translateY(calc(-50% + var(--parallax-y, 0px))) rotate(0deg); }
+  to { transform: translateY(calc(-50% + var(--parallax-y, 0px))) rotate(360deg); }
 }
 
 /* hero: three fine orbit rings with travelling violet beads */
@@ -4191,4 +4453,88 @@
   .map-page .map-tool { width: 34px; height: 34px; }
   .map-page .map-frame-title small { display: none; }
   .map-page .map-route-fab { right: 14px; bottom: 50px; }
+}
+
+/* ============================================================
+   Premium motion layer
+   Additive lighting and parallax only — no layout or palette shift.
+   ============================================================ */
+
+.ambient-light {
+  position: fixed;
+  inset: -22%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.ambient-light i {
+  position: absolute;
+  display: block;
+  width: 54vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(96px);
+  opacity: 0.13;
+  will-change: transform;
+}
+
+.ambient-light i:nth-child(1) {
+  left: -8%;
+  top: -12%;
+  background: radial-gradient(circle, rgba(107, 43, 208, 0.95), transparent 70%);
+  animation: ambient-drift-a 32s ease-in-out infinite alternate;
+}
+
+.ambient-light i:nth-child(2) {
+  right: -12%;
+  top: 8%;
+  background: radial-gradient(circle, rgba(183, 32, 155, 0.8), transparent 70%);
+  animation: ambient-drift-b 38s ease-in-out infinite alternate;
+  animation-delay: -11s;
+}
+
+.ambient-light i:nth-child(3) {
+  left: 26%;
+  bottom: -24%;
+  background: radial-gradient(circle, rgba(47, 111, 107, 0.72), transparent 70%);
+  animation: ambient-drift-c 44s ease-in-out infinite alternate;
+  animation-delay: -19s;
+}
+
+@keyframes ambient-drift-a {
+  from { transform: translate3d(-4%, 2%, 0) scale(0.92); }
+  to { transform: translate3d(8%, 7%, 0) scale(1.12); }
+}
+
+@keyframes ambient-drift-b {
+  from { transform: translate3d(6%, -4%, 0) scale(1.08); }
+  to { transform: translate3d(-8%, 5%, 0) scale(0.94); }
+}
+
+@keyframes ambient-drift-c {
+  from { transform: translate3d(0, 4%, 0) scale(0.95); }
+  to { transform: translate3d(-6%, -8%, 0) scale(1.14); }
+}
+
+/* Parallax hooks. JS only writes --parallax-y, so layout never depends on it. */
+.hero-aurora {
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+}
+
+.hero-rings,
+.hero-sun {
+  transform: translate3d(0, calc(-50% + var(--parallax-y, 0px)), 0);
+}
+
+@media (max-width: 720px) {
+  .ambient-light i {
+    width: 78vmax;
+    filter: blur(64px);
+    opacity: 0.1;
+  }
+
+  .ambient-light i:nth-child(3) { display: none; }
+  .event-card { transform-style: flat; }
 }

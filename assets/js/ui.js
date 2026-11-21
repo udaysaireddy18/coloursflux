@@ -53,6 +53,7 @@ function currentPage() {
 
 let chromeMounted = false;
 let revealReady = false;
+let motionReady = false;
 
 function initReveals() {
   if (revealReady) return;
@@ -113,6 +114,263 @@ function initReveals() {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+}
+
+/* ---------------------------------------------------------------- */
+/* Motion polish                                                    */
+/* ---------------------------------------------------------------- */
+
+/** Shared reduced-motion check for every progressive effect. */
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** Three very soft colour clouds behind the lilac page surface. */
+function mountAmbientLight() {
+  if (document.querySelector('.ambient-light')) return;
+  const layer = document.createElement('div');
+  layer.className = 'ambient-light';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = '<i></i><i></i><i></i>';
+  document.body.prepend(layer);
+}
+
+/** A quiet, progressive page entrance that never blocks content if JS fails. */
+function mountPageEnter() {
+  document.documentElement.classList.add('page-ready');
+  document.getElementById('main')?.classList.add('page-enter');
+}
+
+let activeTiltCard = null;
+
+function clearCardTilt() {
+  if (!activeTiltCard) return;
+  activeTiltCard.classList.remove('is-tilting');
+  activeTiltCard.style.removeProperty('--tilt-x');
+  activeTiltCard.style.removeProperty('--tilt-y');
+  activeTiltCard.style.removeProperty('--tilt-glow-x');
+  activeTiltCard.style.removeProperty('--tilt-glow-y');
+  activeTiltCard = null;
+}
+
+/** Pointer-tracked 3D tilt for event cards plus button sheen coordinates. */
+function mountPointerPolish() {
+  if (prefersReducedMotion()) return;
+
+  document.addEventListener(
+    'pointermove',
+    (e) => {
+      const card = e.target.closest?.('.event-card');
+      if (card) {
+        if (activeTiltCard && activeTiltCard !== card) clearCardTilt();
+        if (window.matchMedia('(pointer: fine)').matches) {
+          const box = card.getBoundingClientRect();
+          const px = Math.min(1, Math.max(0, (e.clientX - box.left) / box.width));
+          const py = Math.min(1, Math.max(0, (e.clientY - box.top) / box.height));
+          card.style.setProperty('--tilt-x', `${((0.5 - py) * 5.5).toFixed(2)}deg`);
+          card.style.setProperty('--tilt-y', `${((px - 0.5) * 7).toFixed(2)}deg`);
+          card.style.setProperty('--tilt-glow-x', `${(px * 100).toFixed(1)}%`);
+          card.style.setProperty('--tilt-glow-y', `${(py * 100).toFixed(1)}%`);
+          card.classList.add('is-tilting');
+          activeTiltCard = card;
+        }
+      } else if (!card) {
+        clearCardTilt();
+      }
+
+      const control = e.target.closest?.('.btn, .chip, .social-btn, .map-tool');
+      if (!control) return;
+      const box = control.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      control.style.setProperty('--btn-x', `${(((e.clientX - box.left) / box.width) * 100).toFixed(1)}%`);
+      control.style.setProperty('--btn-y', `${(((e.clientY - box.top) / box.height) * 100).toFixed(1)}%`);
+    },
+    { passive: true }
+  );
+
+  document.addEventListener(
+    'pointerout',
+    (e) => {
+      if (!activeTiltCard) return;
+      if (e.relatedTarget && activeTiltCard.contains(e.relatedTarget)) return;
+      clearCardTilt();
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('blur', clearCardTilt);
+}
+
+/* ---------- full-screen artwork previews ------------------------ */
+
+let lightbox = null;
+let lightboxItems = [];
+let lightboxIndex = 0;
+let lightboxToken = 0;
+
+function lightboxDialog() {
+  if (lightbox) return lightbox;
+  lightbox = document.createElement('dialog');
+  lightbox.className = 'lightbox';
+  lightbox.setAttribute('aria-label', 'Artwork preview');
+  lightbox.innerHTML = `
+    <div class="lightbox-shell">
+      <button type="button" class="lightbox-close" data-lightbox-close aria-label="Close preview">${icon('x', { size: 18 })}</button>
+      <div class="lightbox-stage">
+        <button type="button" class="lightbox-nav lightbox-prev" data-lightbox-prev aria-label="Previous image">${icon('chevron-left', { size: 22 })}</button>
+        <figure class="lightbox-figure">
+          <img class="lightbox-image" alt="" decoding="async" />
+          <figcaption class="lightbox-caption"></figcaption>
+        </figure>
+        <button type="button" class="lightbox-nav lightbox-next" data-lightbox-next aria-label="Next image">${icon('chevron-right', { size: 22 })}</button>
+      </div>
+    </div>`;
+  document.body.appendChild(lightbox);
+  mountIcons(lightbox);
+
+  lightbox.querySelector('[data-lightbox-close]').addEventListener('click', () => lightbox.close());
+  lightbox.querySelector('[data-lightbox-prev]').addEventListener('click', () => stepLightbox(-1));
+  lightbox.querySelector('[data-lightbox-next]').addEventListener('click', () => stepLightbox(1));
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.close();
+  });
+  lightbox.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+    if (e.key === 'ArrowRight') stepLightbox(1);
+  });
+  lightbox.addEventListener('close', () => document.documentElement.classList.remove('lightbox-open'));
+  return lightbox;
+}
+
+function paintLightbox(direction = 0) {
+  const item = lightboxItems[lightboxIndex];
+  if (!item || !lightbox) return;
+  const figure = lightbox.querySelector('.lightbox-figure');
+  const image = lightbox.querySelector('.lightbox-image');
+  const caption = lightbox.querySelector('.lightbox-caption');
+  const token = ++lightboxToken;
+
+  lightbox.querySelectorAll('.lightbox-nav').forEach((btn) => {
+    btn.hidden = lightboxItems.length < 2;
+  });
+  caption.textContent = item.caption || '';
+
+  const swap = () => {
+    if (token !== lightboxToken) return;
+    image.src = item.src;
+    image.alt = item.caption || 'Artwork preview';
+  };
+
+  if (prefersReducedMotion() || !figure.animate || !direction) {
+    swap();
+    return;
+  }
+
+  figure
+    .animate(
+      [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-direction * 14}px)` }],
+      { duration: 120, easing: 'ease-in', fill: 'forwards' }
+    )
+    .finished.then(() => {
+      if (token !== lightboxToken) return;
+      swap();
+      figure
+        .animate(
+          [{ opacity: 0, transform: `translateX(${direction * 14}px)` }, { opacity: 1, transform: 'none' }],
+          { duration: 240, easing: 'cubic-bezier(.2,.7,.2,1)' }
+        )
+        .finished.catch(() => {});
+    })
+    .catch(() => {});
+}
+
+function stepLightbox(step) {
+  if (lightboxItems.length < 2) return;
+  lightboxIndex = (lightboxIndex + step + lightboxItems.length) % lightboxItems.length;
+  paintLightbox(step);
+}
+
+function mountLightbox() {
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest?.('[data-preview-src]');
+    if (!trigger || trigger.closest('.lightbox')) return;
+    e.preventDefault();
+    lightboxItems = [...document.querySelectorAll('[data-preview-src]')].map((el) => ({
+      src: el.dataset.previewSrc,
+      caption: el.dataset.previewCaption || el.getAttribute('aria-label') || '',
+    }));
+    const found = lightboxItems.findIndex((item) => item.src === trigger.dataset.previewSrc);
+    if (found < 0) return;
+    lightboxIndex = found;
+    const dialog = lightboxDialog();
+    paintLightbox();
+    document.documentElement.classList.add('lightbox-open');
+    if (!dialog.open) dialog.showModal();
+  });
+}
+
+/* ---------- restrained section parallax ------------------------- */
+
+const PARALLAX_TARGETS = [
+  { selector: '.hero-aurora', factor: 0.1 },
+  { selector: '.hero-sun', factor: 0.07 },
+  { selector: '.hero-rings', factor: 0.05 },
+  { selector: '.page-ornament', factor: 0.12 },
+  { selector: '.detail-hero img', factor: 0.05 },
+];
+
+let parallaxItems = [];
+
+function refreshParallax() {
+  parallaxItems = [];
+  if (prefersReducedMotion()) return;
+  PARALLAX_TARGETS.forEach(({ selector, factor }) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.style.setProperty('--parallax-y', '0px');
+      parallaxItems.push({ el, factor, top: el.getBoundingClientRect().top + window.scrollY, height: el.offsetHeight });
+    });
+  });
+  updateParallax();
+}
+
+let parallaxTicking = false;
+
+function updateParallax() {
+  parallaxTicking = false;
+  if (!parallaxItems.length) return;
+  const viewport = window.innerHeight;
+  const scale = window.innerWidth < 720 ? 0.5 : 1;
+  parallaxItems.forEach(({ el, factor, top, height }) => {
+    const distance = window.scrollY + viewport / 2 - (top + height / 2);
+    const limit = window.innerWidth < 720 ? 18 : 34;
+    const y = Math.max(-limit, Math.min(limit, distance * factor * scale));
+    el.style.setProperty('--parallax-y', `${y.toFixed(1)}px`);
+  });
+}
+
+function mountParallax() {
+  if (prefersReducedMotion()) return;
+  const onScroll = () => {
+    if (parallaxTicking) return;
+    parallaxTicking = true;
+    requestAnimationFrame(updateParallax);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', refreshParallax, { passive: true });
+  refreshParallax();
+}
+
+/** Mount every additive effect once; refresh image hooks after renders. */
+export function mountMotion(root = document) {
+  if (!motionReady) {
+    motionReady = true;
+    mountAmbientLight();
+    mountPageEnter();
+    mountPointerPolish();
+    mountLightbox();
+    mountParallax();
+  } else {
+    refreshParallax();
+  }
+  mountImageFallbacks(root);
 }
 
 /* ---------------------------------------------------------------- */
@@ -324,7 +582,7 @@ export function mountChrome({ active } = {}) {
 
 
   mountIcons();
-  mountImageFallbacks();
+  mountMotion();
   initReveals();
   mountPointerFx();
   chromeMounted = true;
@@ -630,7 +888,8 @@ const PLACEHOLDER = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
 )}`;
 
 export function mountImageFallbacks(root = document) {
-  root.querySelectorAll('img[data-fallback]').forEach((img) => {
+  root.querySelectorAll('img[data-fallback]:not([data-fallback-ready])').forEach((img) => {
+    img.dataset.fallbackReady = '1';
     img.addEventListener(
       'error',
       () => {
@@ -643,7 +902,12 @@ export function mountImageFallbacks(root = document) {
 }
 
 export function imgTag(src, alt, { cls = '', eager = false } = {}) {
-  return `<img src="${esc(safeUrl(src, PLACEHOLDER))}" alt="${esc(alt)}" class="${cls}" loading="${eager ? 'eager' : 'lazy'}" decoding="async" data-fallback>`;
+  return `<img src="${esc(safeUrl(src, PLACEHOLDER))}" alt="${esc(alt)}" class="${cls}" loading="${eager ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${eager ? 'high' : 'auto'}" data-fallback>`;
+}
+
+/** Optional full-screen preview affordance for existing artwork. */
+export function previewButton(src, caption, { cls = '' } = {}) {
+  return `<button type="button" class="image-preview-btn ${cls}" data-preview-src="${esc(safeUrl(src, PLACEHOLDER))}" data-preview-caption="${esc(caption)}" aria-label="Preview ${esc(caption)} artwork">${icon('maximize', { size: 15 })}</button>`;
 }
 
 /* ---------------------------------------------------------------- */
@@ -691,8 +955,8 @@ export function locationTypeOf(type) {
  * Decorative campus plate. Markers are positioned as a percentage of the
  * board, so the SVG stretches to the container and stays aligned at any size.
  */
-export function mapPlate() {
-  return `<img class="map-img" src="assets/img/campus-map.webp" alt="Aditya University campus map showing bhavans, grounds, hostels, parking and college blocks" width="1700" height="1178" decoding="async" draggable="false" />`;
+export function mapPlate({ eager = false } = {}) {
+  return `<img class="map-img" src="assets/img/campus-map.webp" alt="Aditya University campus map showing bhavans, grounds, hostels, parking and college blocks" width="1700" height="1178" loading="${eager ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${eager ? 'high' : 'auto'}" draggable="false" data-fallback />`;
 }
 
 /**
@@ -732,6 +996,7 @@ export function eventCard(ev) {
       </div>
       ${phase === 'cancelled' ? '<span class="badge badge-red" style="position:absolute;right:12px;bottom:12px;z-index:2">Cancelled</span>' : ''}
     </a>
+    ${previewButton(ev.image_url, ev.title)}
     <div class="event-body">
       <h3 class="event-title"><a href="event.html?slug=${encodeURIComponent(ev.slug || ev.id)}">${esc(ev.title)}</a></h3>
       <div class="meta-row">${icon('map-pin', { size: 14 })}<span>${esc(loc?.name || 'Venue to be announced')}</span></div>

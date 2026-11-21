@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v2.0.45';
+const VERSION = 'v2.0.46';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -32,10 +32,10 @@ const SHELL = [
   './terms.html',
   './offline.html',
   './manifest.webmanifest',
-  './assets/css/base.css',
-  './assets/css/components.css?v=2.0.45',
-  './assets/css/pages.css?v=2.0.45',
-  './assets/css/intro.css?v=6',
+  './assets/css/base.css?v=2.0.46',
+  './assets/css/components.css?v=2.0.46',
+  './assets/css/pages.css?v=2.0.46',
+  './assets/css/intro.css?v=7',
   './assets/js/env.js',
   './assets/js/config.js',
   './assets/js/icons.js',
@@ -126,17 +126,21 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(SHELL_CACHE);
-      // addAll is all-or-nothing; add individually so one 404 cannot block install.
-      await Promise.all(
-        SHELL.map(async (url) => {
+      // addAll is all-or-nothing; add individually so one 404 cannot block
+      // install. Small batches keep the first paint from competing with a
+      // hundred simultaneous image requests.
+      const queue = [...SHELL];
+      const worker = async () => {
+        for (let url = queue.shift(); url; url = queue.shift()) {
           try {
             const res = await fetch(new Request(url, { cache: 'reload' }));
             if (res.ok) await cache.put(url, res);
           } catch {
             /* keep installing with whatever succeeded */
           }
-        })
-      );
+        }
+      };
+      await Promise.all(Array.from({ length: 8 }, worker));
       // Take over as soon as the new shell is cached. The page listens for
       // `controllerchange` and reloads once, so a version bump reaches every
       // visitor without them having to dismiss an update banner.

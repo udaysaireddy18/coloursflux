@@ -1,5 +1,5 @@
 import store from '../store.js';
-import { mountChrome, mountSyncBar, emptyState, mapPlate, locationTypeOf } from '../ui.js';
+import { mountChrome, mountSyncBar, emptyState, mapPlate, locationTypeOf, mountMotion } from '../ui.js';
 import { mountIcons, icon } from '../icons.js';
 import { esc, param, debounce } from '../util.js';
 
@@ -953,7 +953,8 @@ function buildTypeChips() {
 async function boot() {
   mountChrome();
   mountIcons();
-  $('#map-art').innerHTML = mapPlate();
+  $('#map-art').innerHTML = mapPlate({ eager: true });
+  mountMotion(document);
   wireView();
   applyView();
   await store.init();

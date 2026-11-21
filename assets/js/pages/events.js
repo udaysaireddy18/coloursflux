@@ -8,6 +8,7 @@ import {
   wireBookmarks,
   wireDataDownload,
   categoryOf,
+  mountMotion,
 } from '../ui.js';
 import { mountIcons, icon } from '../icons.js';
 import { esc, debounce, param, uniqueDays, groupBy, formatDay, sortByDate } from '../util.js';
@@ -103,6 +104,7 @@ function render() {
       text: 'Organisers have not published events. Announcements will confirm when the schedule goes live.',
       action: '<a class="btn btn-sm btn-outline" href="announcements.html">Read announcements</a>',
     });
+    mountMotion(host);
     return;
   }
 
@@ -116,11 +118,13 @@ function render() {
       action: '<button class="btn btn-sm btn-outline" data-clear>Clear filters</button>',
     });
     host.querySelector('[data-clear]')?.addEventListener('click', clearFilters);
+    mountMotion(host);
     return;
   }
 
   if (filters.view === 'grid') {
     host.innerHTML = `<div class="grid grid-3">${rows.map(eventCard).join('')}</div>`;
+    mountMotion(host);
     return;
   }
 
@@ -143,6 +147,7 @@ function render() {
       </section>`;
     })
     .join('');
+  mountMotion(host);
 }
 
 function clearFilters() {
