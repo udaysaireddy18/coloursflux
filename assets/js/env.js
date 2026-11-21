@@ -5,7 +5,7 @@
  * These two values are PUBLIC by design (RLS protects your data). Never put the
  * service_role key or any secret in this file.
  *
- * Leave both blank to run the app in labelled DEMO mode with sample data.
+ * Leave both blank to run the app in demo mode with sample data.
  */
 export const ENV = {
   SUPABASE_URL: '',

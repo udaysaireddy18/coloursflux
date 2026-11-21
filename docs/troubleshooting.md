@@ -36,10 +36,9 @@ Get-ChildItem -Recurse assets\js\*.js | ForEach-Object {
 
 ---
 
-## 2. The "Sample records" strip will not go away
+## 2. Seeded sample rows are still present
 
-The strip is driven by `is_sample = true` on loaded rows — not by whether
-credentials exist. Work through these in order.
+The dashboard flags rows with `is_sample = true`. Work through these in order.
 
 1. **`assets/js/env.js` is still blank.** It must contain both values:
 
@@ -70,12 +69,12 @@ credentials exist. Work through these in order.
    update public.app_config set is_sample = false where id = 'app';
    ```
 
-4. **Only some tables loaded.** The strip appears if *any* row is a sample. A
-   single leftover sample vendor or notice is enough to keep it on.
+4. **Only some tables loaded.** A single leftover sample vendor or notice keeps
+   the dashboard warning visible.
 
-If the public site shows the strip but the dashboard reports zero samples, the
-public data is coming from the offline cache: clear it from **Install → Clear
-saved data** and reload.
+If the dashboard reports zero samples but the public data looks stale, the data
+is coming from the offline cache: clear it from **Install → Clear saved data**
+and reload.
 
 ---
 
@@ -234,8 +233,7 @@ hardcoded timer.
    ```
 
 4. **In demo mode** the date comes from `FALLBACK_CONFIG` / the sample config
-   (7 Jan 2027) and is labelled as sample data. That is a configured date, not a
-   fake timer.
+   (7 Jan 2027). That is a configured date, not a fake timer.
 5. **Cached page.** Reload; the countdown is computed from the loaded config.
 
 ---
@@ -416,7 +414,7 @@ Collect this before asking for help:
 1. The exact page and action.
 2. DevTools → Console output (full error text) and the failing request from
    Network (status, response body).
-3. Whether the app is in demo mode (sample strip visible) or live.
+3. Whether the app is in demo mode or live.
 4. The relevant row from SQL: `select * from public.events where id = '…';`
 5. Your role: `select * from public.profiles where id = auth.uid();`
 6. Browser and version, and whether it happens in a private window.

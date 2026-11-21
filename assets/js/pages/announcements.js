@@ -78,11 +78,9 @@ function render() {
     render();
   });
 
-  $('#last-updated').textContent = store.state.lastSync
-    ? `Last updated: ${timeAgo(store.state.lastSync)}`
-    : store.state.source === 'sample'
-      ? 'Local schedule — not synced'
-      : 'Not yet synchronised';
+  const lastUpdated = $('#last-updated');
+  lastUpdated.hidden = !store.state.lastSync;
+  lastUpdated.textContent = store.state.lastSync ? `Last updated: ${timeAgo(store.state.lastSync)}` : '';
 
   mountIcons($('#announce-feed'));
 }
@@ -191,11 +189,7 @@ async function boot() {
       await store.refresh();
       toast('Announcements updated.', { type: 'success' });
     } catch (err) {
-      if (err.code === 'not-configured') {
-        toast('The saved notices are already up to date.', { type: 'info' });
-      } else {
-        toast(err.message, { type: 'error' });
-      }
+      if (err.code !== 'not-configured') toast(err.message, { type: 'error' });
     } finally {
       btn.disabled = false;
       btn.innerHTML = `${icon('refresh', { size: 14 })} Refresh`;

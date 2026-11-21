@@ -4,7 +4,7 @@
  * Loads the *unpublished* rows the public site never sees (drafts, pending
  * vendors, archived notices) and keeps an in-memory copy that the table views
  * render from. Every write goes straight to PostgREST; Row Level Security is the
- * authority on whether it is allowed. The local copy is only updated after the
+ * authority on whether it is allowed. The in-memory copy is only updated after the
  * server confirms the change, so the dashboard never shows a phantom success.
  */
 import { adminDelete, adminInsert, adminSelect, adminUpdate, uploadImage } from '../api.js';

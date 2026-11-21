@@ -175,7 +175,6 @@ function render(ev) {
         <h3>Status</h3>
         <div class="stack" style="--gap:8px">
           <span class="badge ${isCancelled ? 'badge-red' : ev.featured ? 'badge-magenta' : 'badge-neutral'}">${isCancelled ? 'Cancelled' : ev.featured ? 'Featured event' : 'Scheduled'}</span>
-          <p class="micro dim">Data shown from ${store.state.source === 'live' ? 'the live festival database' : store.state.source === 'cache' ? 'this device’s offline copy' : 'labelled sample records'}.</p>
         </div>
         <div class="divider"></div>
         <a class="btn btn-sm btn-ghost btn-block" href="events.html">${icon('arrow-left', { size: 15 })} All events</a>

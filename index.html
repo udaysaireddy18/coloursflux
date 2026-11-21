@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.58';
+        var stamp = 'v2.0.59';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -66,9 +66,9 @@
       }
     } catch (e) {}
   </script>
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.58" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.58" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.58" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.59" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.59" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.59" />
   <link rel="stylesheet" href="assets/css/intro.css?v=9" />
   <noscript><style>.intro { display: none; }</style></noscript>
   <script type="module" src="assets/js/pages/home.js?v=2"></script>

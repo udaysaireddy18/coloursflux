@@ -36,7 +36,7 @@ npx serve . -l 4173
 | Check | Expected |
 | --- | --- |
 | Home loads | Hero, countdown, featured events/vendors, notices, footer |
-| Sample strip | Visible "Sample records" bar; footer note says sample data |
+| Demo mode | Events, map and notices render from the sample dataset |
 | Countdown | Counts toward 7 Jan 2027, not a fake 3-day timer |
 | Events | Search, day/category/venue filters, schedule/grid toggle, bookmarks |
 | Event detail | Opens `event.html?slug=…`; cancelled event shows warning |
@@ -55,8 +55,7 @@ still a configured date, not an unconfigurable demo timer.
 
 With real credentials and seed data (or real content):
 
-- [ ] Loaded data replaces sample data; the strip disappears when no row has
-      `is_sample = true`.
+- [ ] Loaded data replaces the demo dataset; no seeded rows remain.
 - [ ] Draft/archived events are not visible; cancelled events **are** visible
       with the warning.
 - [ ] Pending/rejected vendors and their offers are absent.

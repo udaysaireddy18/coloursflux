@@ -6,7 +6,7 @@
 import { APP, NAV } from './config.js';
 import { icon, mountIcons } from './icons.js';
 import { esc, formatTime, formatTimeRange, formatDayShort, timeAgo, breakDown, pad2, initials, violetHueFor, safeUrl, isExpired } from './util.js';
-import store, { lastSyncLabel, hasSampleRecords } from './store.js';
+import store from './store.js';
 
 /* ---------------------------------------------------------------- */
 /* Brand art                                                        */
@@ -949,47 +949,10 @@ export function toast(message, { type = 'info', timeout = 4200 } = {}) {
 }
 
 /* ---------------------------------------------------------------- */
-/* Status strips                                                    */
+/* Data-source status strips are intentionally omitted.             */
 /* ---------------------------------------------------------------- */
 
 export function syncBarMarkup() {
-  const s = store.state;
-  if (s.source === 'sample') {
-    return `<div class="sync-bar" data-tone="sample">
-      ${icon('sparkles', { size: 16 })}
-      <span><b>Local copy.</b> You are viewing the Colours 2K27 schedule, map and stalls stored on this device.</span>
-    </div>`;
-  }
-  if (s.source === 'empty') {
-    return `<div class="sync-bar" data-tone="error">
-      ${icon('alert-triangle', { size: 16 })}
-      <span>No festival data is available yet${s.error ? ` — ${esc(s.error.message)}` : ''}.</span>
-    </div>`;
-  }
-  if (!s.online) {
-    return `<div class="sync-bar" data-tone="warn" id="sync-bar">
-      ${icon('wifi-off', { size: 16 })}
-      <span>You are offline. Showing data saved ${esc(lastSyncLabel().toLowerCase())}; it may be out of date.</span>
-      <span class="spacer"></span>
-      <button class="btn btn-sm" data-action="retry-sync">${icon('refresh', { size: 14 })} Retry</button>
-    </div>`;
-  }
-  if (s.stale && s.source === 'cache') {
-    return `<div class="sync-bar" data-tone="warn" id="sync-bar">
-      ${icon('alert-circle', { size: 16 })}
-      <span>Showing saved data from ${esc(lastSyncLabel().toLowerCase())}.</span>
-      <span class="spacer"></span>
-      <button class="btn btn-sm" data-action="retry-sync">${icon('refresh', { size: 14 })} Refresh</button>
-    </div>`;
-  }
-  if (hasSampleRecords()) {
-    return `<div class="sync-bar" data-tone="sample">
-      ${icon('sparkles', { size: 16 })}
-      <span><b>Sample records.</b> Some content is seeded demo data and must be replaced before launch.</span>
-      <span class="spacer"></span>
-      <a class="btn btn-sm" href="admin/index.html">Manage content</a>
-    </div>`;
-  }
   return '';
 }
 
@@ -1366,11 +1329,7 @@ export function wireDataDownload(btn) {
       await store.refresh();
       toast('Festival data saved on this device.', { type: 'success' });
     } catch (err) {
-      if (err.code === 'not-configured') {
-        toast('This copy already includes the full festival schedule.', { type: 'info' });
-      } else {
-        toast(err.message, { type: 'error' });
-      }
+      if (err.code !== 'not-configured') toast(err.message, { type: 'error' });
     } finally {
       btn.disabled = false;
       btn.innerHTML = original;

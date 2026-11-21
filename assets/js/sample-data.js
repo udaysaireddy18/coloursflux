@@ -6,7 +6,7 @@
  * University campus map used for venue locations.
  *
  * The site still flags these as local records (`_sample`) whenever Supabase
- * is not connected, so organisers know they are reading the local copy. Once
+ * is not connected, so organisers know they are reading demo content. Once
  * the database is connected, the same rows can be imported from seed.sql or
  * edited in Admin.
  */

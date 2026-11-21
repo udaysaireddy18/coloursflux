@@ -209,7 +209,7 @@ Before launch:
    is not empty.
 3. Clear the flag on `app_config` if you kept the row:
    `update public.app_config set is_sample = false where id = 'app';`
-4. Confirm the public "Sample records" strip is gone.
+4. Confirm no seeded rows remain in the dashboard.
 
 `supabase/seed.sql` ends with the delete statements in dependency order.
 
