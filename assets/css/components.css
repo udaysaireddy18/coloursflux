@@ -108,6 +108,11 @@
   height: 68px;
 }
 
+.footer-logo:hover .brand-mark {
+  transform: none;
+  filter: none;
+}
+
 /* The island compacts and the mark shrinks once the page starts scrolling. */
 .site-header .brand-mark {
   width: 44px;
@@ -2404,14 +2409,10 @@ html.lightbox-open .ambient-light i {
   gap: 9px;
 }
 
-.footer-col a {
+.footer-col li {
   color: var(--muted);
   font-size: 0.85rem;
-  transition: color 0.16s;
-}
-
-.footer-col a:hover {
-  color: var(--text);
+  cursor: default;
 }
 
 .footer-social {
@@ -2432,12 +2433,6 @@ html.lightbox-open .ambient-light i {
   transition: color 0.16s, border-color 0.16s, background-color 0.16s;
 }
 
-.social-btn:hover {
-  color: var(--text);
-  border-color: var(--border-strong);
-  background: rgba(49, 25, 77, 0.04);
-}
-
 .footer-bottom {
   display: flex;
   align-items: center;
@@ -2451,14 +2446,11 @@ html.lightbox-open .ambient-light i {
   font-size: 0.77rem;
 }
 
-.footer-bottom nav {
+.footer-legal {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-}
-
-.footer-bottom a:hover {
-  color: var(--text);
+  margin: 0;
 }
 
 /* ---------- responsive ---------- */
@@ -3623,7 +3615,7 @@ html.lightbox-open .ambient-light i {
 
   .footer-col h4 { margin-bottom: 10px; font-size: 0.72rem; }
   .footer-col ul { gap: 7px; }
-  .footer-col a {
+  .footer-col li {
     display: inline-block;
     padding-block: 3px;
     font-size: 0.83rem;
@@ -3874,7 +3866,7 @@ html.lightbox-open .ambient-light i {
 
   .site-footer { margin-top: 30px; padding-top: 24px; }
   .footer-grid { gap: 18px 14px; }
-  .footer-col a { font-size: 0.78rem; }
+  .footer-col li { font-size: 0.78rem; }
 }
 
 /* ---------- phone UX: same look, easier taps ---------- */
@@ -3899,22 +3891,20 @@ html.lightbox-open .ambient-light i {
   /* invisible hit padding for compact standalone text links */
   .crumbs a,
   .schedule-main b a,
-  .event-title a,
-  .footer-bottom a {
+  .event-title a {
     position: relative;
   }
 
   .crumbs a::after,
   .schedule-main b a::after,
-  .event-title a::after,
-  .footer-bottom a::after {
+  .event-title a::after {
     content: "";
     position: absolute;
     inset: -10px -8px;
   }
 
   .footer-col ul { gap: 0; }
-  .footer-col a {
+  .footer-col li {
     display: flex;
     align-items: center;
     width: 100%;

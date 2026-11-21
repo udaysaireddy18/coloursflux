@@ -623,49 +623,46 @@ function footerMarkup() {
   const cfg = store.state.config;
   const social = (cfg.social_links || []).filter((s) => s && s.url);
   const contact = [];
-  if (cfg.contact_email) contact.push(`<a href="mailto:${esc(cfg.contact_email)}">${esc(cfg.contact_email)}</a>`);
-  if (cfg.contact_phone) contact.push(`<a href="tel:${esc(cfg.contact_phone)}">${esc(cfg.contact_phone)}</a>`);
+  if (cfg.contact_email) contact.push(esc(cfg.contact_email));
+  if (cfg.contact_phone) contact.push(esc(cfg.contact_phone));
 
   return `
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a class="brand footer-logo" href="index.html" aria-label="${APP.name} home">
+          <span class="brand footer-logo" aria-label="${APP.name} home">
             <span class="brand-mark">${BRAND_MARK}</span>
-          </a>
+          </span>
           <p>${esc(cfg.tagline || APP.tagline)} An unofficial digital campaign for ${esc(APP.institution)} — schedule, campus map, stalls and live notices in one place.</p>
           ${social.length ? `<div class="footer-social">${social
-            .map(
-              (s) =>
-                `<a class="social-btn" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer" aria-label="${esc(s.label || 'Social link')}">${icon(s.icon || 'link', { size: 17 })}</a>`
-            )
+            .map((s) => `<span class="social-btn" aria-label="${esc(s.label || 'Social link')}">${icon(s.icon || 'link', { size: 17 })}</span>`)
             .join('')}</div>` : ''}
         </div>
 
         <div class="footer-col">
           <h4>Festival</h4>
           <ul>
-            <li><a href="events.html">Events &amp; schedule</a></li>
-            <li><a href="map.html">Campus map</a></li>
-            <li><a href="stalls.html">Stalls &amp; offers</a></li>
-            <li><a href="announcements.html">Announcements</a></li>
+            <li>Events &amp; schedule</li>
+            <li>Campus map</li>
+            <li>Stalls &amp; offers</li>
+            <li>Announcements</li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Using the app</h4>
           <ul>
-            <li><a href="install.html">Install &amp; go offline</a></li>
-            <li><a href="about.html#offline">How offline mode works</a></li>
-            <li><a href="about.html#faq">FAQ</a></li>
-            <li><a href="about.html#help">Help</a></li>
+            <li>Install &amp; go offline</li>
+            <li>How offline mode works</li>
+            <li>FAQ</li>
+            <li>Help</li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Official</h4>
           <ul>
-            <li><a href="https://colours.adityauniversity.in/" target="_blank" rel="noopener noreferrer">Official website</a></li>
+            <li>Official website — https://colours.adityauniversity.in/</li>
             ${contact.length ? `<li>${contact.join('</li><li>')}</li>` : ''}
           </ul>
         </div>
@@ -673,11 +670,7 @@ function footerMarkup() {
 
       <div class="footer-bottom">
         <span>© ${new Date().getFullYear()} ${esc(APP.name)} · ${esc(APP.institution)}. Built as a student festival project.</span>
-        <nav aria-label="Legal">
-          <a href="privacy.html">Privacy</a>
-          <a href="terms.html">Terms</a>
-          <a href="about.html">About</a>
-        </nav>
+        <p class="footer-legal"><span>Privacy</span><span>Terms</span><span>About</span></p>
       </div>
       ${isSampleMode() ? `<p class="micro dim" style="padding-bottom:18px">Showing the bundled Colours 2K27 programme.</p>` : hasSampleRecords() ? `<p class="micro dim" style="padding-bottom:18px">Some records come from the bundled programme.</p>` : ''}
     </div>`;
