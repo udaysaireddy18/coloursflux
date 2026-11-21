@@ -193,9 +193,10 @@ Replace any image with your own festival photo if preferred.
 
 ## basketball-women
 - File: `basketball-women.jpg`
-- Source: https://www.adityauniversity.in/public/uploads/editors/basket-ball-resized-8Zqv9is1.webp
-- Author: Aditya University
-- Licence: © Aditya University (official university site use) (https://www.adityauniversity.in/why-us/life-at-aditya-university-why-us)
+- Source: https://gcwguntur.ac.in/images/Sports%20Activities%202023-24%20report.pdf#page=50
+- Author: Government College for Women (A), Guntur
+- Licence: © Government College for Women (A), Guntur (official sports report) (https://gcwguntur.ac.in/images/Sports%20Activities%202023-24%20report.pdf)
+- Note: Caption reads “ANUIC Basketball Women Tournament Runners-Up 2023-24”.
 
 ## kabaddi-women
 - File: `kabaddi-women.jpg`
@@ -211,16 +212,17 @@ Replace any image with your own festival photo if preferred.
 
 ## throwball-women
 - File: `throwball-women.jpg`
-- Source: https://www.adityauniversity.in/public/uploads/editors/throwball-resized-RKasuLy3.webp
-- Author: Aditya University
-- Licence: © Aditya University (official university site use) (https://www.adityauniversity.in/why-us/life-at-aditya-university-why-us)
+- Source: https://necg.ac.in/sports/Activities.pdf#page=15
+- Author: Narayana Engineering College, Gudur
+- Licence: © Narayana Engineering College, Gudur (official sports activities report) (https://necg.ac.in/sports/Activities.pdf)
+- Note: Caption reads “Throw Ball Tournament for Girls”.
 
 ## tennikoit-singles-women
 - File: `tennikoit-singles-women.jpg`
-- Source: https://www.adityauniversity.in/public/uploads/editors/table-tennis-resized-9OiLg9KV.webp
-- Author: Aditya University
-- Licence: © Aditya University (official university site use) (https://www.adityauniversity.in/why-us/life-at-aditya-university-why-us)
-- Note: Aditya University racket-sport campus photo used as tennikoit artwork.
+- Source: https://necg.ac.in/sports/Activities.pdf#page=5
+- Author: Narayana Engineering College, Gudur
+- Licence: © Narayana Engineering College, Gudur (official sports activities report) (https://necg.ac.in/sports/Activities.pdf)
+- Note: Caption reads “Tennikoit Tournament for Girls”.
 
 ## table-tennis-singles-women
 - File: `table-tennis-singles-women.jpg`

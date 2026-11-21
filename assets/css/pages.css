@@ -1401,12 +1401,15 @@
 
 /* Event detail pages use solid tints only — no frosted-glass layers.
    The rest of the site keeps its original aurora glass and motion. */
-body.event-page :is(.site-header .nav-links, .hero-panel, .badge, .date-chip,
-  .image-preview-btn, .event-media .badge, .map-scale, .map-hint),
-body.event-page .modal::backdrop,
-body.event-page .lightbox::backdrop {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+body.event-page,
+body.event-page::before,
+body.event-page::after,
+body.event-page *,
+body.event-page *::before,
+body.event-page *::after,
+body.event-page *::backdrop {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 body.event-page .site-header .nav-links {
@@ -1436,4 +1439,16 @@ body.event-page .lightbox::backdrop {
   background:
     radial-gradient(60% 70% at 50% 40%, rgba(86, 22, 190, 0.28), transparent 72%),
     rgba(18, 12, 28, 0.88);
+}
+
+body.event-page #mobile-menu.mobile-menu {
+  background: #241a2e;
+}
+
+body.event-page nav.bottom-nav {
+  background: #f8f4ff;
+}
+
+body.event-page nav.bottom-nav::after {
+  display: none;
 }
