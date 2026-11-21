@@ -1130,19 +1130,39 @@
     padding: 12px;
   }
 
-  .filter-row { gap: 8px; }
+  .filter-row { gap: 6px; }
 
-  .search-field { flex: 1 1 100%; }
+  .search-field { flex: 1 1 calc(50% - 5px); min-width: 0; }
   .search-field .input {
-    min-height: 42px;
-    font-size: 0.9rem;
+    display: block;
+    min-height: 32px;
+    padding: 4px 10px 4px 34px;
+    line-height: 1.2;
+    font-size: 16px;
   }
+  .search-field > i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+  .search-field .icon { position: static; left: auto; top: auto; transform: none; }
 
   .filter-select {
-    flex: 1 1 calc(50% - 4px);
+    flex: 1 1 calc(50% - 5px);
     min-width: 0;
-    min-height: 42px;
+    min-height: 32px;
+    padding: 4px 34px 4px 10px;
+    line-height: 1.2;
+    font-size: 16px;
   }
+  .filter-row > .chip { min-height: 34px; padding: 6px 10px; }
 
   .chip-row { gap: 6px; }
 
@@ -1264,9 +1284,38 @@
   .page-head-meta { margin-top: 10px; gap: 5px; }
   .page-head-meta .badge { min-height: 26px; font-size: 0.7rem; }
 
+  .filter-row { gap: 6px; }
   .filter-panel { gap: 8px; padding: 10px; }
-  .search-field .input { min-height: 42px; font-size: 16px; }
-  .filter-select { min-height: 42px; font-size: 16px; }
+  .search-field { flex: 1 1 calc(50% - 5px); min-width: 0; }
+  .search-field .input {
+    display: block;
+    min-height: 32px;
+    padding: 4px 10px 4px 34px;
+    line-height: 1.2;
+    font-size: 16px;
+  }
+  .search-field > i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+  .search-field .icon { position: static; left: auto; top: auto; transform: none; }
+  .filter-select {
+    flex: 1 1 calc(50% - 5px);
+    min-width: 0;
+    min-height: 32px;
+    padding: 4px 34px 4px 10px;
+    line-height: 1.2;
+    font-size: 16px;
+  }
+  .filter-row > .chip { min-height: 34px; padding: 6px 10px; }
   .results-line { margin: 12px 0 10px; font-size: 0.74rem; }
 
   .day-block { margin-top: 18px; }

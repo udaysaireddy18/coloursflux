@@ -806,6 +806,8 @@
   color: var(--muted-dim);
 }
 
+.cd-label-short { display: none; }
+
 .hero-countdown {
   margin-top: 26px;
 }
@@ -3556,8 +3558,35 @@
 
   .hero-panel { padding: 14px; }
   .hero-panel-head { padding-bottom: 8px; }
-  .hero-panel .cd-value { font-size: 1.3rem; }
-  .hero-panel .cd-label { font-size: 0.68rem; }
+
+  /* phones show the countdown as one compact inline line: 47d 09h 12m 34s */
+  .hero-panel .countdown {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    gap: 8px;
+    overflow: visible;
+    border: 0;
+    background: none;
+  }
+  .hero-panel .cd-cell {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+  .hero-panel .cd-cell + .cd-cell { border-left: 0; }
+  .hero-panel .cd-value { font-size: 1rem; }
+  .hero-panel .cd-label {
+    margin: 0;
+    font-size: 0.68rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .hero-panel .cd-label-full { display: none; }
+  .hero-panel .cd-label-short { display: inline; }
 
   .quick-grid { gap: 8px; }
   .quick-card { padding: 12px; gap: 6px; }

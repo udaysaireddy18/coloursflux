@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.38';
+        var stamp = 'v2.0.39';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -67,8 +67,8 @@
     } catch (e) {}
   </script>
   <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.38" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.38" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.39" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.39" />
   <link rel="stylesheet" href="assets/css/intro.css?v=6" />
   <noscript><style>.intro { display: none; }</style></noscript>
   <script type="module" src="assets/js/pages/home.js?v=2"></script>
@@ -377,7 +377,6 @@
           <div class="card card-pad">
             <h3 style="font-size:1rem;margin-bottom:12px">Good to know</h3>
             <div class="stack" style="--gap:12px">
-              <div class="meta-row" style="align-items:flex-start"><i data-icon="ticket" data-size="16"></i><span style="white-space:normal">Carry a valid student ID for pass verification at the gate.</span></div>
               <div class="meta-row" style="align-items:flex-start"><i data-icon="clock" data-size="16"></i><span style="white-space:normal">Event timings can change on the day — check Announcements before you leave for a venue.</span></div>
               <div class="meta-row" style="align-items:flex-start"><i data-icon="navigation" data-size="16"></i><span style="white-space:normal">Use the campus map to find stages, food stalls and restrooms.</span></div>
               <div class="meta-row" style="align-items:flex-start"><i data-icon="alert-triangle" data-size="16"></i><span style="white-space:normal">In an emergency, follow organiser instructions and campus security — this app is not an emergency service.</span></div>

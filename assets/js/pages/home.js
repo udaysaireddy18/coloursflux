@@ -166,7 +166,6 @@ function render() {
     facts.innerHTML = [
       { icon: 'calendar', label: 'Festival dates', value: festivalRange() },
       { icon: 'map-pin', label: 'Campus', value: 'Aditya University' },
-      { icon: 'ticket', label: 'Entry', value: 'Check organiser pass info' },
       { icon: 'store', label: 'On ground', value: `${locCount} locations mapped` },
     ]
       .map(

@@ -546,11 +546,17 @@ export async function mountSyncBar(target) {
 /* ---------------------------------------------------------------- */
 
 export function countdownMarkup() {
+  const units = [
+    ['Days', 'd'],
+    ['Hours', 'h'],
+    ['Mins', 'm'],
+    ['Secs', 's'],
+  ];
   return `<div class="countdown" role="timer" aria-live="off" data-countdown>
-    ${['Days', 'Hours', 'Mins', 'Secs']
+    ${units
       .map(
-        (label, i) =>
-          `<div class="cd-cell"><span class="cd-value" data-cd="${i}">--</span><span class="cd-label">${label}</span></div>`
+        ([label, short], i) =>
+          `<div class="cd-cell"><span class="cd-value" data-cd="${i}">--</span><span class="cd-label"><span class="cd-label-full">${label}</span><span class="cd-label-short">${short}</span></span></div>`
       )
       .join('')}
   </div>`;
