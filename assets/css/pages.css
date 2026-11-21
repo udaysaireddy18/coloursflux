@@ -1399,78 +1399,78 @@
   }
 }
 
-/* Event detail pages stay flat: no frosted backdrop, blur filter, sheen
-   or shimmer. The rest of the site keeps its original aurora glass/motion. */
-body.event-page,
-body.event-page::before,
-body.event-page::after,
-body.event-page *,
-body.event-page *::before,
-body.event-page *::after,
-body.event-page *::backdrop {
+/* Events pages (listing and detail) stay flat: no frosted backdrop, blur filter,
+   sheen or shimmer. The rest of the site keeps its original aurora glass/motion. */
+:is(body.event-page, body.events-page),
+:is(body.event-page, body.events-page)::before,
+:is(body.event-page, body.events-page)::after,
+:is(body.event-page, body.events-page) *,
+:is(body.event-page, body.events-page) *::before,
+:is(body.event-page, body.events-page) *::after,
+:is(body.event-page, body.events-page) *::backdrop {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   filter: none !important;
 }
 
-body.event-page .ambient-light,
-body.event-page .page-ornament,
-body.event-page .aurora-shimmer,
-body.event-page .site-header .nav-links::after,
-body.event-page nav.bottom-nav::after {
+:is(body.event-page, body.events-page) .ambient-light,
+:is(body.event-page, body.events-page) .page-ornament,
+:is(body.event-page, body.events-page) .aurora-shimmer,
+:is(body.event-page, body.events-page) .site-header .nav-links::after,
+:is(body.event-page, body.events-page) nav.bottom-nav::after {
   display: none !important;
 }
 
-body.event-page .site-header .nav-links {
+:is(body.event-page, body.events-page) .site-header .nav-links {
   background: #fcf9ff !important;
 }
 
-body.event-page .net-pill {
+:is(body.event-page, body.events-page) .net-pill {
   background: #fcf9ff !important;
   color: #4b2a6b !important;
 }
 
-body.event-page .image-preview-btn {
+:is(body.event-page, body.events-page) .image-preview-btn {
   background: #180e28 !important;
   color: #ffffff !important;
 }
 
-body.event-page .badge {
+:is(body.event-page, body.events-page) .badge {
   background-color: #33223f !important;
   border-color: rgba(235, 225, 255, 0.28) !important;
   color: #ffffff !important;
 }
 
-body.event-page .date-chip {
+:is(body.event-page, body.events-page) .date-chip {
   background: #241631 !important;
   border-color: rgba(158, 99, 241, 0.4) !important;
 }
 
-body.event-page .pill-note,
-body.event-page .sync-bar {
+:is(body.event-page, body.events-page) .pill-note,
+:is(body.event-page, body.events-page) .sync-bar {
   background: #f2ebfb !important;
   color: #2b1740 !important;
 }
 
-body.event-page .card,
-body.event-page .fact,
-body.event-page .event-media,
-body.event-page .detail-hero {
+:is(body.event-page, body.events-page) .card,
+:is(body.event-page, body.events-page) .fact,
+:is(body.event-page, body.events-page) .event-media,
+:is(body.event-page, body.events-page) .detail-hero {
   background: #f6f0fd !important;
 }
 
-body.event-page .modal::backdrop {
+:is(body.event-page, body.events-page) .modal::backdrop {
   background: #17121c !important;
 }
 
-body.event-page .lightbox::backdrop {
+:is(body.event-page, body.events-page) .lightbox::backdrop {
   background: #120c1c !important;
 }
 
-body.event-page #mobile-menu.mobile-menu {
+:is(body.event-page, body.events-page) #mobile-menu.mobile-menu {
   background: #241a2e !important;
 }
 
-body.event-page nav.bottom-nav {
+:is(body.event-page, body.events-page) nav.bottom-nav {
   background: #f8f4ff !important;
 }
