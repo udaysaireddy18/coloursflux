@@ -806,8 +806,6 @@
   color: var(--muted-dim);
 }
 
-.cd-label-short { display: none; }
-
 .hero-countdown {
   margin-top: 26px;
 }
@@ -3559,34 +3557,36 @@
   .hero-panel { padding: 14px; }
   .hero-panel-head { padding-bottom: 8px; }
 
-  /* phones show the countdown as one compact inline line: 47d 09h 12m 34s */
+  /* compact four-cell timer with a soft violet glass lift */
   .hero-panel .countdown {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: baseline;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
     overflow: visible;
     border: 0;
+    border-radius: 0;
     background: none;
   }
   .hero-panel .cd-cell {
-    display: flex;
-    align-items: baseline;
-    gap: 2px;
     min-width: 0;
-    padding: 0;
-    border: 0;
+    padding: 9px 4px 8px;
+    border: 1px solid rgba(124, 58, 217, 0.2);
+    border-top: 2px solid rgba(124, 58, 217, 0.42);
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(239, 230, 253, 0.72));
+    box-shadow:
+      0 8px 18px -14px rgba(71, 18, 151, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    text-align: center;
   }
-  .hero-panel .cd-cell + .cd-cell { border-left: 0; }
-  .hero-panel .cd-value { font-size: 1rem; }
+  .hero-panel .cd-cell + .cd-cell { border-left: 1px solid rgba(124, 58, 217, 0.2); }
+  .hero-panel .cd-value { font-size: 1.15rem; }
   .hero-panel .cd-label {
-    margin: 0;
-    font-size: 0.68rem;
-    letter-spacing: 0;
-    text-transform: none;
+    margin-top: 2px;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
-  .hero-panel .cd-label-full { display: none; }
-  .hero-panel .cd-label-short { display: inline; }
 
   .quick-grid { gap: 8px; }
   .quick-card { padding: 12px; gap: 6px; }
