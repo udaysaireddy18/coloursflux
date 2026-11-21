@@ -413,6 +413,19 @@ html.intro-open .page-ornament * {
   animation: intro-rise 0.75s var(--ease) 1.88s forwards;
 }
 
+.intro-note {
+  max-width: 34ch;
+  margin: clamp(6px, 1.2vw, 10px) 0 0;
+  color: var(--muted);
+  font-size: clamp(0.54rem, 1.2vw, 0.64rem);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+  opacity: 0;
+  animation: intro-rise 0.75s var(--ease) 2.02s forwards;
+}
+
 /* ---------- dismiss affordances ---------- */
 
 .intro-enter {
@@ -676,6 +689,12 @@ html.intro-open .page-ornament * {
     gap: 0.11em;
   }
 
+  .intro-note {
+    max-width: 28ch;
+    margin-top: 6px;
+    font-size: 0.62rem;
+  }
+
   .intro-enter {
     letter-spacing: 0.2em;
   }
@@ -696,6 +715,13 @@ html.intro-open .page-ornament * {
 
   .intro-institution {
     display: none;
+  }
+
+  .intro-note {
+    max-width: 30ch;
+    margin-top: 6px;
+    font-size: 0.56rem;
+    line-height: 1.35;
   }
 
   .intro-enter {

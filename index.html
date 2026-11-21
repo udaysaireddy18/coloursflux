@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.47';
+        var stamp = 'v2.0.48';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -27,7 +27,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ColoursFlux — Feel the Flow. Live the Colours.</title>
-  <meta name="description" content="ColoursFlux is the official festival companion for Colours 2K27 at Aditya University. Explore events, the campus map, stalls, offers and live announcements — online or offline." />
+  <meta name="description" content="ColoursFlux is an unofficial digital campaign for Colours 2K27 at Aditya University. Explore events, the campus map, stalls, offers and live announcements — online or offline." />
   <meta name="theme-color" content="#f8f5fb" />
   <meta name="color-scheme" content="light" />
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -66,10 +66,10 @@
       }
     } catch (e) {}
   </script>
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.47" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.47" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.47" />
-  <link rel="stylesheet" href="assets/css/intro.css?v=7" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.48" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.48" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.48" />
+  <link rel="stylesheet" href="assets/css/intro.css?v=8" />
   <noscript><style>.intro { display: none; }</style></noscript>
   <script type="module" src="assets/js/pages/home.js?v=2"></script>
   <script type="module">
@@ -124,6 +124,7 @@
         <span class="intro-underline" aria-hidden="true"></span>
         <p class="intro-meta">7&ndash;9 January 2027</p>
         <p class="intro-institution">Aditya University</p>
+        <p class="intro-note">ColoursFlux is an unofficial digital campaign of Colours.</p>
       </div>
     </div>
 
