@@ -388,7 +388,7 @@ html.intro-open .page-ornament * {
   border-radius: 2px;
   background: linear-gradient(90deg, rgba(91, 22, 189, 0), #5b16bd 18%, #b7209b 82%, rgba(183, 32, 155, 0));
   opacity: 0;
-  animation: intro-line 0.75s var(--ease) 1.62s forwards;
+  animation: intro-line 0.75s var(--ease) 1.74s forwards;
 }
 
 .intro-meta {
@@ -399,7 +399,7 @@ html.intro-open .page-ornament * {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   opacity: 0;
-  animation: intro-rise 0.75s var(--ease) 1.74s forwards;
+  animation: intro-rise 0.75s var(--ease) 1.86s forwards;
 }
 
 .intro-institution {
@@ -410,20 +410,28 @@ html.intro-open .page-ornament * {
   letter-spacing: 0.24em;
   text-transform: uppercase;
   opacity: 0;
-  animation: intro-rise 0.75s var(--ease) 1.88s forwards;
+  animation: intro-rise 0.75s var(--ease) 2s forwards;
 }
 
-.intro-note {
+.intro-subtitle {
   max-width: 34ch;
-  margin: clamp(6px, 1.2vw, 10px) 0 0;
-  color: var(--muted);
-  font-size: clamp(0.54rem, 1.2vw, 0.64rem);
-  font-weight: 500;
-  line-height: 1.5;
+  margin: clamp(8px, 1.6vw, 14px) 0 0;
+  color: var(--text);
+  font-size: clamp(0.78rem, 2.4vw, 1rem);
+  font-weight: 600;
+  line-height: 1.35;
   letter-spacing: 0.01em;
   text-wrap: balance;
   opacity: 0;
-  animation: intro-rise 0.75s var(--ease) 2.02s forwards;
+  animation: intro-rise 0.75s var(--ease) 1.58s forwards;
+}
+
+.intro-subtitle span {
+  background: var(--grad-cta);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
 /* ---------- dismiss affordances ---------- */
@@ -689,10 +697,11 @@ html.intro-open .page-ornament * {
     gap: 0.11em;
   }
 
-  .intro-note {
-    max-width: 28ch;
-    margin-top: 6px;
-    font-size: 0.62rem;
+  .intro-subtitle {
+    max-width: 30ch;
+    margin-top: 8px;
+    font-size: clamp(0.82rem, 3.2vw, 0.94rem);
+    line-height: 1.3;
   }
 
   .intro-enter {
@@ -717,11 +726,11 @@ html.intro-open .page-ornament * {
     display: none;
   }
 
-  .intro-note {
-    max-width: 30ch;
+  .intro-subtitle {
+    max-width: 34ch;
     margin-top: 6px;
-    font-size: 0.56rem;
-    line-height: 1.35;
+    font-size: 0.82rem;
+    line-height: 1.28;
   }
 
   .intro-enter {

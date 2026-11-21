@@ -633,7 +633,7 @@ function footerMarkup() {
           <a class="brand footer-logo" href="index.html" aria-label="${APP.name} home">
             <span class="brand-mark">${BRAND_MARK}</span>
           </a>
-          <p>${esc(cfg.tagline || APP.tagline)} The festival companion for ${esc(APP.institution)} — schedule, campus map, stalls and live notices in one place.</p>
+          <p>${esc(cfg.tagline || APP.tagline)} An unofficial digital campaign for ${esc(APP.institution)} — schedule, campus map, stalls and live notices in one place.</p>
           ${social.length ? `<div class="footer-social">${social
             .map(
               (s) =>
@@ -663,11 +663,9 @@ function footerMarkup() {
         </div>
 
         <div class="footer-col">
-          <h4>Organisers</h4>
+          <h4>Official</h4>
           <ul>
-            <li><a href="admin/index.html">Admin dashboard</a></li>
-            <li><a href="install.html#qr">QR code &amp; launch</a></li>
-            <li><a href="about.html#vendors">Vendor promotion</a></li>
+            <li><a href="https://colours.adityauniversity.in/" target="_blank" rel="noopener noreferrer">Official website</a></li>
             ${contact.length ? `<li>${contact.join('</li><li>')}</li>` : ''}
           </ul>
         </div>
