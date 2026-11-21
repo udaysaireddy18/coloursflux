@@ -131,20 +131,12 @@ let kineticObserver = null;
 const liquidSeen = new WeakSet();
 let liquidObserver = null;
 
-const rangoliSeen = new WeakSet();
-let rangoliObserver = null;
-
-const maskSeen = new WeakSet();
-let maskObserver = null;
+const shimmerSeen = new WeakSet();
+let shimmerObserver = null;
 
 let storyMounted = false;
 let storyItems = [];
 let storyTicking = false;
-
-const MASK_KEY = 'cf:mask-transition';
-const MASK_POINT_KEY = 'cf:mask-point';
-let pageMaskOverlay = null;
-let pageMaskAnimation = null;
 
 /** Three very soft colour clouds behind the lilac page surface. */
 function mountAmbientLight() {
@@ -483,81 +475,42 @@ function mountLiquidImages(root = document) {
   });
 }
 
-/* ---------- rangoli-inspired SVG line drawing --------------------- */
+/* ---------- aurora shimmer ---------------------------------------- */
 
-function rangoliMarkup() {
-  return `<svg class="motion-rangoli" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
-    <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-      <circle pathLength="100" cx="120" cy="120" r="96" />
-      <circle pathLength="100" cx="120" cy="120" r="68" />
-      <circle pathLength="100" cx="120" cy="120" r="40" />
-      <path pathLength="100" d="M120 14c30 30 30 66 0 102-30-36-30-72 0-102Z" />
-      <path pathLength="100" d="M226 120c-30 30-66 30-102 0 36-30 72-30 102 0Z" />
-      <path pathLength="100" d="M120 226c-30-30-30-66 0-102 30 36 30 72 0 102Z" />
-      <path pathLength="100" d="M14 120c30-30 66-30 102 0-36 30-72 30-102 0Z" />
-      <path pathLength="100" d="M196 44c-22 30-50 42-76 50 10-26 38-50 76-50Z" />
-      <path pathLength="100" d="M196 196c-30-22-42-50-50-76 26 10 50 38 50 76Z" />
-      <path pathLength="100" d="M44 196c22-30 50-42 76-50-10 26-38 50-76 50Z" />
-      <path pathLength="100" d="M44 44c30 22 42 50 50 76-26-10-50-38-50-76Z" />
-      <path pathLength="100" d="M120 20v200M20 120h200M49 49l142 142M191 49 49 191" opacity=".42" />
-    </g>
-  </svg>`;
-}
+const SHIMMER_SELECTOR = '.hero, .page-head, .section, .section-tight, .event-media, .detail-hero';
 
-function mountRangoliArt() {
+function mountAuroraShimmer(root = document) {
   if (prefersReducedMotion()) return;
-  const sections = [...document.querySelectorAll('.hero, .page-head, .section, .section-tight')];
-  if (!rangoliObserver && 'IntersectionObserver' in window) {
-    rangoliObserver = new IntersectionObserver(
+  const matches = root.matches?.(SHIMMER_SELECTOR) ? [root] : [];
+  const hosts = [...new Set([...matches, ...root.querySelectorAll(SHIMMER_SELECTOR)])];
+  if (!hosts.length) return;
+
+  if (!shimmerObserver && 'IntersectionObserver' in window) {
+    shimmerObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add('rangoli-in');
-          rangoliObserver.unobserve(entry.target);
+          entry.target.classList.add('shimmer-in');
+          shimmerObserver.unobserve(entry.target);
         });
       },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.06 }
     );
   }
-  sections.forEach((section) => {
-    if (rangoliSeen.has(section)) return;
-    rangoliSeen.add(section);
-    if (![...section.children].some((child) => child.classList.contains('motion-rangoli'))) {
-      section.insertAdjacentHTML('afterbegin', rangoliMarkup());
-    }
-    section.classList.add('has-rangoli');
-    if (!rangoliObserver || section.getBoundingClientRect().top < window.innerHeight * 0.95) {
-      section.classList.add('rangoli-in');
-    } else {
-      rangoliObserver.observe(section);
-    }
-  });
-}
 
-/* ---------- expanding section masks ------------------------------- */
-
-function mountSectionMasks() {
-  if (prefersReducedMotion()) return;
-  const blocks = [...document.querySelectorAll('#main > section:not(.hero), .day-block')];
-  if (!maskObserver && 'IntersectionObserver' in window) {
-    maskObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('mask-reveal');
-          maskObserver.unobserve(entry.target);
-        });
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.04 }
-    );
-  }
-  blocks.forEach((block) => {
-    if (maskSeen.has(block)) return;
-    maskSeen.add(block);
-    if (!maskObserver || block.getBoundingClientRect().top < window.innerHeight * 0.9) {
-      block.classList.add('mask-reveal');
+  hosts.forEach((host, index) => {
+    if (shimmerSeen.has(host)) return;
+    shimmerSeen.add(host);
+    if (![...host.children].some((child) => child.classList.contains('aurora-shimmer'))) {
+      host.insertAdjacentHTML('afterbegin', '<span class="aurora-shimmer" aria-hidden="true"></span>');
+    }
+    host.classList.add('has-shimmer');
+    host.style.setProperty('--shimmer-delay', `${Math.min(index, 12) * 70}ms`);
+    const box = host.getBoundingClientRect();
+    if (!shimmerObserver || (box.top < window.innerHeight * 0.96 && box.bottom > 0)) {
+      host.classList.add('shimmer-in');
     } else {
-      maskObserver.observe(block);
+      shimmerObserver.observe(host);
     }
   });
 }
@@ -628,104 +581,6 @@ function mountStoryScroll() {
   refreshStory();
 }
 
-/* ---------- expanding page masks ---------------------------------- */
-
-const sessionGet = (key) => {
-  try { return sessionStorage.getItem(key); } catch { return null; }
-};
-const sessionSet = (key, value) => {
-  try { sessionStorage.setItem(key, value); } catch { /* private mode */ }
-};
-const sessionRemove = (key) => {
-  try { sessionStorage.removeItem(key); } catch { /* private mode */ }
-};
-
-function animatePageMask(overlay, from, to, x, y, duration, done) {
-  if (pageMaskAnimation) pageMaskAnimation.cancel();
-  overlay.style.setProperty('--mask-x', `${x}px`);
-  overlay.style.setProperty('--mask-y', `${y}px`);
-  overlay.style.clipPath = `circle(${from}px at ${x}px ${y}px)`;
-  overlay.dataset.state = from > to ? 'enter' : 'exit';
-
-  let finished = false;
-  const complete = () => {
-    if (finished) return;
-    finished = true;
-    done();
-  };
-  if (!overlay.animate) {
-    complete();
-    return;
-  }
-  const anim = overlay.animate(
-    [
-      { clipPath: `circle(${from}px at ${x}px ${y}px)`, opacity: 1 },
-      { clipPath: `circle(${to}px at ${x}px ${y}px)`, opacity: 1 },
-    ],
-    { duration, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' }
-  );
-  pageMaskAnimation = anim;
-  anim.finished.then(complete).catch(complete);
-}
-
-function mountPageMask() {
-  if (prefersReducedMotion()) {
-    sessionRemove(MASK_KEY);
-    sessionRemove(MASK_POINT_KEY);
-    return;
-  }
-
-  const overlay = document.createElement('div');
-  overlay.className = 'page-mask';
-  overlay.setAttribute('aria-hidden', 'true');
-  document.body.prepend(overlay);
-  pageMaskOverlay = overlay;
-
-  const reach = Math.hypot(window.innerWidth, window.innerHeight);
-  if (sessionGet(MASK_KEY) === '1') {
-    const point = String(sessionGet(MASK_POINT_KEY) || '').split(',').map(Number);
-    const rawX = Number.isFinite(point[0]) ? point[0] : window.innerWidth / 2;
-    const rawY = Number.isFinite(point[1]) ? point[1] : window.innerHeight / 2;
-    const x = Math.min(Math.max(rawX, 0), window.innerWidth);
-    const y = Math.min(Math.max(rawY, 0), window.innerHeight);
-    animatePageMask(overlay, reach, 0, x, y, 620, () => {
-      overlay.removeAttribute('data-state');
-      overlay.style.clipPath = '';
-      pageMaskAnimation?.cancel();
-      pageMaskAnimation = null;
-      sessionRemove(MASK_KEY);
-      sessionRemove(MASK_POINT_KEY);
-    });
-  }
-
-  document.addEventListener('click', (e) => {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const link = e.target.closest?.('a[href]');
-    if (!link || link.closest('.lightbox, [data-no-mask]')) return;
-    if (link.target && link.target !== '_self') return;
-    if (link.hasAttribute('download')) return;
-    const url = new URL(link.href, location.href);
-    if (url.origin !== location.origin) return;
-    if (url.pathname === location.pathname && url.search === location.search && (!url.hash || url.hash === location.hash)) return;
-
-    const box = link.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX || box.left + box.width / 2, 0), window.innerWidth);
-    const y = Math.min(Math.max(e.clientY || box.top + box.height / 2, 0), window.innerHeight);
-    e.preventDefault();
-    sessionSet(MASK_KEY, '1');
-    sessionSet(MASK_POINT_KEY, `${Math.round(x)},${Math.round(y)}`);
-
-    let navigated = false;
-    const go = () => {
-      if (navigated) return;
-      navigated = true;
-      location.assign(url.href);
-    };
-    animatePageMask(pageMaskOverlay, 0, Math.hypot(window.innerWidth, window.innerHeight), x, y, 540, go);
-    setTimeout(go, 760);
-  });
-}
-
 /** Mount every additive effect once; refresh image hooks after renders. */
 export function mountMotion(root = document) {
   if (!motionReady) {
@@ -736,15 +591,13 @@ export function mountMotion(root = document) {
     mountLightbox();
     mountParallax();
     mountStoryScroll();
-    mountPageMask();
   } else {
     refreshParallax();
   }
   if (!prefersReducedMotion()) document.documentElement.classList.add('js-motion');
   mountKineticType(root);
   mountLiquidImages(root);
-  mountRangoliArt();
-  mountSectionMasks();
+  mountAuroraShimmer(root);
   refreshStory();
   mountImageFallbacks(root);
 }

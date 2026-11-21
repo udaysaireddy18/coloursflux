@@ -4575,65 +4575,6 @@ html.js-motion .kinetic-in .kinetic-glyph {
   }
 }
 
-html.js-motion .hero-lines .wave-line {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation:
-    wave-drift 24s ease-in-out infinite alternate,
-    draw-line 2.4s var(--ease) 0.15s forwards;
-}
-html.js-motion .hero-lines .w2 { animation-delay: -8s, 0.4s; }
-html.js-motion .hero-lines .w3 { animation-delay: -14s, 0.65s; }
-
-html.js-motion .has-rangoli {
-  isolation: isolate;
-  transform: translateZ(0);
-}
-
-html.js-motion .motion-rangoli {
-  position: absolute;
-  z-index: -1;
-  top: clamp(12px, 3vw, 42px);
-  right: clamp(6px, 2vw, 28px);
-  width: clamp(130px, 21vw, 260px);
-  height: auto;
-  color: rgba(113, 30, 201, 0.42);
-  pointer-events: none;
-}
-
-html.js-motion .page-head .motion-rangoli {
-  top: 6%;
-  right: 3%;
-  width: clamp(150px, 24vw, 300px);
-}
-
-html.js-motion .section-tight .motion-rangoli { top: 16%; }
-
-html.js-motion .motion-rangoli :is(circle, path) {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  vector-effect: non-scaling-stroke;
-}
-html.js-motion .motion-rangoli :nth-child(3n) { color: rgba(183, 32, 155, 0.5); }
-
-html.js-motion .rangoli-in .motion-rangoli :is(circle, path) {
-  animation: draw-line 2s var(--ease) forwards;
-}
-html.js-motion .rangoli-in .motion-rangoli :nth-child(2) { animation-delay: 0.16s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(3) { animation-delay: 0.32s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(4) { animation-delay: 0.48s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(5) { animation-delay: 0.64s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(6) { animation-delay: 0.8s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(7) { animation-delay: 0.96s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(8) { animation-delay: 1.12s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(9) { animation-delay: 1.28s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(10) { animation-delay: 1.44s; }
-html.js-motion .rangoli-in .motion-rangoli :nth-child(11) { animation-delay: 1.6s; }
-
-@keyframes draw-line {
-  to { stroke-dashoffset: 0; }
-}
-
 html.js-motion .event-media::before,
 html.js-motion .detail-hero::before {
   content: "";
@@ -4682,67 +4623,58 @@ html.js-motion .liquid-in.detail-hero img {
   to { transform: none; filter: blur(0) saturate(1.02); }
 }
 
-html.js-motion .mask-reveal :is(
-  .section-head > div,
-  .quick-grid,
-  .grid,
-  .home-map-grid,
-  .announce-feed,
-  .filter-panel,
-  .detail-hero,
-  .day-head,
-  .schedule-list
-) {
-  animation: section-iris 0.9s var(--ease) backwards;
+/* One soft aurora sweep replaces the earlier line-drawing and iris effects.
+   The inserted span is absolutely positioned, so neither layout nor copy changes. */
+html.js-motion .has-shimmer {
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
-@keyframes section-iris {
-  from {
-    opacity: 0.25;
-    clip-path: circle(0px at 8% 46%);
-  }
-  to {
-    opacity: 1;
-    clip-path: circle(120vmax at 8% 46%);
-  }
-}
-
-.page-mask {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  clip-path: circle(0px at var(--mask-x, 50%) var(--mask-y, 50%));
-  background:
-    radial-gradient(circle at var(--mask-x, 50%) var(--mask-y, 50%), rgba(183, 32, 155, 0.92), rgba(113, 30, 201, 0.95) 38%, #4a0fae 100%);
-}
-
-.page-mask::after {
-  content: "";
+html.js-motion .aurora-shimmer {
   position: absolute;
   inset: 0;
-  background: repeating-conic-gradient(
-    from 0deg at var(--mask-x, 50%) var(--mask-y, 50%),
-    rgba(255, 255, 255, 0.09) 0deg 6deg,
-    transparent 6deg 18deg
-  );
-  animation: mask-spin 0.9s linear infinite;
+  z-index: 1;
+  opacity: 0;
   pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(42% 54% at 18% 48%, rgba(183, 32, 155, 0.32), transparent 72%),
+    radial-gradient(48% 60% at 48% 54%, rgba(124, 58, 217, 0.3), transparent 74%),
+    linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.36) 48%, transparent 68%);
+  background-repeat: no-repeat;
+  background-size: 220% 100%;
+  background-position: -70% 50%;
+  filter: blur(20px);
+  mix-blend-mode: screen;
 }
 
-.page-mask[data-state] {
-  visibility: visible;
-  opacity: 1;
+html.js-motion .hero > .aurora-shimmer,
+html.js-motion .page-head > .aurora-shimmer,
+html.js-motion .section > .aurora-shimmer,
+html.js-motion .section-tight > .aurora-shimmer {
+  z-index: -1;
 }
 
-.page-mask[data-state="exit"] {
-  pointer-events: auto;
+html.js-motion .shimmer-in > .aurora-shimmer {
+  animation: aurora-sweep 3.8s var(--ease) var(--shimmer-delay, 0ms) both;
 }
 
-@keyframes mask-spin {
-  to { transform: rotate(360deg); }
+@keyframes aurora-sweep {
+  0% {
+    opacity: 0;
+    background-position: -70% 50%;
+  }
+  22% { opacity: 0.7; }
+  68% { opacity: 0.34; }
+  100% {
+    opacity: 0;
+    background-position: 170% 50%;
+  }
+}
+
+html.intro-open .aurora-shimmer,
+html.lightbox-open .aurora-shimmer {
+  opacity: 0 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4753,8 +4685,7 @@ html.js-motion .mask-reveal :is(
     filter: none !important;
     opacity: 1 !important;
   }
-  html.js-motion .motion-rangoli,
-  html.js-motion .page-mask {
+  html.js-motion .aurora-shimmer {
     display: none !important;
   }
   html.js-motion .event-media::before,
