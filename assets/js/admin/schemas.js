@@ -674,7 +674,7 @@ export const RESOURCES = {
         required: true,
         max: 120,
         span: 2,
-        placeholder: 'e.g. Nova Foods',
+        placeholder: 'e.g. foodiehub.in',
       },
       imageField('sponsors', 'Sponsor logo'),
       {

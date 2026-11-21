@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v2.0.52';
+const VERSION = 'v2.0.53';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -32,9 +32,9 @@ const SHELL = [
   './terms.html',
   './offline.html',
   './manifest.webmanifest',
-  './assets/css/base.css?v=2.0.52',
-  './assets/css/components.css?v=2.0.52',
-  './assets/css/pages.css?v=2.0.52',
+  './assets/css/base.css?v=2.0.53',
+  './assets/css/components.css?v=2.0.53',
+  './assets/css/pages.css?v=2.0.53',
   './assets/css/intro.css?v=9',
   './assets/js/env.js',
   './assets/js/config.js',
@@ -95,7 +95,7 @@ const SHELL = [
   './assets/img/events/kabaddi-men.jpg',
   './assets/img/events/kabaddi-women.jpg',
   './assets/img/events/kho-kho-men.jpg',
-  './assets/img/events/kho-kho-women.jpg',
+  './assets/img/events/kho-kho-women.webp',
   './assets/img/events/mehandi.jpg',
   './assets/img/events/mime.jpg',
   './assets/img/events/mimicry.jpg',
@@ -114,8 +114,6 @@ const SHELL = [
   './assets/img/events/stand-up-comedy.jpg',
   './assets/img/events/table-tennis-singles-men.jpg',
   './assets/img/events/table-tennis-singles-women.jpg',
-  './assets/img/events/tennikoit-singles-women.jpg',
-  './assets/img/events/throwball-women.jpg',
   './assets/img/events/throwing.jpg',
   './assets/img/events/treasure-hunt.jpg',
   './assets/img/events/volleyball-men.jpg',

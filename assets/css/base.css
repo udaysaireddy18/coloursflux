@@ -802,20 +802,16 @@ input[type="radio"] {
 
 .js-reveal .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  filter: blur(7px);
+  transform: translateY(20px);
   transition:
-    opacity 0.8s var(--ease),
-    transform 0.8s var(--ease),
-    filter 0.8s var(--ease);
+    opacity 0.55s var(--ease),
+    transform 0.55s var(--ease);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform, filter;
 }
 
 .js-reveal .reveal.is-in {
   opacity: 1;
   transform: none;
-  filter: none;
 }
 
 .hero-copy > * {

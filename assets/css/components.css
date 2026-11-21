@@ -153,13 +153,11 @@
   padding: 5px;
   border-radius: var(--r-pill);
   border: 1px solid rgba(78, 32, 148, 0.18);
-  background: linear-gradient(180deg, rgba(252, 249, 255, 0.94), rgba(238, 229, 250, 0.82));
+  background: linear-gradient(180deg, #fcf9ff, #eee9f7);
   box-shadow:
     0 16px 34px -24px rgba(35, 8, 84, 0.6),
     0 1px 0 rgba(255, 255, 255, 0.92) inset,
     0 -1px 0 rgba(107, 43, 208, 0.06) inset;
-  -webkit-backdrop-filter: blur(16px) saturate(1.18);
-  backdrop-filter: blur(16px) saturate(1.18);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -191,7 +189,6 @@
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
-  animation: gold-ring 15s linear infinite;
   pointer-events: none;
 }
 
@@ -208,11 +205,10 @@
   background: linear-gradient(
     100deg,
     transparent,
-    rgba(255, 255, 255, 0.9) 44%,
-    rgba(214, 177, 255, 0.45) 62%,
+    rgba(255, 255, 255, 0.72) 44%,
+    rgba(214, 177, 255, 0.36) 62%,
     transparent
   );
-  filter: blur(6px);
   opacity: 0;
   transform: translate3d(-130%, 0, 0) rotate(9deg);
   animation: island-sheen 9s var(--ease) 1.4s infinite;
@@ -237,7 +233,7 @@
 .site-header.is-scrolled .nav-links {
   gap: 2px;
   padding: 4px;
-  background: linear-gradient(180deg, rgba(251, 247, 255, 0.97), rgba(233, 222, 248, 0.9));
+  background: linear-gradient(180deg, #fbf7ff, #e9def8);
   border-color: rgba(78, 32, 148, 0.24);
   box-shadow:
     0 20px 40px -26px rgba(35, 8, 84, 0.65),
@@ -356,8 +352,7 @@
   z-index: 90;
   display: none;
   padding: 12px;
-  background: rgba(23, 18, 28, 0.32);
-  backdrop-filter: blur(4px);
+  background: rgba(23, 18, 28, 0.58);
 }
 
 .mobile-menu[open] {
@@ -451,9 +446,8 @@
   bottom: 0;
   z-index: 70;
   padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
-  background: rgba(250, 246, 255, 0.94);
+  background: #faf6ff;
   border-top: 1px solid var(--hairline);
-  backdrop-filter: blur(16px);
 }
 
 .bottom-nav ul {
@@ -514,8 +508,6 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(139, 82, 235, 0.42), rgba(183, 60, 214, 0.16) 46%, transparent 72%);
-  filter: blur(10px);
-  animation: moon-breathe 14s ease-in-out infinite alternate;
 }
 
 @keyframes moon-breathe {
@@ -558,7 +550,7 @@
 
 .hero-lines .w1 { stroke-width: 1.4; opacity: 0.5; }
 .hero-lines .w2 { stroke-width: 1.1; opacity: 0.32; animation-delay: -8s; }
-.hero-lines .w3 { stroke-width: 2.6; opacity: 0.12; filter: blur(5px); animation-delay: -14s; }
+.hero-lines .w3 { stroke-width: 2.6; opacity: 0.12; animation-delay: -14s; }
 
 @keyframes wave-drift {
   from { transform: translate3d(-8px, 3px, 0); }
@@ -690,9 +682,7 @@
   border: 1px solid transparent;
   background:
     radial-gradient(120% 100% at 100% 0%, rgba(174, 95, 255, 0.2), transparent 62%),
-    linear-gradient(160deg, rgba(255, 255, 255, 0.86), rgba(244, 236, 254, 0.7)) padding-box;
-  -webkit-backdrop-filter: blur(18px) saturate(1.12);
-  backdrop-filter: blur(18px) saturate(1.12);
+    linear-gradient(160deg, #fffdfd, #f4ecfe) padding-box;
   box-shadow: 0 34px 80px -46px rgba(58, 12, 130, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   overflow: hidden;
   isolation: isolate;
@@ -1168,13 +1158,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease), filter 0.3s;
-  filter: saturate(0.9) brightness(0.88);
+  transition: transform 0.5s var(--ease);
 }
 
 .event-card:hover .event-media img {
   transform: scale(1.03);
-  filter: saturate(1) brightness(0.96);
 }
 
 .event-media::after {
@@ -1253,10 +1241,8 @@
   place-items: center;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.32);
-  background: rgba(24, 14, 40, 0.72);
+  background: #3a2054;
   color: #ffffff;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
   opacity: 0;
   transform: translateY(-50%) scale(0.9);
   transition: opacity 0.22s var(--ease), transform 0.22s var(--ease), background-color 0.22s;
@@ -1640,8 +1626,7 @@
 }
 
 .modal::backdrop {
-  background: rgba(23, 18, 28, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(23, 18, 28, 0.62);
 }
 
 .modal-wide {
@@ -1696,9 +1681,7 @@
 .lightbox::backdrop {
   background:
     radial-gradient(60% 70% at 50% 40%, rgba(86, 22, 190, 0.28), transparent 72%),
-    rgba(18, 12, 28, 0.78);
-  -webkit-backdrop-filter: blur(9px);
-  backdrop-filter: blur(9px);
+    rgba(18, 12, 28, 0.88);
   animation: lightbox-backdrop-in 0.28s ease both;
 }
 
@@ -2117,13 +2100,12 @@ html.lightbox-open .ambient-light i {
   gap: 6px;
   padding: 4px 9px;
   border-radius: 999px;
-  background: rgba(249, 245, 255, 0.92);
+  background: #f9f5ff;
   border: 1px solid var(--border-soft);
   color: var(--muted);
   font-size: 0.64rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  backdrop-filter: blur(8px);
   white-space: nowrap;
 }
 
@@ -2464,13 +2446,11 @@ html.lightbox-open .ambient-light i {
     height: 46px;
     border-radius: var(--r-pill);
     border: 1px solid rgba(78, 32, 148, 0.18);
-    background: linear-gradient(180deg, rgba(252, 249, 255, 0.94), rgba(238, 229, 250, 0.84));
+    background: linear-gradient(180deg, #fcf9ff, #eee9f7);
     color: var(--text);
     box-shadow:
       0 14px 30px -22px rgba(35, 8, 84, 0.6),
       0 1px 0 rgba(255, 255, 255, 0.92) inset;
-    -webkit-backdrop-filter: blur(16px) saturate(1.16);
-    backdrop-filter: blur(16px) saturate(1.16);
     transition:
       width 0.3s var(--ease),
       height 0.3s var(--ease),
@@ -2821,7 +2801,6 @@ html.lightbox-open .ambient-light i {
     radial-gradient(circle, rgba(158, 99, 241, 0.5) 1.4px, transparent 2.1px);
   background-size: 230px 270px, 350px 320px, 540px 480px;
   background-position: 0 0, 80px 60px, 160px 30px;
-  will-change: transform;
   animation: dust-drift 70s linear infinite;
 }
 
@@ -2830,9 +2809,8 @@ html.lightbox-open .ambient-light i {
 }
 
 /* hero: violet-magenta aurora drifting behind the art and the headline.
-   Three blurred colour clouds travel on separate slow loops, over a very
-   slow turning ribbon, so the backdrop keeps shifting without ever showing
-   a hard edge. Transforms and opacity only, so it stays on the compositor. */
+   The gradients already have soft edges, so no blur filter is needed.
+   Transforms and opacity keep the movement on the compositor. */
 .hero-aurora {
   position: absolute;
   inset: -24% -12%;
@@ -2848,8 +2826,6 @@ html.lightbox-open .ambient-light i {
   position: absolute;
   display: block;
   border-radius: 50%;
-  filter: blur(34px);
-  will-change: transform, opacity;
 }
 
 .hero-aurora i:nth-child(1) {
@@ -2904,10 +2880,7 @@ html.lightbox-open .ambient-light i {
     rgba(139, 92, 246, 0.16) 272deg,
     rgba(183, 32, 155, 0.13) 322deg,
     transparent 360deg);
-  filter: blur(38px);
   transform: translate(-50%, -50%);
-  will-change: transform;
-  animation: aurora-turn 140s linear infinite;
 }
 
 @keyframes aurora-drift-a {
@@ -2951,7 +2924,6 @@ html.lightbox-open .ambient-light i {
   position: absolute;
   display: block;
   border-radius: 50%;
-  will-change: transform, opacity;
   animation: sheen-drift 26s ease-in-out infinite alternate, sheen-fade 15s ease-in-out infinite alternate;
 }
 
@@ -3009,8 +2981,6 @@ html.lightbox-open .ambient-light i {
   mask-image: radial-gradient(circle at 50% 50%, #000 0 44%, transparent 71%);
   opacity: 0.75;
   pointer-events: none;
-  will-change: transform;
-  animation: sun-turn 170s linear infinite;
 }
 
 @keyframes sun-turn {
@@ -3035,7 +3005,6 @@ html.lightbox-open .ambient-light i {
   inset: 0;
   border-radius: 50%;
   border: 1px solid rgba(113, 30, 201, 0.22);
-  will-change: transform;
   animation: orbit-turn 54s linear infinite;
 }
 
@@ -3089,7 +3058,6 @@ html.lightbox-open .ambient-light i {
   background: linear-gradient(160deg, rgba(184, 137, 249, 0.95), rgba(113, 30, 201, 0.4));
   box-shadow: 0 0 10px rgba(158, 99, 241, 0.4);
   opacity: 0;
-  will-change: transform, opacity;
   animation: petal-rise 21s linear infinite;
 }
 
@@ -3121,7 +3089,6 @@ html.lightbox-open .ambient-light i {
   mask: radial-gradient(circle, transparent 61%, #000 62%, #000 68%, transparent 69%);
   opacity: 0;
   pointer-events: none;
-  animation: gold-ring 9s linear infinite;
   transition: opacity 0.3s;
 }
 
@@ -3140,7 +3107,6 @@ html.lightbox-open .ambient-light i {
     rgba(71, 18, 151, 0.28) 72%,
     rgba(124, 58, 217, 0.95)
   );
-  animation: gold-ring 16s linear infinite;
 }
 
 @keyframes gold-ring {
@@ -3236,15 +3202,7 @@ html.lightbox-open .ambient-light i {
   text-shadow: 0 0 10px rgba(158, 99, 241, 0.8);
 }
 
-/* cards: cool media grade and violet-ruled hover */
-.event-media img {
-  filter: saturate(1.02) contrast(1.02);
-}
-
-.event-card:hover .event-media img {
-  filter: saturate(1.08) contrast(1.04);
-}
-
+/* cards: violet-ruled hover */
 .event-card:hover {
   border-color: rgba(113, 30, 201, 0.5);
 }
@@ -3255,8 +3213,7 @@ html.lightbox-open .ambient-light i {
 
 .date-chip {
   border-color: rgba(158, 99, 241, 0.4);
-  background: rgba(22, 17, 27, 0.66);
-  backdrop-filter: blur(3px);
+  background: #241631;
 }
 
 .date-chip b {
@@ -3309,11 +3266,10 @@ html.lightbox-open .ambient-light i {
   .hero-orbits { right: -12%; width: 82vw; opacity: 0.7; }
   .hero-sheen { inset: -12% -8%; }
   .hero-aurora { inset: -16% -10%; opacity: 0.82; animation: none; }
-  .hero-aurora i { filter: blur(22px); }
   .hero-aurora i:nth-child(1) { width: 96vw; height: 74vw; }
   .hero-aurora i:nth-child(2) { width: 86vw; height: 68vw; }
   .hero-aurora i:nth-child(3) { display: none; }
-  .hero-aurora::before { width: 190vw; filter: blur(26px); }
+  .hero-aurora::before { width: 190vw; }
   .hero-petals i:nth-child(4),
   .hero-petals i:nth-child(8) { display: none; }
 }
@@ -3361,15 +3317,6 @@ html.lightbox-open .ambient-light i {
 /* primary gradient buttons get a fine foil edge */
 .btn-gold {
   border: 1px solid rgba(71, 18, 151, 0.35);
-}
-
-/* cool photo grade so event artwork sits inside the lilac + violet palette */
-.event-media img {
-  filter: saturate(0.9) contrast(1.04) brightness(0.97);
-}
-
-.event-card:hover .event-media img {
-  filter: saturate(1) contrast(1.05) brightness(1.03);
 }
 
 .event-media {
@@ -4465,9 +4412,7 @@ html.lightbox-open .ambient-light i {
   width: 54vmax;
   aspect-ratio: 1;
   border-radius: 50%;
-  filter: blur(96px);
-  opacity: 0.13;
-  will-change: transform;
+  opacity: 0.1;
 }
 
 .ambient-light i:nth-child(1) {
@@ -4521,12 +4466,33 @@ html.lightbox-open .ambient-light i {
 @media (max-width: 720px) {
   .ambient-light i {
     width: 78vmax;
-    filter: blur(64px);
-    opacity: 0.1;
+    opacity: 0.08;
   }
 
   .ambient-light i:nth-child(3) { display: none; }
   .event-card { transform-style: flat; }
+}
+
+/* Performance: decorative lighting stays still. The motion budget is
+   reserved for kinetic type, scroll storytelling, liquid artwork reveals,
+   aurora shimmer, and the seconds tick — not a dozen ambient loops. */
+.ambient-light i,
+.gold-dust,
+.hero-aurora,
+.hero-aurora i,
+.hero-sheen i,
+.hero-sun,
+.hero-orbits i,
+.hero-petals i,
+.hero-lines .wave-line,
+.hero-glow,
+.site-header .nav-links::after,
+.quick-card::before,
+.site-footer::before,
+.hero-actions .btn-gold,
+.ribbon-star,
+.gradient-text {
+  animation: none !important;
 }
 
 /* ---------- additive creative motion ------------------------------ */
@@ -4536,8 +4502,6 @@ html.lightbox-open .ambient-light i {
 
 html.js-motion .story-float {
   transform: translate3d(0, var(--story-y, 0px), 0) scale(var(--story-scale, 1));
-  filter: blur(var(--story-blur, 0px));
-  will-change: transform, filter;
 }
 
 html.js-motion .kinetic-word {
@@ -4561,17 +4525,14 @@ html.js-motion .kinetic-in .kinetic-glyph {
   0% {
     opacity: 0;
     transform: translateY(0.42em) rotate(-8deg) scaleX(0.62);
-    filter: blur(8px);
   }
   55% {
     opacity: 1;
     transform: translateY(-0.06em) rotate(3deg) scaleX(1.08);
-    filter: blur(0);
   }
   100% {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 
@@ -4619,15 +4580,14 @@ html.js-motion .liquid-in.detail-hero img {
 }
 
 @keyframes liquid-image {
-  from { transform: scale(1.12); filter: blur(8px) saturate(0.85); }
-  to { transform: none; filter: blur(0) saturate(1.02); }
+  from { transform: scale(1.12); }
+  to { transform: none; }
 }
 
 /* One soft aurora sweep replaces the earlier line-drawing and iris effects.
    The inserted span is absolutely positioned, so neither layout nor copy changes. */
 html.js-motion .has-shimmer {
   isolation: isolate;
-  transform: translateZ(0);
 }
 
 html.js-motion .aurora-shimmer {
@@ -4644,8 +4604,6 @@ html.js-motion .aurora-shimmer {
   background-repeat: no-repeat;
   background-size: 220% 100%;
   background-position: -70% 50%;
-  filter: blur(20px);
-  mix-blend-mode: screen;
 }
 
 html.js-motion .hero > .aurora-shimmer,
@@ -4664,8 +4622,8 @@ html.js-motion .shimmer-in > .aurora-shimmer {
     opacity: 0;
     background-position: -70% 50%;
   }
-  22% { opacity: 0.7; }
-  68% { opacity: 0.34; }
+  22% { opacity: 0.45; }
+  68% { opacity: 0.22; }
   100% {
     opacity: 0;
     background-position: 170% 50%;

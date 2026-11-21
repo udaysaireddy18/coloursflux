@@ -354,19 +354,19 @@ values
   ('22222222-2222-4222-8222-000000000034', 'Kho-Kho (Women)', 'kho-kho-women',
    'Women''s kho-kho. Venue: CV Raman Bhavan Ground.',
    'sports', '2027-01-09', '10:00', '13:00',
-   '11111111-1111-4111-8111-000000000014', 'assets/img/events/kho-kho-women.jpg',
+   '11111111-1111-4111-8111-000000000014', 'assets/img/events/kho-kho-women.webp',
    'published', false, true),
 
   ('22222222-2222-4222-8222-000000000035', 'Throwball (Women)', 'throwball-women',
    'Women''s throwball. Venue: KL Rao Bhavan Ground.',
    'sports', '2027-01-09', '10:00', '13:00',
-   '11111111-1111-4111-8111-000000000011', 'assets/img/events/throwball-women.jpg',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/events/kho-kho-women.webp',
    'published', false, true),
 
   ('22222222-2222-4222-8222-000000000036', 'Tennikoit Singles (Women)', 'tennikoit-singles-women',
    'Women''s tennikoit singles. Venue: KL Rao Bhavan Ground.',
    'sports', '2027-01-09', '10:00', '13:00',
-   '11111111-1111-4111-8111-000000000011', 'assets/img/events/tennikoit-singles-women.jpg',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/events/kho-kho-women.webp',
    'published', false, true),
 
   ('22222222-2222-4222-8222-000000000037', 'Table Tennis Singles (Women)', 'table-tennis-singles-women',
@@ -529,9 +529,7 @@ on conflict (id) do update set
 insert into public.sponsorships
   (id, sponsor_name, logo_url, placement, campaign_start, campaign_end, status, is_paid, is_sample)
 values
-  ('66666666-6666-4666-8666-000000000001', 'Nova Foods', '',
-   'home_strip', '2027-01-01', '2027-01-31', 'active', true, true),
-  ('66666666-6666-4666-8666-000000000002', 'Bluewave Audio', '',
+  ('66666666-6666-4666-8666-000000000001', 'foodiehub.in', '',
    'home_strip', '2027-01-01', '2027-01-31', 'active', true, true),
   ('66666666-6666-4666-8666-000000000003', 'Campus Print Co.', '',
    'stalls_banner', '2027-01-02', '2027-01-15', 'active', false, true)

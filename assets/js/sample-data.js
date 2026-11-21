@@ -306,21 +306,21 @@ export const sampleEvents = [
     id: 'evt-034', title: 'Kho-Kho (Women)', slug: 'kho-kho-women',
     description: "Women's kho-kho. Venue: CV Raman Bhavan Ground.",
     category: 'sports', event_date: day(2), start_time: '10:00:00', end_time: '13:00:00',
-    location_id: 'loc-cvraman-ground', image_url: 'assets/img/events/kho-kho-women.jpg',
+    location_id: 'loc-cvraman-ground', image_url: 'assets/img/events/kho-kho-women.webp',
     status: 'published', featured: false,
   },
   {
     id: 'evt-035', title: 'Throwball (Women)', slug: 'throwball-women',
     description: "Women's throwball. Venue: KL Rao Bhavan Ground.",
     category: 'sports', event_date: day(2), start_time: '10:00:00', end_time: '13:00:00',
-    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/throwball-women.jpg',
+    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/kho-kho-women.webp',
     status: 'published', featured: false,
   },
   {
     id: 'evt-036', title: 'Tennikoit Singles (Women)', slug: 'tennikoit-singles-women',
     description: "Women's tennikoit singles. Venue: KL Rao Bhavan Ground.",
     category: 'sports', event_date: day(2), start_time: '10:00:00', end_time: '13:00:00',
-    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/tennikoit-singles-women.jpg',
+    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/kho-kho-women.webp',
     status: 'published', featured: false,
   },
   {
@@ -418,8 +418,7 @@ export const sampleAnnouncements = [
 ];
 
 export const sampleSponsorships = [
-  { id: 'spo-001', sponsor_name: 'Nova Foods', logo_url: '', placement: 'home_strip', campaign_start: '2027-01-01', campaign_end: '2027-01-31', status: 'active', is_paid: true },
-  { id: 'spo-002', sponsor_name: 'Bluewave Audio', logo_url: '', placement: 'home_strip', campaign_start: '2027-01-01', campaign_end: '2027-01-31', status: 'active', is_paid: true },
+  { id: 'spo-001', sponsor_name: 'foodiehub.in', logo_url: '', placement: 'home_strip', campaign_start: '2027-01-01', campaign_end: '2027-01-31', status: 'active', is_paid: true },
   { id: 'spo-003', sponsor_name: 'Campus Print Co.', logo_url: '', placement: 'stalls_banner', campaign_start: '2027-01-02', campaign_end: '2027-01-15', status: 'active', is_paid: false },
 ];
 

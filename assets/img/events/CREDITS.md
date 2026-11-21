@@ -2,13 +2,14 @@
 
 Campus event photos are from the Aditya University gallery (adityauniversity.in/gallery) and show university students at real campus events.
 Remaining photos are from Wikimedia Commons, chosen to show Indian and Andhra Pradesh people.
+Selected artwork has been replaced with user-provided festival photos; those entries are marked below.
 Replace any image with your own festival photo if preferred.
 
 ## spot-photography
 - File: `spot-photography.jpg`
-- Source: https://www.adityauniversity.in/gallery
-- Author: Aditya University
-- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
+- Source: User-provided festival photo set (`spot photgraphy.jpg`)
+- Author: ColoursFlux photo set
+- Licence: Provided for ColoursFlux demo use
 
 ## sahityam
 - File: `sahityam.jpg`
@@ -120,9 +121,9 @@ Replace any image with your own festival photo if preferred.
 
 ## running
 - File: `running.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Women_4x100m_Relay_Dutee_Chand_In_Action_2017_cropped.jpg
-- Author: Odisha Games 2017 were cc by sa - Organised by Asian Athletics Assoc and Odisha government
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- Source: User-provided festival photo set (`running.jpg`)
+- Author: ColoursFlux photo set
+- Licence: Provided for ColoursFlux demo use
 
 ## relay
 - File: `relay.jpg`
@@ -203,22 +204,22 @@ Replace any image with your own festival photo if preferred.
 - Licence: GODL-India (https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf)
 
 ## kho-kho-women
-- File: `kho-kho-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:A_game_of_Kho-Kho_in_progress_at_the_Sports_meet_for_Parliamentarians_and_Media_Persons,_in_New_Delhi_on_August_30,_2005_(1).jpg
-- Author: Ministry of Parliamentary Affairs
-- Licence: GODL-India (https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf)
+- File: `kho-kho-women.webp`
+- Source: User-provided festival photo set (`kho kho womens.webp`)
+- Author: ColoursFlux photo set
+- Licence: Provided for ColoursFlux demo use
 
 ## throwball-women
-- File: `throwball-women.jpg`
-- Source: https://www.adityauniversity.in/gallery
-- Author: Aditya University
-- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
+- File: `kho-kho-women.webp` (shared)
+- Source: User-provided festival photo set (`kho kho womens.webp`)
+- Author: ColoursFlux photo set
+- Licence: Provided for ColoursFlux demo use
 
 ## tennikoit-singles-women
-- File: `tennikoit-singles-women.jpg`
-- Source: https://commons.wikimedia.org/wiki/File:Indische_Wurfdynamik.jpg
-- Author: Mario.mueller-rt
-- Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0)
+- File: `kho-kho-women.webp` (shared)
+- Source: User-provided festival photo set (`kho kho womens.webp`)
+- Author: ColoursFlux photo set
+- Licence: Provided for ColoursFlux demo use
 
 ## table-tennis-singles-women
 - File: `table-tennis-singles-women.jpg`
