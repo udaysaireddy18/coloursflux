@@ -690,26 +690,100 @@
 }
 
 .hero-panel .countdown {
+  --dial: clamp(46px, 6vw, 58px);
+  --core: calc(var(--dial) - 10px);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  border: 1px solid var(--border-soft);
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(49, 25, 77, 0.02);
+  gap: 10px;
+  border: 0;
+  border-radius: 16px;
+  padding: 4px 0;
+  overflow: visible;
+  background: none;
 }
 
 .hero-panel .cd-cell {
+  position: relative;
+  isolation: isolate;
   min-width: 0;
-  padding: 16px 6px 13px;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
+  padding: 0 6px 12px;
+  border: 1px solid rgba(124, 58, 217, 0.24);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(39, 16, 72, 0.97), rgba(20, 8, 42, 0.97));
+  box-shadow:
+    0 16px 28px -20px rgba(49, 8, 102, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  text-align: center;
+  overflow: hidden;
 }
 
-.hero-panel .cd-cell + .cd-cell {
-  border-left: 1px solid var(--border-soft);
+/* image-inspired segmented clock dial with a violet/magenta sweep */
+.hero-panel .cd-cell::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 50%;
+  width: var(--dial);
+  height: var(--dial);
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    conic-gradient(from 215deg, rgba(255, 92, 199, 0.95) 0deg 44deg, transparent 44deg 360deg),
+    repeating-conic-gradient(from -90deg, rgba(205, 157, 255, 0.9) 0deg 5deg, rgba(205, 157, 255, 0.16) 5deg 9deg, transparent 9deg 15deg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  animation: cd-dial-spin 22s linear infinite;
+}
+
+.hero-panel .cd-cell::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 15px;
+  left: 50%;
+  width: var(--core);
+  height: var(--core);
+  transform: translateX(-50%);
+  border: 1px solid rgba(205, 157, 255, 0.14);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 34%, #3b166f, #1b0a35 74%);
+  box-shadow: inset 0 0 18px rgba(124, 58, 217, 0.35);
+}
+
+.hero-panel .cd-cell:nth-child(2)::before { animation-delay: -5s; }
+.hero-panel .cd-cell:nth-child(3)::before { animation-delay: -10s; }
+.hero-panel .cd-cell:nth-child(4)::before { animation-delay: -15s; }
+
+.hero-panel .cd-value {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--core);
+  height: var(--core);
+  margin: 15px auto 0;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 0 16px rgba(205, 157, 255, 0.75);
+}
+
+.hero-panel .cd-label {
+  position: relative;
+  z-index: 2;
+  margin-top: 8px;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: #dbc6ff;
+}
+
+@keyframes cd-dial-spin {
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-panel .cd-cell::before { animation: none; }
 }
 
 .hero-panel-foot {
@@ -2267,9 +2341,10 @@
   .hero-actions .btn { flex: 1 1 auto; min-height: 48px; padding-inline: 14px; }
   .hero-meta { margin-top: 22px; gap: 8px 16px; font-size: 0.78rem; }
   .hero-panel { padding: 18px; border-radius: 18px; }
-  .hero-panel .cd-cell { padding: 13px 4px 11px; }
-  .hero-panel .cd-value { font-size: 1.5rem; }
-  .hero-panel .cd-label { font-size: 0.55rem; letter-spacing: 0.1em; }
+  .hero-panel .countdown { --dial: 50px; --core: 42px; gap: 8px; }
+  .hero-panel .cd-cell { padding: 0 4px 10px; }
+  .hero-panel .cd-value { font-size: 1.3rem; }
+  .hero-panel .cd-label { font-size: 0.55rem; letter-spacing: 0.1em; margin-top: 6px; }
   .map-preview { aspect-ratio: 1700 / 1178; min-height: 0; }
   .map-preview-cta { min-height: 40px; padding: 8px 13px; font-size: 0.8rem; }
   .home-map-panel { padding: 18px; }
@@ -3398,11 +3473,13 @@
     font-size: 0.72rem;
     white-space: nowrap;
   }
-  .hero-panel .cd-cell { padding: 11px 3px 9px; }
-  .hero-panel .cd-value { font-size: 1.45rem; }
+  .hero-panel .countdown { --dial: 44px; --core: 36px; gap: 6px; }
+  .hero-panel .cd-cell { padding: 0 3px 9px; }
+  .hero-panel .cd-value { font-size: 1.12rem; }
 
   .hero-panel .cd-label {
-    font-size: 0.72rem;
+    margin-top: 5px;
+    font-size: 0.58rem;
     letter-spacing: 0.06em;
   }
 
@@ -3557,35 +3634,16 @@
   .hero-panel { padding: 14px; }
   .hero-panel-head { padding-bottom: 8px; }
 
-  /* compact four-cell timer with a soft violet glass lift */
-  .hero-panel .countdown {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 6px;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    background: none;
-  }
-  .hero-panel .cd-cell {
-    min-width: 0;
-    padding: 9px 4px 8px;
-    border: 1px solid rgba(124, 58, 217, 0.2);
-    border-top: 2px solid rgba(124, 58, 217, 0.42);
-    border-radius: 10px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(239, 230, 253, 0.72));
-    box-shadow:
-      0 8px 18px -14px rgba(71, 18, 151, 0.6),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    text-align: center;
-  }
-  .hero-panel .cd-cell + .cd-cell { border-left: 1px solid rgba(124, 58, 217, 0.2); }
-  .hero-panel .cd-value { font-size: 1.15rem; }
+  /* image-inspired clock dials, scaled down for small phones */
+  .hero-panel .countdown { --dial: 40px; --core: 32px; gap: 4px; }
+  .hero-panel .cd-cell { padding: 0 2px 8px; border-radius: 12px; }
+  .hero-panel .cd-cell::before { top: 8px; }
+  .hero-panel .cd-cell::after { top: 13px; }
+  .hero-panel .cd-value { margin-top: 13px; font-size: 1rem; }
   .hero-panel .cd-label {
-    margin-top: 2px;
-    font-size: 0.64rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    margin-top: 4px;
+    font-size: 0.52rem;
+    letter-spacing: 0.05em;
   }
 
   .quick-grid { gap: 8px; }
