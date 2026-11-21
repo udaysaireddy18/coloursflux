@@ -731,20 +731,6 @@
   gap: 7px;
 }
 
-.hero-panel-foot a {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--text);
-  font-weight: 550;
-}
-
-.hero-panel-foot a:hover {
-  color: var(--gold-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 /* countdown */
 .countdown {
   display: flex;
@@ -3535,21 +3521,7 @@
   }
   .hero-meta { margin-top: 12px; font-size: 0.72rem; }
 
-  /* offline first: highlight Save for offline, quieten Install app */
-  .hero-panel-foot a[href="install.html"] {
-    justify-content: center;
-    min-height: 40px;
-    padding: 8px 14px;
-    border: 1px solid rgba(71, 18, 151, 0.35);
-    border-radius: var(--r-pill);
-    background: var(--grad-gold);
-    color: #fff;
-    font-size: 0.78rem;
-    font-weight: 650;
-    text-decoration: none;
-    box-shadow: 0 10px 24px -14px rgba(88, 22, 190, 0.6);
-  }
-
+  /* quieten Install app on small screens */
   [data-install-app] {
     border-color: var(--border-soft);
     background: transparent;
