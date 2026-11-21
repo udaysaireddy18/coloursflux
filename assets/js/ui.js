@@ -581,7 +581,8 @@ export function mountCountdown(root, { onPhase } = {}) {
       const next = valid ? values[i] : '--';
       if (c.textContent === next) return;
       c.textContent = next;
-      if (!valid) return;
+      // Only the last value (seconds) animates; other units update quietly.
+      if (!valid || i !== cells.length - 1) return;
       c.classList.remove('is-tick');
       void c.offsetWidth;
       c.classList.add('is-tick');

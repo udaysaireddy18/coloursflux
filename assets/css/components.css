@@ -775,54 +775,20 @@
   transform-origin: center bottom;
 }
 
-.cd-value.is-tick {
-  animation: cd-tick 0.5s var(--ease);
-}
-
-@keyframes cd-tick {
-  0% { transform: translateY(0) scale(1); }
-  34% {
-    transform: translateY(-2px) scale(1.07);
-    text-shadow: 0 0 32px rgba(174, 95, 255, 0.85);
-  }
-  100% { transform: translateY(0) scale(1); }
-}
-
-/* seconds step through one by one with a slim progress sweep */
-.hero-panel .cd-cell:last-child { position: relative; }
-.hero-panel .cd-cell:last-child::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: 4px;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(113, 30, 201, 0.12), var(--gold-deep), #c535a8);
-  transform: scaleX(0);
-  transform-origin: left center;
-  animation: cd-second-track 1s linear infinite;
-  pointer-events: none;
-}
+/* only the seconds value steps on each tick */
 .hero-panel .cd-value[data-cd="3"].is-tick {
   animation: cd-second-step 0.58s var(--ease);
 }
-@keyframes cd-second-track {
-  0% { transform: scaleX(0); opacity: 0.25; }
-  85% { opacity: 0.95; }
-  100% { transform: scaleX(1); opacity: 0.25; }
-}
 @keyframes cd-second-step {
   0% { transform: translateY(-55%); opacity: 0; filter: blur(2px); }
-  40% { opacity: 1; filter: blur(0); }
+  45% {
+    opacity: 1;
+    filter: blur(0);
+    text-shadow: 0 0 28px rgba(174, 95, 255, 0.9);
+  }
   100% { transform: translateY(0); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-panel .cd-cell:last-child::after {
-    animation: none;
-    transform: scaleX(1);
-    opacity: 0.45;
-  }
   .hero-panel .cd-value[data-cd="3"].is-tick { animation: none; }
 }
 
