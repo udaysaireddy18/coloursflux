@@ -193,9 +193,9 @@ Replace any image with your own festival photo if preferred.
 
 ## basketball-women
 - File: `basketball-women.jpg`
-- Source: https://www.adityauniversity.in/gallery
+- Source: https://www.adityauniversity.in/public/uploads/editors/basket-ball-resized-8Zqv9is1.webp
 - Author: Aditya University
-- Licence: © Aditya University (official festival site use) (https://www.adityauniversity.in/gallery)
+- Licence: © Aditya University (official university site use) (https://www.adityauniversity.in/why-us/life-at-aditya-university-why-us)
 
 ## kabaddi-women
 - File: `kabaddi-women.jpg`
@@ -210,16 +210,17 @@ Replace any image with your own festival photo if preferred.
 - Licence: Provided for ColoursFlux demo use
 
 ## throwball-women
-- File: `kho-kho-women.webp` (shared)
-- Source: User-provided festival photo set (`kho kho womens.webp`)
-- Author: ColoursFlux photo set
-- Licence: Provided for ColoursFlux demo use
+- File: `throwball-women.jpg`
+- Source: https://www.adityauniversity.in/public/uploads/editors/throwball-resized-RKasuLy3.webp
+- Author: Aditya University
+- Licence: © Aditya University (official university site use) (https://www.adityauniversity.in/why-us/life-at-aditya-university-why-us)
 
 ## tennikoit-singles-women
-- File: `kho-kho-women.webp` (shared)
-- Source: User-provided festival photo set (`kho kho womens.webp`)
-- Author: ColoursFlux photo set
-- Licence: Provided for ColoursFlux demo use
+- File: `tennikoit-singles-women.jpg`
+- Source: https://www.adityauniversity.in/public/uploads/editors/table-tennis-resized-9OiLg9KV.webp
+- Author: Aditya University
+- Licence: © Aditya University (official university site use) (https://www.adityauniversity.in/why-us/life-at-aditya-university-why-us)
+- Note: Aditya University racket-sport campus photo used as tennikoit artwork.
 
 ## table-tennis-singles-women
 - File: `table-tennis-singles-women.jpg`

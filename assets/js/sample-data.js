@@ -313,14 +313,14 @@ export const sampleEvents = [
     id: 'evt-035', title: 'Throwball (Women)', slug: 'throwball-women',
     description: "Women's throwball. Venue: KL Rao Bhavan Ground.",
     category: 'sports', event_date: day(2), start_time: '10:00:00', end_time: '13:00:00',
-    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/kho-kho-women.webp',
+    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/throwball-women.jpg',
     status: 'published', featured: false,
   },
   {
     id: 'evt-036', title: 'Tennikoit Singles (Women)', slug: 'tennikoit-singles-women',
     description: "Women's tennikoit singles. Venue: KL Rao Bhavan Ground.",
     category: 'sports', event_date: day(2), start_time: '10:00:00', end_time: '13:00:00',
-    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/kho-kho-women.webp',
+    location_id: 'loc-klrao-bhavan-ground', image_url: 'assets/img/events/tennikoit-singles-women.jpg',
     status: 'published', featured: false,
   },
   {

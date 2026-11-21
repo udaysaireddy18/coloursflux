@@ -360,13 +360,13 @@ values
   ('22222222-2222-4222-8222-000000000035', 'Throwball (Women)', 'throwball-women',
    'Women''s throwball. Venue: KL Rao Bhavan Ground.',
    'sports', '2027-01-09', '10:00', '13:00',
-   '11111111-1111-4111-8111-000000000011', 'assets/img/events/kho-kho-women.webp',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/events/throwball-women.jpg',
    'published', false, true),
 
   ('22222222-2222-4222-8222-000000000036', 'Tennikoit Singles (Women)', 'tennikoit-singles-women',
    'Women''s tennikoit singles. Venue: KL Rao Bhavan Ground.',
    'sports', '2027-01-09', '10:00', '13:00',
-   '11111111-1111-4111-8111-000000000011', 'assets/img/events/kho-kho-women.webp',
+   '11111111-1111-4111-8111-000000000011', 'assets/img/events/tennikoit-singles-women.jpg',
    'published', false, true),
 
   ('22222222-2222-4222-8222-000000000037', 'Table Tennis Singles (Women)', 'table-tennis-singles-women',

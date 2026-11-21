@@ -258,6 +258,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: saturate(0.9) brightness(0.9);
 }
 
 .detail-hero::after {
@@ -1007,14 +1008,14 @@
   color: #4b2680;
 }
 
-/* event media: solid tints keep badges legible without frosted-glass repaint */
+/* event media: gold-tinted grade keeps photos warm */
 .event-media::after {
-  background: linear-gradient(180deg, rgba(22, 17, 27, 0) 40%, rgba(25, 14, 34, 0.82) 100%);
+  background: linear-gradient(180deg, rgba(22, 17, 27, 0) 40%, rgba(25, 14, 34, 0.78) 100%);
 }
 
 .event-media .badge {
-  background-color: #33223f;
-  border-color: rgba(235, 225, 255, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 /* filter panel: a touch of depth under the gold hairline */
@@ -1398,13 +1399,18 @@
   }
 }
 
-/* Event detail pages use solid tints only — no frosted-glass layers. */
+/* Event detail pages use solid tints only — no frosted-glass layers.
+   The rest of the site keeps its original aurora glass and motion. */
 body.event-page :is(.site-header .nav-links, .hero-panel, .badge, .date-chip,
   .image-preview-btn, .event-media .badge, .map-scale, .map-hint),
 body.event-page .modal::backdrop,
 body.event-page .lightbox::backdrop {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+}
+
+body.event-page .site-header .nav-links {
+  background: linear-gradient(180deg, #fcf9ff, #eee9f7);
 }
 
 body.event-page .detail-hero .image-preview-btn {
@@ -1420,4 +1426,14 @@ body.event-page .event-media .badge {
 body.event-page .date-chip {
   background: #241631;
   border-color: rgba(158, 99, 241, 0.4);
+}
+
+body.event-page .modal::backdrop {
+  background: rgba(23, 18, 28, 0.62);
+}
+
+body.event-page .lightbox::backdrop {
+  background:
+    radial-gradient(60% 70% at 50% 40%, rgba(86, 22, 190, 0.28), transparent 72%),
+    rgba(18, 12, 28, 0.88);
 }

@@ -518,18 +518,22 @@ function mountAuroraShimmer(root = document) {
 /* ---------- scroll-driven storytelling --------------------------- */
 
 const STORY_TARGETS = [
-  ['.hero-copy', 12, 0.012],
-  ['.section-head > div', 12, 0.01],
-  ['.quick-grid', 18, 0.015],
-  ['.grid', 20, 0.014],
-  ['.filter-panel', 12, 0.01],
-  ['.detail-hero', 24, 0.018],
+  ['.hero-copy', 12, 0.012, 1.5],
+  ['.section-head > div', 12, 0.01, 1.5],
+  ['.quick-grid', 18, 0.015, 2],
+  ['.grid', 20, 0.014, 2],
+  ['.home-map-grid', 22, 0.02, 2.5],
+  ['.announce-feed', 16, 0.012, 2],
+  ['.filter-panel', 12, 0.01, 1.5],
+  ['.day-head', 10, 0.01, 1.5],
+  ['.schedule-list', 14, 0.01, 1.5],
+  ['.detail-hero', 24, 0.018, 2.5],
 ];
 
 function updateStory() {
   storyTicking = false;
   const viewport = window.innerHeight || 1;
-  storyItems.forEach(({ el, amount, scale }) => {
+  storyItems.forEach(({ el, amount, scale, blur }) => {
     if (!el.isConnected) return;
     const box = el.getBoundingClientRect();
     if (box.bottom < -viewport * 0.25 || box.top > viewport * 1.25) return;
@@ -538,6 +542,7 @@ function updateStory() {
     const wave = Math.sin((p - 0.5) * Math.PI);
     el.style.setProperty('--story-y', `${(-wave * amount).toFixed(1)}px`);
     el.style.setProperty('--story-scale', (1 - Math.abs(wave) * scale).toFixed(4));
+    el.style.setProperty('--story-blur', `${(Math.abs(wave) * blur).toFixed(1)}px`);
   });
 }
 
@@ -545,7 +550,7 @@ function refreshStory() {
   storyItems = [];
   if (prefersReducedMotion()) return;
   const mobile = window.innerWidth < 720;
-  STORY_TARGETS.forEach(([selector, amount, scale]) => {
+  STORY_TARGETS.forEach(([selector, amount, scale, blur]) => {
     document.querySelectorAll(selector).forEach((el) => {
       if (el.closest('.intro')) return;
       el.classList.add('story-float');
@@ -553,6 +558,7 @@ function refreshStory() {
         el,
         amount: amount * (mobile ? 0.45 : 1),
         scale: scale * (mobile ? 0.5 : 1),
+        blur: blur * (mobile ? 0.5 : 1),
       });
     });
   });
@@ -875,17 +881,17 @@ function footerMarkup() {
         <div class="footer-col">
           <h4>Using the app</h4>
           <ul>
-            <li>Install &amp; go offline</li>
-            <li>How offline mode works</li>
-            <li>FAQ</li>
-            <li>Help</li>
+            <li><a href="install.html">Install &amp; go offline</a></li>
+            <li><a href="about.html#offline">How offline mode works</a></li>
+            <li><a href="about.html#faq-list">FAQ</a></li>
+            <li><a href="about.html#help">Help</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
           <h4>Official</h4>
           <ul>
-            <li>Official website — https://colours.adityauniversity.in/</li>
+            <li><a href="https://colours.adityauniversity.in/" target="_blank" rel="noopener noreferrer">Official website — https://colours.adityauniversity.in/</a></li>
             ${contact.length ? `<li>${contact.join('</li><li>')}</li>` : ''}
           </ul>
         </div>
