@@ -1,11 +1,11 @@
 /**
  * ColoursFlux — published festival data.
  *
- * This file mirrors the programme from the official "Schedule of Events" PDF:
+ * This file mirrors the schedule from the official "Schedule of Events" PDF:
  * CREO, cultural and sports events across 7–9 January, with the Aditya
  * University campus map used for venue locations.
  *
- * The site still flags these as bundled records (`_sample`) whenever Supabase
+ * The site still flags these as local records (`_sample`) whenever Supabase
  * is not connected, so organisers know they are reading the local copy. Once
  * the database is connected, the same rows can be imported from seed.sql or
  * edited in Admin.

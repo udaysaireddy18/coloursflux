@@ -237,7 +237,7 @@ export async function init({ autoSync = true } = {}) {
 /** "Download festival data" / pull-to-refresh action. */
 export async function refresh() {
   if (!isConfigured()) {
-    const err = new Error('Live sync is not available in this copy; bundled data is shown instead.');
+    const err = new Error('Live sync is not available in this copy; local data is shown instead.');
     err.code = 'not-configured';
     throw err;
   }

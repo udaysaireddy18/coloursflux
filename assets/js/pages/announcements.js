@@ -81,7 +81,7 @@ function render() {
   $('#last-updated').textContent = store.state.lastSync
     ? `Last updated: ${timeAgo(store.state.lastSync)}`
     : store.state.source === 'sample'
-      ? 'Bundled schedule — not synced'
+      ? 'Local schedule — not synced'
       : 'Not yet synchronised';
 
   mountIcons($('#announce-feed'));
@@ -192,7 +192,7 @@ async function boot() {
       toast('Announcements updated.', { type: 'success' });
     } catch (err) {
       if (err.code === 'not-configured') {
-        toast('The bundled notices are already up to date.', { type: 'info' });
+        toast('The saved notices are already up to date.', { type: 'info' });
       } else {
         toast(err.message, { type: 'error' });
       }

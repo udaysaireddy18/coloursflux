@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.57';
+        var stamp = 'v2.0.58';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -36,9 +36,9 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.57" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.57" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.57" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.58" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.58" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.58" />
   <script type="module" src="assets/js/pages/events.js"></script>
 </head>
 <body class="events-page">
@@ -49,7 +49,7 @@
     <section class="page-head">
       <div class="container">
         <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Events</span></nav>
-        <span class="eyebrow"><i data-icon="calendar" data-size="13"></i> Festival programme</span>
+        <span class="eyebrow"><i data-icon="calendar" data-size="13"></i> Festival schedule</span>
         <h1>Events &amp; <span class="gradient-text">schedule</span></h1>
         <p class="lead">Every performance, competition and workshop, ordered by day and start time. Save what you like — saved events stay on this device.</p>
         <div class="page-head-meta">

@@ -6,7 +6,7 @@
 import { APP, NAV } from './config.js';
 import { icon, mountIcons } from './icons.js';
 import { esc, formatTime, formatTimeRange, formatDayShort, timeAgo, breakDown, pad2, initials, violetHueFor, safeUrl, isExpired } from './util.js';
-import store, { lastSyncLabel, isSampleMode, hasSampleRecords } from './store.js';
+import store, { lastSyncLabel, hasSampleRecords } from './store.js';
 
 /* ---------------------------------------------------------------- */
 /* Brand art                                                        */
@@ -901,7 +901,6 @@ function footerMarkup() {
         <span>© ${new Date().getFullYear()} ${esc(APP.name)} · ${esc(APP.institution)}. Built as a student festival project.</span>
         <p class="footer-legal"><span>Privacy</span><span>Terms</span><span>About</span></p>
       </div>
-      ${isSampleMode() ? `<p class="micro dim" style="padding-bottom:18px">Showing the bundled Colours 2K27 programme.</p>` : hasSampleRecords() ? `<p class="micro dim" style="padding-bottom:18px">Some records come from the bundled programme.</p>` : ''}
     </div>`;
 }
 
@@ -958,7 +957,7 @@ export function syncBarMarkup() {
   if (s.source === 'sample') {
     return `<div class="sync-bar" data-tone="sample">
       ${icon('sparkles', { size: 16 })}
-      <span><b>Bundled programme.</b> You are viewing the Colours 2K27 schedule, map and stalls stored with the site.</span>
+      <span><b>Local copy.</b> You are viewing the Colours 2K27 schedule, map and stalls stored on this device.</span>
     </div>`;
   }
   if (s.source === 'empty') {
@@ -1368,7 +1367,7 @@ export function wireDataDownload(btn) {
       toast('Festival data saved on this device.', { type: 'success' });
     } catch (err) {
       if (err.code === 'not-configured') {
-        toast('This copy already includes the full festival programme.', { type: 'info' });
+        toast('This copy already includes the full festival schedule.', { type: 'info' });
       } else {
         toast(err.message, { type: 'error' });
       }

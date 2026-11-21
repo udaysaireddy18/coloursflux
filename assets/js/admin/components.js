@@ -432,7 +432,7 @@ function looksLikeHttp(value) {
 }
 
 /**
- * Bundled artwork uses repo-relative paths like `assets/img/art/wave-purple.svg`.
+ * Local artwork uses repo-relative paths like `assets/img/art/wave-purple.svg`.
  * They are valid for seeded rows, so image fields accept them as well as http(s)
  * URLs. Nothing else (javascript:, data:, …) is allowed.
  */
@@ -509,7 +509,7 @@ export function collectForm(form, fields, { timezone = 'Asia/Kolkata' } = {}) {
     } else if (field.type === 'image') {
       if (!looksLikeHttp(raw) && !looksLikeRelativeImage(raw)) {
         throw new FormError(
-          `${field.label} must be a full http(s) URL or a bundled assets/… image.`,
+          `${field.label} must be a full http(s) URL or a local assets/… image.`,
           field.name
         );
       }

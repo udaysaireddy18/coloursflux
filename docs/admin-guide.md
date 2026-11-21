@@ -190,7 +190,7 @@ convenience link, not an embedded user manager.
 - Uploads go to the public `festival-media` bucket under a folder named after
   the content type (`events`, `vendors`, `sponsors`, `branding`, `misc`).
 - Only editors/admins can upload; only admins can delete objects in Supabase.
-- Seeded rows use bundled relative paths (`assets/img/art/…`). Those are valid
+- Seeded rows use local relative paths (`assets/img/art/…`). Those are valid
   in the editor and preview; replace them with real uploads when available.
 - Prefer landscape images around 1600×900 for event covers. Logos look best on a
   transparent or dark background.
@@ -227,7 +227,7 @@ is separate from the dashboard and never includes drafts or unapproved vendors.
 
 ## Content quality checklist
 
-- [ ] Dates, times and venues match the final programme.
+- [ ] Dates, times and venues match the final schedule.
 - [ ] Cancellations are marked cancelled, not deleted.
 - [ ] Vendor approvals are current; no pending vendor is publicly visible.
 - [ ] Offers have an end time and the vendor has agreed to them.

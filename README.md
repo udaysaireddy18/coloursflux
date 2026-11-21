@@ -389,6 +389,6 @@ than opening a public issue with exploit details.
 ## Licence and credits
 
 The interface, icon set, QR encoder and placeholder artwork are written for this
-project; no third-party icon font, photo library or QR service is bundled. Add a
+project; it uses no third-party icon font, photo library or QR service. Add a
 project licence before publishing the repository, and confirm usage rights for
 any real photographs, logos or sponsor artwork uploaded through the dashboard.

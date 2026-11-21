@@ -177,12 +177,12 @@ Quick probes are in [`testing.md`](testing.md#4-rls-probes-with-curl).
 | `403` on upload | Bucket policies missing, or the account is a `viewer` |
 | `404` / bucket not found | `supabase/storage.sql` was not run |
 | Uploads, but the image is broken | Object is private or the row points at a path that was never saved |
-| Works in the dashboard preview, broken on the public site | A bundled `assets/…` path is fine; an `http://` image on an HTTPS page is blocked as mixed content |
+| Works in the dashboard preview, broken on the public site | A local `assets/…` path is fine; an `http://` image on an HTTPS page is blocked as mixed content |
 
 Fixes: re-run `storage.sql`, confirm the user's role, and check the file size.
 Only editors and admins can write; only admins can delete objects.
 
-Seeded rows use bundled paths like `assets/img/art/wave-purple.svg`. Those are
+Seeded rows use local paths like `assets/img/art/wave-purple.svg`. Those are
 valid in the editor and preview. Replace them with real uploads before launch.
 
 ---

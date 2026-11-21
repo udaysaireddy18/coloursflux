@@ -8,7 +8,7 @@
 -- for venue positions.
 --
 -- Rows are flagged `is_sample = true` so the dashboard can tell they came from
--- this bundled seed rather than hand entry. Remove the flag once the programme
+-- this local seed rather than hand entry. Remove the flag once the schedule
 -- is confirmed:
 --
 --   update public.events     set is_sample = false;
@@ -16,7 +16,7 @@
 --   update public.announcements set is_sample = false;
 --   update public.app_config set is_sample = false where id = 'app';
 --
--- Images use the bundled SVG artwork so the seed works without uploading
+-- Images use local SVG artwork so the seed works without uploading
 -- anything. Replace them from Admin → any image field when real artwork exists.
 -- ============================================================================
 
@@ -50,9 +50,9 @@ on conflict (id) do update set
   data_version = excluded.data_version;
 
 -- ----------------------------------------------------------------------------
--- Reset previous bundled seed rows
+-- Reset previous seed rows
 -- ----------------------------------------------------------------------------
--- Keeps the seed idempotent and removes the older placeholder programme
+-- Keeps the seed idempotent and removes the older placeholder schedule
 -- (Event 1–11) when re-running it against an existing demo project.
 
 delete from public.offers        where is_sample;
