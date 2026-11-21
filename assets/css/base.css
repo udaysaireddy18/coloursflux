@@ -877,29 +877,11 @@ input[type="radio"] {
 
 /* ---------- page transitions ---------- */
 
-@view-transition {
-  navigation: auto;
-}
-
-::view-transition-old(root) {
-  animation: page-out 0.22s ease both;
-}
-
-::view-transition-new(root) {
-  animation: page-in 0.44s var(--ease) both;
-}
-
+/* The JS-driven entrance is the reliable, cross-browser path. Browser-native
+   cross-document view transitions can reject during a forced intro replay, so
+   they are deliberately not opted into here. */
 html.page-ready #main {
   animation: page-enter 0.5s var(--ease) both;
-}
-
-@keyframes page-out {
-  to { opacity: 0; }
-}
-
-@keyframes page-in {
-  from { opacity: 0; filter: blur(7px); }
-  to { opacity: 1; filter: none; }
 }
 
 @keyframes page-enter {
@@ -937,8 +919,6 @@ html.page-ready #main {
     scroll-behavior: auto !important;
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root),
   html.page-ready #main {
     animation: none !important;
   }

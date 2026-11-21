@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v2.0.46';
+const VERSION = 'v2.0.47';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -32,9 +32,9 @@ const SHELL = [
   './terms.html',
   './offline.html',
   './manifest.webmanifest',
-  './assets/css/base.css?v=2.0.46',
-  './assets/css/components.css?v=2.0.46',
-  './assets/css/pages.css?v=2.0.46',
+  './assets/css/base.css?v=2.0.47',
+  './assets/css/components.css?v=2.0.47',
+  './assets/css/pages.css?v=2.0.47',
   './assets/css/intro.css?v=7',
   './assets/js/env.js',
   './assets/js/config.js',
