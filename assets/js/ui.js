@@ -123,6 +123,29 @@ function initReveals() {
 /** Shared reduced-motion check for every progressive effect. */
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const KINETIC_SELECTOR = '.hero h1, .page-head h1, .detail-title, .section-head h2, .day-head h2';
+const kineticSeen = new WeakSet();
+const kineticObserved = new WeakSet();
+let kineticObserver = null;
+
+const liquidSeen = new WeakSet();
+let liquidObserver = null;
+
+const rangoliSeen = new WeakSet();
+let rangoliObserver = null;
+
+const maskSeen = new WeakSet();
+let maskObserver = null;
+
+let storyMounted = false;
+let storyItems = [];
+let storyTicking = false;
+
+const MASK_KEY = 'cf:mask-transition';
+const MASK_POINT_KEY = 'cf:mask-point';
+let pageMaskOverlay = null;
+let pageMaskAnimation = null;
+
 /** Three very soft colour clouds behind the lilac page surface. */
 function mountAmbientLight() {
   if (document.querySelector('.ambient-light')) return;
@@ -266,16 +289,22 @@ function paintLightbox(direction = 0) {
 
   figure
     .animate(
-      [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${-direction * 14}px)` }],
-      { duration: 120, easing: 'ease-in', fill: 'forwards' }
+      [
+        { opacity: 1, transform: 'none', clipPath: 'circle(140% at 50% 50%)', filter: 'blur(0px)' },
+        { opacity: 0, transform: `translateX(${-direction * 14}px)`, clipPath: 'circle(10% at 30% 50%)', filter: 'blur(7px)' },
+      ],
+      { duration: 140, easing: 'ease-in', fill: 'forwards' }
     )
     .finished.then(() => {
       if (token !== lightboxToken) return;
       swap();
       figure
         .animate(
-          [{ opacity: 0, transform: `translateX(${direction * 14}px)` }, { opacity: 1, transform: 'none' }],
-          { duration: 240, easing: 'cubic-bezier(.2,.7,.2,1)' }
+          [
+            { opacity: 0, transform: `translateX(${direction * 14}px)`, clipPath: 'circle(10% at 70% 50%)', filter: 'blur(7px)' },
+            { opacity: 1, transform: 'none', clipPath: 'circle(140% at 50% 50%)', filter: 'blur(0px)' },
+          ],
+          { duration: 300, easing: 'cubic-bezier(.2,.7,.2,1)' }
         )
         .finished.catch(() => {});
     })
@@ -358,6 +387,345 @@ function mountParallax() {
   refreshParallax();
 }
 
+/* ---------- kinetic festival typography -------------------------- */
+
+function splitKineticHeading(el) {
+  if (kineticSeen.has(el)) return;
+  kineticSeen.add(el);
+  const label = el.textContent.replace(/\s+/g, ' ').trim();
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    if (walker.currentNode.nodeValue.trim()) nodes.push(walker.currentNode);
+  }
+
+  let index = 0;
+  nodes.forEach((node) => {
+    const frag = document.createDocumentFragment();
+    node.nodeValue.split(/(\s+)/).forEach((part) => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) {
+        frag.appendChild(document.createTextNode(part));
+        return;
+      }
+      const word = document.createElement('span');
+      word.className = 'kinetic-word';
+      word.style.setProperty('--kinetic-delay', `${Math.min(index, 14) * 55}ms`);
+      const glyph = document.createElement('span');
+      glyph.className = 'kinetic-glyph';
+      glyph.textContent = part;
+      word.appendChild(glyph);
+      frag.appendChild(word);
+      index += 1;
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+  if (label) el.setAttribute('aria-label', label);
+}
+
+function mountKineticType(root = document) {
+  if (prefersReducedMotion()) return;
+  const headings = [...root.querySelectorAll(KINETIC_SELECTOR)].filter(
+    (el) => !el.classList.contains('sr-only') && !el.closest('.intro')
+  );
+  if (!headings.length) return;
+  if (!kineticObserver && 'IntersectionObserver' in window) {
+    kineticObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('kinetic-in');
+          kineticObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 }
+    );
+  }
+  headings.forEach((el) => {
+    splitKineticHeading(el);
+    if (kineticObserved.has(el)) return;
+    kineticObserved.add(el);
+    if (!kineticObserver || el.getBoundingClientRect().top < window.innerHeight * 0.94) {
+      el.classList.add('kinetic-in');
+    } else {
+      kineticObserver.observe(el);
+    }
+  });
+}
+
+/* ---------- liquid artwork reveals -------------------------------- */
+
+function mountLiquidImages(root = document) {
+  if (prefersReducedMotion()) return;
+  const frames = [...root.querySelectorAll('.event-media, .detail-hero')];
+  if (!frames.length) return;
+  if (!liquidObserver && 'IntersectionObserver' in window) {
+    liquidObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('liquid-in');
+          liquidObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -6% 0px', threshold: 0.12 }
+    );
+  }
+  frames.forEach((frame) => {
+    if (liquidSeen.has(frame)) return;
+    liquidSeen.add(frame);
+    const box = frame.getBoundingClientRect();
+    if (!liquidObserver || (box.top < window.innerHeight * 0.96 && box.bottom > 0)) {
+      frame.classList.add('liquid-in');
+    } else {
+      liquidObserver.observe(frame);
+    }
+  });
+}
+
+/* ---------- rangoli-inspired SVG line drawing --------------------- */
+
+function rangoliMarkup() {
+  return `<svg class="motion-rangoli" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+      <circle pathLength="100" cx="120" cy="120" r="96" />
+      <circle pathLength="100" cx="120" cy="120" r="68" />
+      <circle pathLength="100" cx="120" cy="120" r="40" />
+      <path pathLength="100" d="M120 14c30 30 30 66 0 102-30-36-30-72 0-102Z" />
+      <path pathLength="100" d="M226 120c-30 30-66 30-102 0 36-30 72-30 102 0Z" />
+      <path pathLength="100" d="M120 226c-30-30-30-66 0-102 30 36 30 72 0 102Z" />
+      <path pathLength="100" d="M14 120c30-30 66-30 102 0-36 30-72 30-102 0Z" />
+      <path pathLength="100" d="M196 44c-22 30-50 42-76 50 10-26 38-50 76-50Z" />
+      <path pathLength="100" d="M196 196c-30-22-42-50-50-76 26 10 50 38 50 76Z" />
+      <path pathLength="100" d="M44 196c22-30 50-42 76-50-10 26-38 50-76 50Z" />
+      <path pathLength="100" d="M44 44c30 22 42 50 50 76-26-10-50-38-50-76Z" />
+      <path pathLength="100" d="M120 20v200M20 120h200M49 49l142 142M191 49 49 191" opacity=".42" />
+    </g>
+  </svg>`;
+}
+
+function mountRangoliArt() {
+  if (prefersReducedMotion()) return;
+  const sections = [...document.querySelectorAll('.hero, .page-head, .section, .section-tight')];
+  if (!rangoliObserver && 'IntersectionObserver' in window) {
+    rangoliObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('rangoli-in');
+          rangoliObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.05 }
+    );
+  }
+  sections.forEach((section) => {
+    if (rangoliSeen.has(section)) return;
+    rangoliSeen.add(section);
+    if (![...section.children].some((child) => child.classList.contains('motion-rangoli'))) {
+      section.insertAdjacentHTML('afterbegin', rangoliMarkup());
+    }
+    section.classList.add('has-rangoli');
+    if (!rangoliObserver || section.getBoundingClientRect().top < window.innerHeight * 0.95) {
+      section.classList.add('rangoli-in');
+    } else {
+      rangoliObserver.observe(section);
+    }
+  });
+}
+
+/* ---------- expanding section masks ------------------------------- */
+
+function mountSectionMasks() {
+  if (prefersReducedMotion()) return;
+  const blocks = [...document.querySelectorAll('#main > section:not(.hero), .day-block')];
+  if (!maskObserver && 'IntersectionObserver' in window) {
+    maskObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('mask-reveal');
+          maskObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.04 }
+    );
+  }
+  blocks.forEach((block) => {
+    if (maskSeen.has(block)) return;
+    maskSeen.add(block);
+    if (!maskObserver || block.getBoundingClientRect().top < window.innerHeight * 0.9) {
+      block.classList.add('mask-reveal');
+    } else {
+      maskObserver.observe(block);
+    }
+  });
+}
+
+/* ---------- scroll-driven storytelling --------------------------- */
+
+const STORY_TARGETS = [
+  ['.hero-copy', 12, 0.012, 1.5],
+  ['.section-head > div', 12, 0.01, 1.5],
+  ['.quick-grid', 18, 0.015, 2],
+  ['.grid', 20, 0.014, 2],
+  ['.home-map-grid', 22, 0.02, 2.5],
+  ['.announce-feed', 16, 0.012, 2],
+  ['.filter-panel', 12, 0.01, 1.5],
+  ['.day-head', 10, 0.01, 1.5],
+  ['.schedule-list', 14, 0.01, 1.5],
+  ['.detail-hero', 24, 0.018, 2.5],
+];
+
+function updateStory() {
+  storyTicking = false;
+  const viewport = window.innerHeight || 1;
+  storyItems.forEach(({ el, amount, scale, blur }) => {
+    if (!el.isConnected) return;
+    const box = el.getBoundingClientRect();
+    if (box.bottom < -viewport * 0.25 || box.top > viewport * 1.25) return;
+    const progress = (viewport - box.top) / (viewport + Math.max(box.height, 1));
+    const p = Math.min(1, Math.max(0, progress));
+    const wave = Math.sin((p - 0.5) * Math.PI);
+    el.style.setProperty('--story-y', `${(-wave * amount).toFixed(1)}px`);
+    el.style.setProperty('--story-scale', (1 - Math.abs(wave) * scale).toFixed(4));
+    el.style.setProperty('--story-blur', `${(Math.abs(wave) * blur).toFixed(1)}px`);
+  });
+}
+
+function refreshStory() {
+  storyItems = [];
+  if (prefersReducedMotion()) return;
+  const mobile = window.innerWidth < 720;
+  STORY_TARGETS.forEach(([selector, amount, scale, blur]) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      if (el.closest('.intro')) return;
+      el.classList.add('story-float');
+      storyItems.push({
+        el,
+        amount: amount * (mobile ? 0.45 : 1),
+        scale: scale * (mobile ? 0.5 : 1),
+        blur: blur * (mobile ? 0.5 : 1),
+      });
+    });
+  });
+  updateStory();
+}
+
+function mountStoryScroll() {
+  if (storyMounted || prefersReducedMotion()) return;
+  storyMounted = true;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (storyTicking) return;
+      storyTicking = true;
+      requestAnimationFrame(updateStory);
+    },
+    { passive: true }
+  );
+  window.addEventListener('resize', refreshStory, { passive: true });
+  refreshStory();
+}
+
+/* ---------- expanding page masks ---------------------------------- */
+
+const sessionGet = (key) => {
+  try { return sessionStorage.getItem(key); } catch { return null; }
+};
+const sessionSet = (key, value) => {
+  try { sessionStorage.setItem(key, value); } catch { /* private mode */ }
+};
+const sessionRemove = (key) => {
+  try { sessionStorage.removeItem(key); } catch { /* private mode */ }
+};
+
+function animatePageMask(overlay, from, to, x, y, duration, done) {
+  if (pageMaskAnimation) pageMaskAnimation.cancel();
+  overlay.style.setProperty('--mask-x', `${x}px`);
+  overlay.style.setProperty('--mask-y', `${y}px`);
+  overlay.style.clipPath = `circle(${from}px at ${x}px ${y}px)`;
+  overlay.dataset.state = from > to ? 'enter' : 'exit';
+
+  let finished = false;
+  const complete = () => {
+    if (finished) return;
+    finished = true;
+    done();
+  };
+  if (!overlay.animate) {
+    complete();
+    return;
+  }
+  const anim = overlay.animate(
+    [
+      { clipPath: `circle(${from}px at ${x}px ${y}px)`, opacity: 1 },
+      { clipPath: `circle(${to}px at ${x}px ${y}px)`, opacity: 1 },
+    ],
+    { duration, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' }
+  );
+  pageMaskAnimation = anim;
+  anim.finished.then(complete).catch(complete);
+}
+
+function mountPageMask() {
+  if (prefersReducedMotion()) {
+    sessionRemove(MASK_KEY);
+    sessionRemove(MASK_POINT_KEY);
+    return;
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'page-mask';
+  overlay.setAttribute('aria-hidden', 'true');
+  document.body.prepend(overlay);
+  pageMaskOverlay = overlay;
+
+  const reach = Math.hypot(window.innerWidth, window.innerHeight);
+  if (sessionGet(MASK_KEY) === '1') {
+    const point = String(sessionGet(MASK_POINT_KEY) || '').split(',').map(Number);
+    const rawX = Number.isFinite(point[0]) ? point[0] : window.innerWidth / 2;
+    const rawY = Number.isFinite(point[1]) ? point[1] : window.innerHeight / 2;
+    const x = Math.min(Math.max(rawX, 0), window.innerWidth);
+    const y = Math.min(Math.max(rawY, 0), window.innerHeight);
+    animatePageMask(overlay, reach, 0, x, y, 620, () => {
+      overlay.removeAttribute('data-state');
+      overlay.style.clipPath = '';
+      pageMaskAnimation?.cancel();
+      pageMaskAnimation = null;
+      sessionRemove(MASK_KEY);
+      sessionRemove(MASK_POINT_KEY);
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const link = e.target.closest?.('a[href]');
+    if (!link || link.closest('.lightbox, [data-no-mask]')) return;
+    if (link.target && link.target !== '_self') return;
+    if (link.hasAttribute('download')) return;
+    const url = new URL(link.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname && url.search === location.search && (!url.hash || url.hash === location.hash)) return;
+
+    const box = link.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX || box.left + box.width / 2, 0), window.innerWidth);
+    const y = Math.min(Math.max(e.clientY || box.top + box.height / 2, 0), window.innerHeight);
+    e.preventDefault();
+    sessionSet(MASK_KEY, '1');
+    sessionSet(MASK_POINT_KEY, `${Math.round(x)},${Math.round(y)}`);
+
+    let navigated = false;
+    const go = () => {
+      if (navigated) return;
+      navigated = true;
+      location.assign(url.href);
+    };
+    animatePageMask(pageMaskOverlay, 0, Math.hypot(window.innerWidth, window.innerHeight), x, y, 540, go);
+    setTimeout(go, 760);
+  });
+}
+
 /** Mount every additive effect once; refresh image hooks after renders. */
 export function mountMotion(root = document) {
   if (!motionReady) {
@@ -367,9 +735,17 @@ export function mountMotion(root = document) {
     mountPointerPolish();
     mountLightbox();
     mountParallax();
+    mountStoryScroll();
+    mountPageMask();
   } else {
     refreshParallax();
   }
+  if (!prefersReducedMotion()) document.documentElement.classList.add('js-motion');
+  mountKineticType(root);
+  mountLiquidImages(root);
+  mountRangoliArt();
+  mountSectionMasks();
+  refreshStory();
   mountImageFallbacks(root);
 }
 
