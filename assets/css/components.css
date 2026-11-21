@@ -3313,13 +3313,13 @@
   }
 
   .btn-icon {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
   }
 
   .bookmark-btn {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
   }
 
   /* footer */
@@ -3354,15 +3354,15 @@
   }
 
   /* bottom nav stays a single tidy row, even at 320px */
-  body { padding-bottom: calc(74px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
 
   .bottom-nav { padding: 5px 4px calc(5px + env(safe-area-inset-bottom)); }
   .bottom-nav ul { gap: 0; }
 
   .bottom-nav a {
-    gap: 3px;
-    padding: 6px 1px;
-    font-size: 0.75rem;
+    gap: 2px;
+    padding: 5px 1px;
+    font-size: 0.72rem;
     letter-spacing: 0;
     white-space: nowrap;
   }
@@ -3455,15 +3455,15 @@
     content: "";
     position: absolute;
     left: 50%;
-    top: 14px;
-    width: 44px;
-    height: 44px;
+    top: 13px;
+    width: 40px;
+    height: 40px;
     transform: translate(-50%, -50%);
   }
 
   .map-marker .pin-label {
-    max-width: 104px;
-    font-size: 0.68rem;
+    max-width: 100px;
+    font-size: 0.65rem;
   }
 
   /* cards: less air, long venue names wrap */
@@ -3501,7 +3501,7 @@
 /* ---------- phone-wide compact scale ---------- */
 
 @media (max-width: 720px) {
-  html { font-size: 14.5px; }
+  html { font-size: 14px; }
 
   /* the three-line menu icon sits beside Online on desktop only */
   .menu-toggle { display: none; }
@@ -3515,32 +3515,32 @@
   .section-head h2 { padding-bottom: 10px; font-size: 1.5rem; }
   .section-head p { margin-top: 6px; font-size: 0.82rem; }
 
-  .eyebrow { font-size: 0.7rem; }
+  .eyebrow { font-size: 0.68rem; }
   .lead { font-size: 0.84rem; }
   .small { font-size: 0.76rem; }
-  .micro { font-size: 0.72rem; }
+  .micro { font-size: 0.7rem; }
 
   .hero { padding-block: 22px 24px; }
   .hero-date { margin-top: 10px; }
   .hero .lead { margin-top: 10px; }
   .hero-actions { margin-top: 16px; gap: 8px; }
   .hero-actions .btn {
-    min-height: 46px;
+    min-height: 42px;
     padding-inline: 8px;
-    font-size: 0.86rem;
+    font-size: 0.82rem;
   }
   .hero-meta { margin-top: 12px; font-size: 0.72rem; }
 
   /* offline first: highlight Save for offline, quieten Install app */
   .hero-panel-foot a[href="install.html"] {
     justify-content: center;
-    min-height: 44px;
-    padding: 10px 14px;
+    min-height: 40px;
+    padding: 8px 14px;
     border: 1px solid rgba(71, 18, 151, 0.35);
     border-radius: var(--r-pill);
     background: var(--grad-gold);
     color: #fff;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 650;
     text-decoration: none;
     box-shadow: 0 10px 24px -14px rgba(88, 22, 190, 0.6);
@@ -3557,7 +3557,7 @@
   .hero-panel { padding: 14px; }
   .hero-panel-head { padding-bottom: 8px; }
   .hero-panel .cd-value { font-size: 1.3rem; }
-  .hero-panel .cd-label { font-size: 0.7rem; }
+  .hero-panel .cd-label { font-size: 0.68rem; }
 
   .quick-grid { gap: 8px; }
   .quick-card { padding: 12px; gap: 6px; }
@@ -3570,9 +3570,9 @@
   .vendor-card { padding: 12px; gap: 10px; }
   .announce-card { padding: 12px 14px; gap: 10px; }
 
-  .badge { padding: 4px 9px; font-size: 0.72rem; }
-  .chip { min-height: 44px; padding: 10px 14px; font-size: 0.82rem; }
-  .btn-sm { min-height: 44px; padding: 10px 14px; font-size: 0.82rem; }
+  .badge { padding: 3px 8px; font-size: 0.7rem; }
+  .chip { min-height: 40px; padding: 8px 12px; font-size: 0.78rem; }
+  .btn-sm { min-height: 40px; padding: 8px 12px; font-size: 0.78rem; }
   .input,
   .select,
   textarea { font-size: 16px; }
@@ -3623,15 +3623,15 @@
     display: flex;
     align-items: center;
     width: 100%;
-    min-height: 40px;
+    min-height: 36px;
   }
 
-  .site-header .brand-mark { width: 44px; height: 44px; }
-  .site-header.is-scrolled .brand-mark { width: 40px; height: 40px; }
+  .site-header .brand-mark { width: 40px; height: 40px; }
+  .site-header.is-scrolled .brand-mark { width: 36px; height: 36px; }
 
   .map-tool {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -4015,23 +4015,23 @@
   }
 
   .dir-heading h2 { font-size: 0.9rem; }
-  .dir-heading p { font-size: 0.74rem; }
+  .dir-heading p { font-size: 0.7rem; }
 
   .dir-fields {
-    grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
     gap: 6px;
     margin-top: 12px;
   }
 
   .dir-field .select {
-    min-height: 44px;
-    padding: 10px 30px 10px 10px;
+    min-height: 42px;
+    padding: 9px 30px 9px 10px;
     font-size: 16px;
   }
 
-  .dir-field-label { font-size: 0.72rem; }
-  .dir-swap { width: 44px; height: 44px; }
-  .dir-actions .btn { flex: 1 1 auto; justify-content: center; min-height: 44px; font-size: 0.86rem; }
+  .dir-field-label { font-size: 0.68rem; }
+  .dir-swap { width: 40px; height: 42px; }
+  .dir-actions .btn { flex: 1 1 auto; justify-content: center; min-height: 42px; font-size: 0.82rem; }
   .dir-time { margin-left: 0; }
   .dir-steps li { font-size: 0.76rem; padding: 7px 8px 7px 34px; }
   .dir-steps li::before { left: 7px; top: 7px; width: 19px; height: 19px; }
