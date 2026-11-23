@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.61';
+        var stamp = 'v2.0.62';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -36,9 +36,9 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.61" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.61" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.61" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.62" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.62" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.62" />
   <script type="module" src="assets/js/pages/events.js"></script>
 </head>
 <body class="events-page">
