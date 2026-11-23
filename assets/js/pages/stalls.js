@@ -81,7 +81,6 @@ function render() {
     (row) => !q || row.name.toLowerCase().includes(q)
   );
 
-  $('#food-count').textContent = `${rows.length} stall${rows.length === 1 ? '' : 's'}`;
   const grid = $('#food-stall-grid');
   grid.innerHTML = rows.length
     ? rows.map((row) => card(row.name, row.index)).join('')

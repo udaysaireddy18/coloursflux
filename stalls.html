@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.63';
+        var stamp = 'v2.0.64';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -36,12 +36,12 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.63" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.63" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.63" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.64" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.64" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.64" />
   <script type="module" src="assets/js/pages/stalls.js"></script>
 </head>
-<body>
+<body class="stalls-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header id="site-header" class="site-header"></header>
 
@@ -53,7 +53,7 @@
         <h1>Stalls &amp; <span class="gradient-text">offers</span></h1>
         <p class="lead">Explore the proposed food stall line-up for Colours 2K27. Stall names come from the official food stalls notice.</p>
         <div class="page-head-meta">
-          <span class="badge badge-magenta"><i data-icon="store" data-size="12"></i> 45 proposed food stalls</span>
+          <span class="badge badge-magenta"><i data-icon="store" data-size="12"></i> Proposed line-up</span>
         </div>
       </div>
     </section>
@@ -77,7 +77,6 @@
         </div>
         <div class="cluster" style="gap:10px">
           <input id="food-search" class="input" type="search" placeholder="Search food stalls" aria-label="Search food stalls" style="width:min(280px,60vw)" />
-          <span class="badge badge-neutral" id="food-count">45 stalls</span>
         </div>
       </div>
 

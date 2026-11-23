@@ -1543,6 +1543,24 @@
   filter: none !important;
 }
 
+body.stalls-page,
+body.stalls-page::before,
+body.stalls-page::after,
+body.stalls-page *,
+body.stalls-page *::before,
+body.stalls-page *::after,
+body.stalls-page *::backdrop {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+body.stalls-page .ambient-light,
+body.stalls-page .page-ornament,
+body.stalls-page .aurora-shimmer {
+  display: none !important;
+}
+
 :is(body.event-page, body.events-page) .ambient-light,
 :is(body.event-page, body.events-page) .page-ornament,
 :is(body.event-page, body.events-page) .aurora-shimmer,
