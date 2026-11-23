@@ -12,7 +12,7 @@
  *  - /admin/ is network-only by design.
  */
 
-const VERSION = 'v2.0.59';
+const VERSION = 'v2.0.60';
 const SHELL_CACHE = `coloursflux-shell-${VERSION}`;
 const IMAGE_CACHE = `coloursflux-images-${VERSION}`;
 const OFFLINE_URL = 'offline.html';
@@ -32,9 +32,9 @@ const SHELL = [
   './terms.html',
   './offline.html',
   './manifest.webmanifest',
-  './assets/css/base.css?v=2.0.59',
-  './assets/css/components.css?v=2.0.59',
-  './assets/css/pages.css?v=2.0.59',
+  './assets/css/base.css?v=2.0.60',
+  './assets/css/components.css?v=2.0.60',
+  './assets/css/pages.css?v=2.0.60',
   './assets/css/intro.css?v=9',
   './assets/js/env.js',
   './assets/js/config.js',
@@ -119,6 +119,8 @@ const SHELL = [
   './assets/img/events/throwing.jpg',
   './assets/img/events/treasure-hunt.jpg',
   './assets/img/events/volleyball-men.jpg',
+  './assets/img/food-stalls.webp',
+  './assets/img/game-stalls.webp',
   './assets/img/campus-map.webp',
 ];
 
