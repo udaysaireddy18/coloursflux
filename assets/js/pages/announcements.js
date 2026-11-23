@@ -161,11 +161,22 @@ function setupNotifications() {
   paint();
 }
 
+function wireStallPreviews() {
+  document.querySelector('.stall-alert-grid')?.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const img = e.target.closest?.('img[data-preview-src]');
+    if (!img) return;
+    e.preventDefault();
+    img.click();
+  });
+}
+
 async function boot() {
   mountChrome();
   mountIcons();
   await store.init();
   mountChrome();
+  wireStallPreviews();
 
   mountSyncBar($('#announce-status'));
   paintChips();

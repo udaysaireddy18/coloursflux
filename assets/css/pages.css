@@ -611,6 +611,12 @@
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
+  cursor: zoom-in;
+}
+
+.stall-alert img:focus-visible {
+  outline: 3px solid var(--purple-bright, #7b2ff7);
+  outline-offset: 3px;
 }
 
 .stall-alert figcaption {
