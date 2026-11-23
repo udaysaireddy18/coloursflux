@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.62';
+        var stamp = 'v2.0.63';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -36,9 +36,9 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.62" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.62" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.62" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.63" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.63" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.63" />
   <script type="module" src="assets/js/pages/announcements.js"></script>
 </head>
 <body>
@@ -76,58 +76,6 @@
             <figcaption>Game stalls</figcaption>
           </figure>
         </div>
-
-        <details class="stall-list">
-          <summary><span>Proposed food stalls</span><span class="badge badge-purple">45</span></summary>
-          <ol>
-            <li>Biryani</li>
-            <li>Cool Drinks</li>
-            <li>Fried Rice</li>
-            <li>Chaat &amp; Pani Puri</li>
-            <li>Ice Cream</li>
-            <li>Manchurian</li>
-            <li>Chocolate Fountain</li>
-            <li>Juice Point</li>
-            <li>Rolls &amp; Frankies</li>
-            <li>Haleem</li>
-            <li>Fried Chicken</li>
-            <li>Tandoori</li>
-            <li>Bajji &amp; Samosa</li>
-            <li>Momos</li>
-            <li>Milk Items</li>
-            <li>Bamboo Chicken</li>
-            <li>Seafood</li>
-            <li>Desserts</li>
-            <li>Fruits &amp; Coconut</li>
-            <li>Shawarma</li>
-            <li>Bakery Products</li>
-            <li>Dosa</li>
-            <li>Soups</li>
-            <li>Tiffins</li>
-            <li>Bread Omelette &amp; Egg</li>
-            <li>Kulfi</li>
-            <li>Chapathi &amp; Pulka</li>
-            <li>French Fries &amp; Spring Potato</li>
-            <li>Peechumittai</li>
-            <li>Coffee &amp; Tea</li>
-            <li>Noodles</li>
-            <li>Sugarcane Juice</li>
-            <li>Kerala Specials</li>
-            <li>Live bobbatlu</li>
-            <li>Pizza</li>
-            <li>Roti</li>
-            <li>Fire paan</li>
-            <li>Veg Starters</li>
-            <li>Pav Bhaji &amp; Vada Pav</li>
-            <li>Kulfi</li>
-            <li>Live Putharekulu</li>
-            <li>Ice Crush</li>
-            <li>Ragi Sangati &amp; Natu Kodi Pulusu</li>
-            <li>Waffles</li>
-            <li>Korean Cuisine</li>
-          </ol>
-          <p class="micro dim">Any other food items proposed by students will also be considered.</p>
-        </details>
       </article>
 
       <div class="between" style="margin:18px 0 14px">

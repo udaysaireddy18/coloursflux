@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.62';
+        var stamp = 'v2.0.63';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -26,8 +26,8 @@
   </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Stalls · Coming Soon · ColoursFlux</title>
-  <meta name="description" content="Stall listings and offers for Colours 2K27 are coming soon. Check back for updates as vendors are confirmed." />
+  <title>Food Stalls · ColoursFlux</title>
+  <meta name="description" content="Browse the 45 proposed food stalls for Colours 2K27, 7–9 January at Aditya University." />
   <meta name="theme-color" content="#f8f5fb" />
   <meta name="color-scheme" content="light" />
   <link rel="preload" href="assets/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -36,10 +36,10 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.62" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.62" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.62" />
-  <script type="module" src="assets/js/pages/static.js"></script>
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.63" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.63" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.63" />
+  <script type="module" src="assets/js/pages/stalls.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,22 +51,41 @@
         <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Stalls</span></nav>
         <span class="eyebrow"><i data-icon="store" data-size="13"></i> Food · Merch · Art</span>
         <h1>Stalls &amp; <span class="gradient-text">offers</span></h1>
-        <p class="lead">Stall listings and offers are coming soon. This page will be updated as vendors are confirmed.</p>
+        <p class="lead">Explore the proposed food stall line-up for Colours 2K27. Stall names come from the official food stalls notice.</p>
         <div class="page-head-meta">
-          <span class="badge badge-magenta"><i data-icon="clock" data-size="12"></i> Coming soon · updated shortly</span>
+          <span class="badge badge-magenta"><i data-icon="store" data-size="12"></i> 45 proposed food stalls</span>
         </div>
       </div>
     </section>
 
-    <section class="container" aria-label="Stalls">
+    <section class="container" aria-label="Food stalls">
       <div class="card card-pad" style="margin-top:18px">
-        <span class="badge badge-magenta"><i data-icon="store" data-size="13"></i> Coming soon</span>
-        <h2 style="font-size:1.5rem;margin-top:12px">Stalls are coming soon</h2>
-        <p class="lead" style="margin-top:8px">Vendor listings and offers will be updated here once they are confirmed. Check announcements for the latest festival information.</p>
-        <div class="cluster" style="margin-top:16px">
-          <a class="btn btn-gold btn-sm" href="announcements.html">Check announcements <i data-icon="arrow-right" data-size="15"></i></a>
-          <a class="btn btn-ghost btn-sm" href="index.html">Back to home</a>
+        <div class="stall-source">
+          <div style="max-width:62ch">
+            <span class="badge badge-purple"><i data-icon="utensils" data-size="13"></i> Food stalls notice</span>
+            <h2 style="font-size:1.35rem;margin-top:10px">Flavours lined up for Colours 2K27</h2>
+            <p class="small" style="margin-top:6px">These are the proposed food stalls from the auction notice. Stall allotments and offers will be confirmed closer to the fest.</p>
+          </div>
+          <img src="assets/img/food-stalls.webp" alt="Food stalls notice for Colours 2K27" data-preview-src="assets/img/food-stalls.webp" data-preview-caption="Food stalls notice · Colours 2K27" role="button" tabindex="0" decoding="async" />
         </div>
+      </div>
+
+      <div class="between" style="margin:22px 0 14px;gap:12px;flex-wrap:wrap">
+        <div>
+          <span class="eyebrow"><i data-icon="utensils" data-size="13"></i> Food stalls</span>
+          <h2 style="font-size:1.35rem;margin-top:8px">Browse the line-up</h2>
+        </div>
+        <div class="cluster" style="gap:10px">
+          <input id="food-search" class="input" type="search" placeholder="Search food stalls" aria-label="Search food stalls" style="width:min(280px,60vw)" />
+          <span class="badge badge-neutral" id="food-count">45 stalls</span>
+        </div>
+      </div>
+
+      <div id="food-stall-grid" class="grid grid-3"></div>
+
+      <div class="cluster" style="margin-top:22px">
+        <a class="btn btn-outline btn-sm" href="announcements.html"><i data-icon="megaphone" data-size="15"></i> Check announcements</a>
+        <a class="btn btn-ghost btn-sm" href="events.html">Back to schedule</a>
       </div>
     </section>
   </main>
