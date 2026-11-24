@@ -540,27 +540,6 @@
   border-radius: 4px;
 }
 
-.stall-source {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 210px;
-  gap: 22px;
-  align-items: center;
-}
-
-.stall-source img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  cursor: zoom-in;
-}
-
-.stall-source img:focus-visible {
-  outline: 3px solid var(--purple-bright, #7b2ff7);
-  outline-offset: 3px;
-}
-
 .food-stall-card .food-stall-media {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -591,11 +570,6 @@
   color: #fff;
   border-color: rgba(255, 255, 255, 0.42);
   background: rgba(35, 8, 58, 0.55);
-}
-
-@media (max-width: 760px) {
-  .stall-source { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-  .stall-source img { max-width: 240px; }
 }
 
 /* ---------- announcements ---------- */

@@ -102,20 +102,10 @@ function render() {
   mountMotion(grid);
 }
 
-function wireSourceImage() {
-  const img = $('.stall-source img');
-  img?.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    e.preventDefault();
-    img.click();
-  });
-}
-
 function boot() {
   mountChrome();
   $('#food-search').value = query;
   render();
-  wireSourceImage();
 
   $('#food-search').addEventListener(
     'input',
