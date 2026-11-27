@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.65';
+        var stamp = 'v2.0.66';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -36,9 +36,9 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.65" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.65" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.65" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.66" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.66" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.66" />
   <script type="module" src="assets/js/pages/map.js"></script>
 </head>
 <body class="map-page">
@@ -56,6 +56,7 @@
         <div class="page-head-meta">
           <span class="badge badge-purple"><i data-icon="map" data-size="12"></i> Aditya University campus</span>
           <span class="badge badge-cyan"><i data-icon="wifi-off" data-size="12"></i> Works offline</span>
+          <a class="btn btn-ghost btn-sm" href="#travel-info"><i data-icon="navigation" data-size="14"></i> How to reach</a>
         </div>
       </div>
     </section>
@@ -170,6 +171,55 @@
       </section>
 
       <div class="location-list" id="location-list" aria-label="Location directory"></div>
+    </section>
+
+    <section class="container" id="travel-info" aria-labelledby="travel-title" style="margin-top:18px">
+      <div class="card card-pad">
+        <div class="between" style="gap:12px;flex-wrap:wrap">
+          <div>
+            <span class="eyebrow"><i data-icon="navigation" data-size="13"></i> Getting here</span>
+            <h2 id="travel-title" style="font-size:1.35rem;margin-top:8px">How to reach Aditya University</h2>
+            <p class="small" style="margin-top:6px;max-width:68ch">Use these rail, air and road routes to reach the campus at Surampalem, Kakinada District.</p>
+          </div>
+          <span class="badge badge-purple"><i data-icon="map-pin" data-size="12"></i> Aditya Nagar, ADB Road</span>
+        </div>
+
+        <div class="grid grid-2" style="margin-top:18px">
+          <div class="info-tile">
+            <div class="cluster" style="gap:8px">
+              <span class="badge badge-purple"><i data-icon="navigation" data-size="12"></i> By train</span>
+              <b>Samalkot Junction (SLO)</b>
+            </div>
+            <p>13 km (20 - 25 mins drive). Autos &amp; APSRTC buses available.</p>
+            <p style="margin-top:8px"><b>Rajahmundry (RJY)</b><br />50 km (1 hr drive).</p>
+          </div>
+
+          <div class="info-tile">
+            <div class="cluster" style="gap:8px">
+              <span class="badge badge-purple"><i data-icon="globe" data-size="12"></i> By air</span>
+              <b>Rajahmundry Domestic Airport (RJY)</b>
+            </div>
+            <p>50 km with daily flights from Hyderabad, Bengaluru, Chennai.</p>
+          </div>
+
+          <div class="info-tile">
+            <div class="cluster" style="gap:8px">
+              <span class="badge badge-purple"><i data-icon="map" data-size="12"></i> By road</span>
+              <b>ADB Road / NH-16</b>
+            </div>
+            <p>Located on ADB Road, connecting NH-16 (Chennai–Kolkata National Highway) at Rajanagaram.</p>
+          </div>
+
+          <div class="info-tile">
+            <div class="cluster" style="gap:8px">
+              <span class="badge badge-purple"><i data-icon="map-pin" data-size="12"></i> Campus address</span>
+              <b>Aditya University</b>
+            </div>
+            <p>Aditya Nagar, ADB Road, Surampalem, Kakinada District, AP – 533437.</p>
+            <p style="margin-top:8px">Frequent buses from Kakinada, Samalkot, and Rajahmundry.</p>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 

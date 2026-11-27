@@ -6,7 +6,7 @@
     /* One-time reset for browsers still running an old service-worker cache. */
     (function () {
       try {
-        var stamp = 'v2.0.65';
+        var stamp = 'v2.0.66';
         if (!('serviceWorker' in navigator) || localStorage.getItem('cf.cacheReset') === stamp) return;
         Promise.all([navigator.serviceWorker.getRegistrations(), caches.keys()])
           .then(function (res) {
@@ -36,9 +36,9 @@
   <link rel="icon" href="assets/icons/favicon.png" sizes="64x64" type="image/png" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="stylesheet" href="assets/css/base.css?v=2.0.65" />
-  <link rel="stylesheet" href="assets/css/components.css?v=2.0.65" />
-  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.65" />
+  <link rel="stylesheet" href="assets/css/base.css?v=2.0.66" />
+  <link rel="stylesheet" href="assets/css/components.css?v=2.0.66" />
+  <link rel="stylesheet" href="assets/css/pages.css?v=2.0.66" />
   <script type="module" src="assets/js/pages/about.js"></script>
 </head>
 <body>
@@ -68,6 +68,28 @@
 
           <h2 id="festival">Festival information</h2>
           <div class="info-grid" id="about-facts" style="grid-template-columns:1fr 1fr"></div>
+
+          <h2 id="travel">How to reach</h2>
+          <p>Aditya University is at Aditya Nagar, ADB Road, Surampalem, Kakinada District, AP – 533437.</p>
+          <div class="info-grid info-grid-2">
+            <div class="info-tile">
+              <b>By train</b>
+              <p>Samalkot Junction (SLO): 13 km (20 - 25 mins drive). Autos &amp; APSRTC buses available. Rajahmundry (RJY): 50 km (1 hr drive).</p>
+            </div>
+            <div class="info-tile">
+              <b>By air</b>
+              <p>Rajahmundry Domestic Airport (RJY): 50 km with daily flights from Hyderabad, Bengaluru, Chennai.</p>
+            </div>
+            <div class="info-tile">
+              <b>By road</b>
+              <p>ADB Road connects NH-16 (Chennai–Kolkata National Highway) at Rajanagaram, with frequent buses from Kakinada, Samalkot, and Rajahmundry.</p>
+            </div>
+            <div class="info-tile">
+              <b>On campus</b>
+              <p>Use the campus map for venue directions and a searchable location directory.</p>
+              <p style="margin-top:8px"><a href="map.html#travel-info">Open campus map <i data-icon="arrow-right" data-size="13"></i></a></p>
+            </div>
+          </div>
 
           <h2 id="offline">How offline mode works</h2>
           <p>ColoursFlux is a progressive web app. When you load it once with a connection, the app shell is cached and the festival data is stored locally on your device. On later visits, the app opens from that cache and shows the saved schedule, map, stalls and notices.</p>
